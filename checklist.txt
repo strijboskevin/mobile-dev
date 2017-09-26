@@ -1,0 +1,12 @@
+Topics die aan bod moeten komen voor project, aftikken en indien nodig classname + line number
+
+Omgeving
+UI Design
+Events Intents
+Optionmenu
+Listview Adapter
+Fragments
+Preferences
+Content Providers
+SQLite
+Loader async
