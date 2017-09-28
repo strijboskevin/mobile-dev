@@ -1,4 +1,4 @@
-package com.example.fred.mobile_dev;
+package mobile_dev.mobile_dev;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.example.fred.mobile_dev", appContext.getPackageName());
+        assertEquals("mobile_dev.mobile_dev", appContext.getPackageName());
     }
 }

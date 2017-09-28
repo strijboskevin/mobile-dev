@@ -1,4 +1,4 @@
-package com.example.fred.mobile_dev;
+package mobile_dev.mobile_dev;
 
 import org.junit.Test;
 
