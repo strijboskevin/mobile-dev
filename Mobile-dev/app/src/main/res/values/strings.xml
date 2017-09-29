@@ -4,7 +4,7 @@
     <!-- Strings related to login -->
     <string name="prompt_firstname">Voornaam</string>
     <string name="prompt_lastname">Achternaam</string>
-    <string name="prompt_email">Email</string>
+    <string name="prompt_email">Emailadres</string>
     <string name="prompt_password">Wachtwoord</string>
     <string name="prompt_age">Gebroortedatum</string>
     <string name="prompt_address">Adres</string>
