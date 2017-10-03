@@ -6,15 +6,15 @@ package mobile_dev.mobile_dev.model;
 
 public class User {
 
-    private String userName;
+    private String username;
     private String firstName;
     private String lastName;
     private String passWord;
     private City city;
     private String address;
 
-    public User(String userName, String firstName, String lastName, String passWord, City city, String address) {
-        this.userName = userName;
+    public User(String username, String firstName, String lastName, String passWord, City city, String address) {
+        this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.passWord = passWord;
@@ -25,11 +25,11 @@ public class User {
     public User() {};
 
     public String getUserName() {
-        return userName;
+        return username;
     }
 
     public void setUserName(String userName) {
-        this.userName = userName;
+        this.username = userName;
     }
 
     public String getFirstName() {
