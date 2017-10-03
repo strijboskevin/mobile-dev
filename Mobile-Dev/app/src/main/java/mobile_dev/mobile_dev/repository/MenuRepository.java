@@ -24,7 +24,7 @@ public class MenuRepository implements IRepository {
     }
 
     public Menu find(int id) {
-        connection.setUrl("http://10.0.2.2:8080/api-0.1.0/menus/get/" + id);
+        connection.setUrl("http://10.0.2.2:8080/mdev-api/menus/get/" + id);
         connection.getString();
         Menu menu = gson.fromJson(this.result, Menu.class);
         return menu;

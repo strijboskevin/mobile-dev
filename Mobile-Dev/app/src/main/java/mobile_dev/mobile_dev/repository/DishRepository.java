@@ -24,7 +24,7 @@ public class DishRepository implements IRepository {
     }
 
     public Dish find(int id) {
-        connection.setUrl("http://10.0.2.2:8080/api-0.1.0/dishes/get/" + id);
+        connection.setUrl("http://10.0.2.2:8080/mdev-api/dishes/get/" + id);
         connection.getString();
         Dish dish = gson.fromJson(this.result, Dish.class);
         return dish;
