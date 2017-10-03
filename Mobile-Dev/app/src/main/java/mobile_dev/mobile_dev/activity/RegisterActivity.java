@@ -1,4 +1,4 @@
-package mobile_dev.mobile_dev.activitiy;
+package mobile_dev.mobile_dev.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

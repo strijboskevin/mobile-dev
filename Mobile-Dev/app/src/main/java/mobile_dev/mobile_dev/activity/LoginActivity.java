@@ -1,4 +1,4 @@
-package mobile_dev.mobile_dev.activitiy;
+package mobile_dev.mobile_dev.activity;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
