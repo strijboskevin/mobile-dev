@@ -1,11 +1,18 @@
 package mobile_dev.mobile_dev.connection;
 
+import android.app.Activity;
+import android.os.AsyncTask;
+import android.util.Log;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Scanner;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+
+import mobile_dev.mobile_dev.repository.IRepository;
 
 /**
  * Created by kevin on 03/10/2017.
@@ -13,60 +20,67 @@ import java.util.Scanner;
 
 public class Connection {
 
-    private URL url = null;
-    private HttpURLConnection connection = null;
+    private String url = null;
+    private IRepository repo;
 
-    public Connection(String url) throws MalformedURLException {
-        try {
-            this.url = new URL(url);
-        } catch (MalformedURLException ex) {
-            throw ex;
-        }
+    public Connection(String url, IRepository repo) {
+        this.url = url;
+        this.repo = repo;
     }
 
-    public Connection() {};
+    public Connection(IRepository repo) { this.repo = repo; }
 
-    public URL getUrl() {
+    public String getUrl() {
         return url;
     }
 
-    public void setUrl(String url) throws MalformedURLException, IOException {
-        try {
-            this.url = new URL(url);
-            init();
-        } catch (MalformedURLException ex) {
-            throw ex;
-        } catch (IOException ex) {
-            throw ex;
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public void getString() {
+        if (url != null) {
+            RetrieveInput input = new RetrieveInput();
+            input.execute(url);
+            try {
+                repo.setString(input.get(15000, TimeUnit.MILLISECONDS));
+            } catch (InterruptedException e) {
+                Log.d("Error", e.getStackTrace().toString());
+            } catch (ExecutionException e) {
+                Log.d("Error", e.getStackTrace().toString());
+            } catch (TimeoutException e) {
+                Log.d("Error", e.getStackTrace().toString());
+            }
         }
     }
 
-    public HttpURLConnection getConnection() { return connection; }
+    class RetrieveInput extends AsyncTask<String, Void, String> {
 
-    public String getString() throws IOException {
-        if (connection != null) {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            String result = "";
             try {
+                URL url = new URL(params[0]);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
                 InputStream stream = connection.getInputStream();
                 Scanner s = new Scanner(stream).useDelimiter("\\A");
-                String result = s.hasNext() ? s.next() : "";
+                result = s.hasNext() ? s.next() : "";
+            } catch (IOException ex) {
+                Log.d("Error", ex.getStackTrace().toString());
+            } finally {
                 return result;
-            } catch (IOException ex) {
-                throw ex;
             }
-        } else {
-            return null;
         }
-    }
 
-    private void init() throws IOException {
-        if (url != null) {
-            try {
-                connection = (HttpURLConnection) url.openConnection();
-                connection.setRequestMethod("GET");
-                connection.setRequestProperty("Accept", "application/json");
-            } catch (IOException ex) {
-                throw ex;
-            }
+        @Override
+        protected void onPostExecute(String result) {
+            repo.setString(result);
         }
     }
 
