@@ -1,7 +1,9 @@
-package mobile_dev.mobile_dev;
+package mobile_dev.mobile_dev.activitiy;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+
+import mobile_dev.mobile_dev.R;
 
 public class RegisterActivity extends AppCompatActivity {
     @Override
