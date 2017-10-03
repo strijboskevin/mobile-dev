@@ -24,14 +24,14 @@ public class RestaurantRepository implements IRepository {
     }
 
     public Restaurant find(int id) {
-        connection.setUrl("http://10.0.2.2:8080/api-0.1.0/restaurants/get/" + id);
+        connection.setUrl("http://10.0.2.2:4041/mdev-api/restaurants/get/" + id);
         connection.getString();
         Restaurant restaurant = gson.fromJson(this.result, Restaurant.class);
         return restaurant;
     }
 
     public List<Restaurant> all() {
-        connection.setUrl("http://10.0.2.2:8080/mdev-api/restaurants/all");
+        connection.setUrl("http://10.0.2.2:4041/mdev-api/restaurants/all");
         connection.getString();
         List<Restaurant> restaurants = gson.fromJson(this.result, new TypeToken<List<Restaurant>>(){}.getType());
         return restaurants;

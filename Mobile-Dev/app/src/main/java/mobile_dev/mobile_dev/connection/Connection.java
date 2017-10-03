@@ -6,6 +6,7 @@ import android.util.Log;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.Scanner;
 import java.util.concurrent.ExecutionException;
@@ -67,12 +68,19 @@ public class Connection {
             try {
                 URL url = new URL(params[0]);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setConnectTimeout(5000); //set timeout to 5 seconds
                 connection.setRequestMethod("GET");
+                int res = connection.getResponseCode();
                 InputStream stream = connection.getInputStream();
                 Scanner s = new Scanner(stream).useDelimiter("\\A");
                 result = s.hasNext() ? s.next() : "";
             } catch (IOException ex) {
                 Log.d("Error", ex.getStackTrace().toString());
+            } catch (Exception ex)
+                {
+                    ex.getStackTrace();
+
+
             } finally {
                 return result;
             }

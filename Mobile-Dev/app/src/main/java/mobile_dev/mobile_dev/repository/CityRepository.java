@@ -24,14 +24,14 @@ public class CityRepository implements IRepository {
     }
 
     public City find(String postalCode) {
-        connection.setUrl("http://10.0.2.2:8080/api-0.1.0/cities/get/" + postalCode);
+        connection.setUrl("http://10.0.2.2:4041/mdev-api/cities/get/" + postalCode);
         connection.getString();
         City city = gson.fromJson(this.result, City.class);
         return city;
     }
 
     public List<City> all() {
-        connection.setUrl("http://10.0.2.2:8080/mdev-api/cities/all");
+        connection.setUrl("http://10.0.2.2:4041/mdev-api/cities/all");
         connection.getString();
         List<City> cities = gson.fromJson(this.result, new TypeToken<List<City>>(){}.getType());
         return cities;

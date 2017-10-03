@@ -24,14 +24,14 @@ public class UserRepository implements IRepository {
     }
 
     public User find(String userName) {
-        connection.setUrl("http://10.0.2.2:8080/api-0.1.0/users/get/" + userName);
+        connection.setUrl("http://10.0.2.2:4041/mdev-api/users/get/" + userName);
         connection.getString();
         User user = gson.fromJson(this.result, User.class);
         return user;
     }
 
     public List<User> all() {
-        connection.setUrl("http://10.0.2.2:8080/mdev-api/users/all");
+        connection.setUrl("http://10.0.2.2:4041/mdev-api/users/all");
         connection.getString();
         List<User> users = gson.fromJson(this.result, new TypeToken<List<User>>(){}.getType());
         return users;
