@@ -1,7 +1,9 @@
-package mobile_dev.mobile_dev;
+package mobile_dev.mobile_dev.activitiy;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import mobile_dev.mobile_dev.R;
 
 public class RecipeActivity extends AppCompatActivity {
 

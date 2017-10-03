@@ -1,4 +1,4 @@
-package mobile_dev.mobile_dev;
+package mobile_dev.mobile_dev.activitiy;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -17,6 +17,7 @@ import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -29,6 +30,10 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import mobile_dev.mobile_dev.R;
+import mobile_dev.mobile_dev.model.User;
+import mobile_dev.mobile_dev.repository.UserRepository;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -65,6 +70,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        Log.d("main", "main");
+        UserRepository repo = new UserRepository();
+        User user = repo.find("kevinstrijbos");
 
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
