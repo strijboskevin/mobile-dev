@@ -19,9 +19,18 @@ public class Dish {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String name;
+    private String image;
     @ManyToMany(mappedBy = "dishes")
     @JsonManagedReference(value = "dishes_restaurants")
     private List<Restaurant> restaurants;
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
 
     public Dish() {};
 

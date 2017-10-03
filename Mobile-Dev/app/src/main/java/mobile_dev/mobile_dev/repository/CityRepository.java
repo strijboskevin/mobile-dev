@@ -31,7 +31,7 @@ public class CityRepository implements IRepository {
     }
 
     public List<City> all() {
-        connection.setUrl("http://10.0.2.2:8080/api-0.1.0/cities/all");
+        connection.setUrl("http://10.0.2.2:8080/mdev-api/cities/all");
         connection.getString();
         List<City> cities = gson.fromJson(this.result, new TypeToken<List<City>>(){}.getType());
         return cities;

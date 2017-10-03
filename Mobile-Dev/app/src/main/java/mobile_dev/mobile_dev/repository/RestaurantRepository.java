@@ -31,7 +31,7 @@ public class RestaurantRepository implements IRepository {
     }
 
     public List<Restaurant> all() {
-        connection.setUrl("http://10.0.2.2:8080/api-0.1.0/restaurants/all");
+        connection.setUrl("http://10.0.2.2:8080/mdev-api/restaurants/all");
         connection.getString();
         List<Restaurant> restaurants = gson.fromJson(this.result, new TypeToken<List<Restaurant>>(){}.getType());
         return restaurants;

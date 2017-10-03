@@ -22,9 +22,18 @@ public class User {
     private String lastName;
     private String mobileNr;
     private String address;
+    private int radius;
     @ManyToOne
     @JsonManagedReference(value = "cities_users")
     private City city;
+
+    public int getRadius() {
+        return radius;
+    }
+
+    public void setRadius(int radius) {
+        this.radius = radius;
+    }
 
     public String getPassWord() {
         return passWord;

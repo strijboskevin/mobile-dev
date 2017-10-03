@@ -31,7 +31,7 @@ public class DishRepository implements IRepository {
     }
 
     public List<Dish> all() {
-        connection.setUrl("http://10.0.2.2:8080/api-0.1.0/dishes/all");
+        connection.setUrl("http://10.0.2.2:8080/mdev-api/dishes/all");
         connection.getString();
         List<Dish> dishes = gson.fromJson(this.result, new TypeToken<List<Dish>>(){}.getType());
         return dishes;
