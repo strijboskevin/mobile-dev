@@ -29,6 +29,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 import mobile_dev.mobile_dev.R;
+import mobile_dev.mobile_dev.model.Dish;
+import mobile_dev.mobile_dev.repository.DishRepository;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -65,6 +67,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        Dish dish = new DishRepository().find(1);
 
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);

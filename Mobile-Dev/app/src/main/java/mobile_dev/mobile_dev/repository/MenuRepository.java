@@ -24,14 +24,18 @@ public class MenuRepository implements IRepository {
     }
 
     public Menu find(int id) {
+<<<<<<< HEAD
         connection.setUrl("http://10.0.2.2:8080/mdev-api/menus/get/" + id);
+=======
+        connection.setUrl("http://10.0.2.2:4041/mdev-api/menus/get/" + id);
+>>>>>>> 1d2ead9dfb22bfceb9720c7b3dd5937cdb675f8a
         connection.getString();
         Menu menu = gson.fromJson(this.result, Menu.class);
         return menu;
     }
 
     public List<Menu> all() {
-        connection.setUrl("http://10.0.2.2:8080/mdev-api/menus/all");
+        connection.setUrl("http://10.0.2.2:4041/mdev-api/menus/all");
         connection.getString();
         List<Menu> menus = gson.fromJson(this.result, new TypeToken<List<Menu>>(){}.getType());
         return menus;
