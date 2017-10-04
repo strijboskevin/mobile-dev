@@ -25,7 +25,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.RegisterActivity" />
-        <activity android:name=".activity.RecipeActivity"></activity>
+        <activity android:name=".activity.DishActivity" />
+        <activity android:name=".activity.RestaurantListActivity" />
     </application>
 
 </manifest>

@@ -1,10 +1,12 @@
 package mobile_dev.mobile_dev.model;
 
+import java.io.Serializable;
+
 /**
  * Created by kevin on 03/10/2017.
  */
 
-public class Menu {
+public class Menu implements Serializable {
 
     private int id;
     private String name;

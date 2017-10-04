@@ -1,16 +1,20 @@
 package mobile_dev.mobile_dev.model;
 
+import android.os.Parcelable;
+
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by kevin on 03/10/2017.
  */
 
-public class Restaurant {
+public class Restaurant implements Serializable {
 
     private int id;
     private String name;
     private City city;
+    private String address;
     private List<Menu> menus;
 
     public Restaurant(int id, String name, City city, List<Menu> menus) {
@@ -18,6 +22,14 @@ public class Restaurant {
         this.name = name;
         this.city = city;
         this.menus = menus;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public Restaurant() {};

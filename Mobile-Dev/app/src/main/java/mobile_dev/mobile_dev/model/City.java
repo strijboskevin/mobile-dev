@@ -1,10 +1,15 @@
 package mobile_dev.mobile_dev.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.io.Serializable;
+
 /**
  * Created by kevin on 03/10/2017.
  */
 
-public class City {
+public class City implements Serializable {
 
     private String postalCode;
     private String name;

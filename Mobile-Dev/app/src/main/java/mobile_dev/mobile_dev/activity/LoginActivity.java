@@ -29,8 +29,9 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 import mobile_dev.mobile_dev.R;
-import mobile_dev.mobile_dev.model.Dish;
-import mobile_dev.mobile_dev.repository.DishRepository;
+import mobile_dev.mobile_dev.container.UserContainer;
+import mobile_dev.mobile_dev.model.User;
+import mobile_dev.mobile_dev.repository.UserRepository;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -67,8 +68,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        Dish dish = new DishRepository().find(1);
 
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
@@ -157,52 +156,34 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * errors are presented and no actual login attempt is made.
      */
     private void attemptLogin() {
-        /*if (mAuthTask != null) {
-            return;
+        UserRepository repo = new UserRepository();
+        EditText userNameField = (EditText) findViewById(R.id.email);
+        EditText passWordField = (EditText) findViewById(R.id.password);
+        String userName = userNameField.getText().toString();
+        String passWord = passWordField.getText().toString();
+        passWord = convertToMD5(passWord);
+        User user = repo.find(userName);
+
+        if (user != null && user.getPassWord().equals(passWord)) {
+            UserContainer container = new UserContainer(user);
+            Intent intent = new Intent(LoginActivity.this, DishActivity.class);
+            intent.putExtra("user", container);
+            startActivity(intent);
         }
+    }
 
-        // Reset errors.
-        mEmailView.setError(null);
-        mPasswordView.setError(null);
-
-        // Store values at the time of the login attempt.
-        String email = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
-
-        boolean cancel = false;
-        View focusView = null;
-
-        // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
-            cancel = true;
+    private String convertToMD5(String toConvert) {
+        try {
+            java.security.MessageDigest md = java.security.MessageDigest.getInstance("MD5");
+            byte[] array = md.digest(toConvert.getBytes());
+            StringBuffer sb = new StringBuffer();
+            for (int i = 0; i < array.length; ++i) {
+                sb.append(Integer.toHexString((array[i] & 0xFF) | 0x100).substring(1,3));
+            }
+            return sb.toString();
+        } catch (java.security.NoSuchAlgorithmException e) {
         }
-
-        // Check for a valid email address.
-        if (TextUtils.isEmpty(email)) {
-            mEmailView.setError(getString(R.string.error_field_required));
-            focusView = mEmailView;
-            cancel = true;
-        } else if (!isEmailValid(email)) {
-            mEmailView.setError(getString(R.string.error_invalid_email));
-            focusView = mEmailView;
-            cancel = true;
-        }
-
-        if (cancel) {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
-            focusView.requestFocus();
-        } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
-            showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
-            mAuthTask.execute((Void) null);
-        }*/
-        Intent i = new Intent(LoginActivity.this, RecipeActivity.class);
-        startActivity(i);
+        return null;
     }
 
     private boolean isEmailValid(String email) {

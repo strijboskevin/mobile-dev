@@ -8,8 +8,7 @@
        android:layout_height="wrap_content"
        android:id="@+id/gridview_element_imageview"
        android:layout_marginLeft="8dp"
-       android:layout_marginTop="8dp"
-       android:src="@drawable/potato"/>
+       android:layout_marginTop="8dp" />
 
    <TextView
        android:id="@+id/gridview_element_textview"

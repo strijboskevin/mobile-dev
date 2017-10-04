@@ -2,9 +2,7 @@ package mobile_dev.mobile_dev.repository;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
 import java.util.List;
-
 import mobile_dev.mobile_dev.connection.Connection;
 import mobile_dev.mobile_dev.model.User;
 
@@ -24,11 +22,7 @@ public class UserRepository implements IRepository {
     }
 
     public User find(String userName) {
-<<<<<<< HEAD
         connection.setUrl("http://10.0.2.2:8080/mdev-api/users/get/" + userName);
-=======
-        connection.setUrl("http://10.0.2.2:4041/mdev-api/users/get/" + userName);
->>>>>>> 1d2ead9dfb22bfceb9720c7b3dd5937cdb675f8a
         connection.getString();
         User user = gson.fromJson(this.result, User.class);
         return user;

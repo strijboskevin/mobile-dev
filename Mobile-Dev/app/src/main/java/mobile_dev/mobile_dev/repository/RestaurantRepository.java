@@ -2,9 +2,7 @@ package mobile_dev.mobile_dev.repository;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
 import java.util.List;
-
 import mobile_dev.mobile_dev.connection.Connection;
 import mobile_dev.mobile_dev.model.Restaurant;
 
@@ -24,11 +22,7 @@ public class RestaurantRepository implements IRepository {
     }
 
     public Restaurant find(int id) {
-<<<<<<< HEAD
         connection.setUrl("http://10.0.2.2:8080/mdev-api/restaurants/get/" + id);
-=======
-        connection.setUrl("http://10.0.2.2:4041/mdev-api/restaurants/get/" + id);
->>>>>>> 1d2ead9dfb22bfceb9720c7b3dd5937cdb675f8a
         connection.getString();
         Restaurant restaurant = gson.fromJson(this.result, Restaurant.class);
         return restaurant;

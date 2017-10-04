@@ -1,10 +1,12 @@
 package mobile_dev.mobile_dev.model;
 
+import java.io.Serializable;
+
 /**
  * Created by kevin on 03/10/2017.
  */
 
-public class User {
+public class User implements Serializable {
 
     private String username;
     private String firstName;
@@ -12,17 +14,35 @@ public class User {
     private String passWord;
     private City city;
     private String address;
+    private int radius;
 
-    public User(String username, String firstName, String lastName, String passWord, City city, String address) {
+    public User(String username, String firstName, String lastName, String passWord, City city, String address, int radius) {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.passWord = passWord;
         this.city = city;
         this.address = address;
+        this.radius = radius;
     }
 
     public User() {};
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public int getRadius() {
+        return radius;
+    }
+
+    public void setRadius(int radius) {
+        this.radius = radius;
+    }
 
     public String getUserName() {
         return username;
