@@ -1,4 +1,4 @@
-package mobile_dev.mobile_dev.container;
+package mobile_dev.mobile_dev.activity.container;
 
 import java.io.Serializable;
 

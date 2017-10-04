@@ -28,52 +28,51 @@ import android.widget.EditText;
 import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import mobile_dev.mobile_dev.R;
-import mobile_dev.mobile_dev.container.UserContainer;
-import mobile_dev.mobile_dev.model.User;
-import mobile_dev.mobile_dev.repository.UserRepository;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
-/**
- * A login screen that offers login via email/password.
- */
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
-    Button registerButton;
-    /**
-     * Id to identity READ_CONTACTS permission request.
-     */
+    @BindView(R.id.registerButton) Button registerButton;
+    @BindView(R.id.email) AutoCompleteTextView mEmailView;
+    @BindView(R.id.password) EditText mPasswordView;
+    @BindView(R.id.loginButton) Button mEmailSignInButton;
+    @BindView(R.id.login_progress) View mProgressView;
+    @BindView(R.id.login_form) View mLoginFormView;
+    private UserLoginTask mAuthTask = null;
+
     private static final int REQUEST_READ_CONTACTS = 0;
 
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
     private static final String[] DUMMY_CREDENTIALS = new String[]{
             "foo@example.com:hello", "bar@example.com:world"
     };
-    /**
-     * Keep track of the login task to ensure we can cancel it if requested.
-     */
-    private UserLoginTask mAuthTask = null;
-
-    // UI references.
-    private AutoCompleteTextView mEmailView;
-    private EditText mPasswordView;
-    private View mProgressView;
-    private View mLoginFormView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        // Set up the login form.
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
+        ButterKnife.bind(this);
         populateAutoComplete();
+        setPassWordView();
+        setEmailSignInButton();
+        setRegisterButton();
+    }
 
-        mPasswordView = (EditText) findViewById(R.id.password);
+    private void setEmailSignInButton() {
+        mEmailSignInButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                attemptLogin();
+            }
+        });
+
+    }
+
+    private void setPassWordView() {
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -84,19 +83,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 return false;
             }
         });
+    }
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.loginButton);
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                attemptLogin();
-            }
-        });
-
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
-
-        registerButton = (Button)findViewById(R.id.registerButton);
+    private void setRegisterButton() {
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -136,9 +125,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         return false;
     }
 
-    /**
-     * Callback received when a permissions request has been completed.
-     */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
@@ -149,27 +135,19 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 
-
-    /**
-     * Attempts to sign in or register the account specified by the login form.
-     * If there are form errors (invalid email, missing fields, etc.), the
-     * errors are presented and no actual login attempt is made.
-     */
     private void attemptLogin() {
-        UserRepository repo = new UserRepository();
-        EditText userNameField = (EditText) findViewById(R.id.email);
-        EditText passWordField = (EditText) findViewById(R.id.password);
-        String userName = userNameField.getText().toString();
-        String passWord = passWordField.getText().toString();
+     /*   UserRepository repo = new UserRepository();
+        String userName = mEmailView.getText().toString();
+        String passWord = mPasswordView.getText().toString();
         passWord = convertToMD5(passWord);
-        User user = repo.find(userName);
+        User user = repo.find(userName); */
 
-        if (user != null && user.getPassWord().equals(passWord)) {
-            UserContainer container = new UserContainer(user);
+    //    if (user != null && user.getPassWord().equals(passWord)) {
+        /*    UserContainer container = new UserContainer(user); */
             Intent intent = new Intent(LoginActivity.this, DishActivity.class);
-            intent.putExtra("user", container);
+          //  intent.putExtra("user", container);
             startActivity(intent);
-        }
+     //   }
     }
 
     private String convertToMD5(String toConvert) {
@@ -187,18 +165,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
         return email.contains("@");
     }
 
     private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
         return password.length() > 4;
     }
 
-    /**
-     * Shows the progress UI and hides the login form.
-     */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     private void showProgress(final boolean show) {
         // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
@@ -275,7 +248,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mEmailView.setAdapter(adapter);
     }
 
-
     private interface ProfileQuery {
         String[] PROJECTION = {
                 ContactsContract.CommonDataKinds.Email.ADDRESS,
@@ -286,10 +258,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         int IS_PRIMARY = 1;
     }
 
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
-     */
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
         private final String mEmail;

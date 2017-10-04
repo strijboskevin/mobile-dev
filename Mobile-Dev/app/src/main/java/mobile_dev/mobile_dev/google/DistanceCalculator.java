@@ -1,9 +1,7 @@
-package mobile_dev.mobile_dev.location;
+package mobile_dev.mobile_dev.google;
 
 import android.os.AsyncTask;
 import android.util.Log;
-
-import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,8 +12,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import mobile_dev.mobile_dev.adapter.RestaurantListAdapter;
-import mobile_dev.mobile_dev.location.objects.MapsContainer;
+import mobile_dev.mobile_dev.activity.adapter.RestaurantListAdapter;
 
 /**
  * Created by kevin on 03/10/2017.

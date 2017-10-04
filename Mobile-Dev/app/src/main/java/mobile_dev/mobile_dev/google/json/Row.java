@@ -1,4 +1,4 @@
-package mobile_dev.mobile_dev.location.objects;
+package mobile_dev.mobile_dev.google.json;
 
 import java.util.List;
 
