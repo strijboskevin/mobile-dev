@@ -17,4 +17,7 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email completions."</string>
     <string name="title_activity_register_actvity">RegisterActvity</string>
     <string name="title_activity_recipe">RecipeActivity</string>
+    <string name="api_uri">http://10.0.2.2:4041/mdev-api/</string>
+    <string name="facebook_app_id">448612215539677</string>
+    <string name="fb_login_protocol_scheme">fb448612215539677</string>
 </resources>

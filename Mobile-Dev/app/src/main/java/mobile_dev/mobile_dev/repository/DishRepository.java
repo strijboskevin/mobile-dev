@@ -22,14 +22,14 @@ public class DishRepository implements IRepository {
     }
 
     public Dish find(int id) {
-        connection.setUrl("http://10.0.2.2:8080/mdev-api/dishes/get/" + id);
+        connection.setUrl("http://10.0.2.2:4041/mdev-api/dishes/get/" + id);
         connection.getString();
         Dish dish = gson.fromJson(this.result, Dish.class);
         return dish;
     }
 
     public List<Dish> all() {
-        connection.setUrl("http://10.0.2.2:8080/mdev-api/dishes/all");
+        connection.setUrl("http://10.0.2.2:4041/mdev-api/dishes/all");
         connection.getString();
         List<Dish> dishes = gson.fromJson(this.result, new TypeToken<List<Dish>>(){}.getType());
         return dishes;

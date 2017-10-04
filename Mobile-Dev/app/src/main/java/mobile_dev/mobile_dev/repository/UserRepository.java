@@ -22,7 +22,7 @@ public class UserRepository implements IRepository {
     }
 
     public User find(String userName) {
-        connection.setUrl("http://10.0.2.2:8080/mdev-api/users/get/" + userName);
+        connection.setUrl("http://10.0.2.2:4041/mdev-api/users/get/" + userName);
         connection.getString();
         User user = gson.fromJson(this.result, User.class);
         return user;

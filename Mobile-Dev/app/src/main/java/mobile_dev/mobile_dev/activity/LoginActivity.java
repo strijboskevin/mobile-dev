@@ -17,6 +17,7 @@ import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.ActionMode;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -26,8 +27,20 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import java.util.ArrayList;
-import java.util.List;
+import android.util.*;
+
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
+import com.facebook.*;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.w3c.dom.Text;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.*;
 import mobile_dev.mobile_dev.R;
 import mobile_dev.mobile_dev.container.UserContainer;
 import mobile_dev.mobile_dev.model.User;
@@ -63,6 +76,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private LoginButton loginButton;
+    private CallbackManager callbackManager;
+    private TextView textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +112,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
 
-        registerButton = (Button)findViewById(R.id.registerButton);
+        registerButton = (Button) findViewById(R.id.registerButton);
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,6 +120,88 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 startActivity(i);
             }
         });
+
+        loginButton = (LoginButton) findViewById(R.id.login_button);
+        textView = (TextView) findViewById(R.id.textView);
+        loginButton.setReadPermissions(Arrays.asList(
+                "public_profile"));
+        callbackManager = CallbackManager.Factory.create();
+        Log.v("Output", "Test");
+        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                GraphRequest request = GraphRequest.newMeRequest(
+                        loginResult.getAccessToken(),
+                        new GraphRequest.GraphJSONObjectCallback() {
+                            @Override
+                            public void onCompleted(JSONObject object, GraphResponse response) {
+                                //Bundle bFacebookData = getFacebookData(object);
+                                textView.setText("Accessed onSuccesMethod");
+                            }
+                        });
+                textView.setText("Accessed registerCallback");
+                /*Bundle parameters = new Bundle();
+                parameters.putString("fields", "id, first_name, last_name");
+                request.setParameters(parameters);
+                request.executeAsync();
+                textView.setText(parameters.getString("last_name") + " " + parameters.getString("first_name"));*/
+                /*Intent intent = new Intent(LoginActivity.this, DishActivity.class);
+                startActivity(intent);*/
+            }
+
+            @Override
+            public void onCancel() {
+                textView.setText("Login cancelled");
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private Bundle getFacebookData(JSONObject object) {
+
+        try {
+            Bundle bundle = new Bundle();
+            String id = object.getString("id");
+
+            try {
+                URL profile_pic = new URL("https://graph.facebook.com/" + id + "/picture?width=200&height=150");
+                Log.i("profile_pic", profile_pic + "");
+                bundle.putString("profile_pic", profile_pic.toString());
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+                return null;
+            }
+
+            bundle.putString("idFacebook", id);
+            if (object.has("first_name"))
+                bundle.putString("first_name", object.getString("first_name"));
+            if (object.has("last_name"))
+                bundle.putString("last_name", object.getString("last_name"));
+            if (object.has("email"))
+                bundle.putString("email", object.getString("email"));
+            if (object.has("gender"))
+                bundle.putString("gender", object.getString("gender"));
+            if (object.has("birthday"))
+                bundle.putString("birthday", object.getString("birthday"));
+            if (object.has("location"))
+                bundle.putString("location", object.getJSONObject("location").getString("name"));
+
+            return bundle;
+        }
+        catch(JSONException e) {
+            Log.d("error","Error parsing JSON");
+        }
+        return null;
     }
 
     private void populateAutoComplete() {
