@@ -27,7 +27,12 @@
         <activity android:name=".activity.RegisterActivity" />
         <activity android:name=".activity.DishActivity" />
         <activity android:name=".activity.RestaurantListActivity" />
+<<<<<<< HEAD
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+=======
+        <activity android:name=".activity.MenuActivity" />
+        <activity android:name=".activity.OverViewActivity" />
+>>>>>>> fc47ffafc14dcd97ceec53b7736ec3c2836dfb77
     </application>
 
 </manifest>

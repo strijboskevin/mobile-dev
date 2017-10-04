@@ -7,36 +7,44 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import java.util.List;
-import mobile_dev.mobile_dev.adapter.DishAdapter;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import mobile_dev.mobile_dev.activity.adapter.DishAdapter;
 import mobile_dev.mobile_dev.R;
-import mobile_dev.mobile_dev.container.RestaurantContainer;
-import mobile_dev.mobile_dev.container.UserContainer;
+import mobile_dev.mobile_dev.activity.container.RestaurantContainer;
 import mobile_dev.mobile_dev.model.Dish;
 import mobile_dev.mobile_dev.model.User;
 import mobile_dev.mobile_dev.repository.DishRepository;
 
 public class DishActivity extends AppCompatActivity {
 
-    private GridView gridView;
+    @BindView(R.id.gridview) GridView gridView;
     private final List<Dish> dishes = new DishRepository().all();
     private User user;
+    private DishAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recipe);
+        setContentView(R.layout.activity_dishes_list);
+        ButterKnife.bind(this);
+   //     this.user = (User) getIntent().getSerializableExtra("user");
+   //     this.user = ((UserContainer) getIntent().getSerializableExtra("user")).getUser();
+        adapter = new DishAdapter(DishActivity.this, dishes);
+        setGridView();
+    }
 
-        this.user = ((UserContainer) getIntent().getSerializableExtra("user")).getUser();
-
-        gridView = (GridView) findViewById(R.id.gridview);
-        DishAdapter adapter = new DishAdapter(DishActivity.this, dishes);
+    private void setGridView() {
         gridView.setAdapter(adapter);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long l) {
-                RestaurantContainer container = new RestaurantContainer(dishes.get(position).getRestaurants());
+                RestaurantContainer restaurantsContainer = new RestaurantContainer(dishes.get(position).getRestaurants());
+                //            UserContainer userContainer = new UserContainer(user);
                 Intent intent = new Intent(DishActivity.this, RestaurantListActivity.class);
-                intent.putExtra("container", container);
+                intent.putExtra("restaurants", restaurantsContainer);
+                //            intent.putExtra("user", userContainer);
+                intent.putExtra("url", dishes.get(position).getImage());
                 startActivity(intent);
             }
         });

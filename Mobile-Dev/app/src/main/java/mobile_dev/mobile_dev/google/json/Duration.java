@@ -1,15 +1,15 @@
-package mobile_dev.mobile_dev.location.objects;
+package mobile_dev.mobile_dev.google.json;
 
 /**
  * Created by kevin on 03/10/2017.
  */
 
-public class Distance {
+public class Duration {
 
     private String text;
     private int value;
 
-    public Distance(String text, int value) {
+    public Duration(String text, int value) {
         this.text = text;
         this.value = value;
     }

@@ -1,18 +1,18 @@
-package mobile_dev.mobile_dev.adapter.bundle;
+package mobile_dev.mobile_dev.activity.adapter.bundle;
 
-import mobile_dev.mobile_dev.location.objects.MapsContainer;
+import mobile_dev.mobile_dev.google.json.MapsContainer;
 import mobile_dev.mobile_dev.model.Restaurant;
 
 /**
  * Created by kevin on 04/10/2017.
  */
 
-public class Bundle {
+public class RestaurantBundle {
 
     private MapsContainer container;
     private Restaurant restaurant;
 
-    public Bundle(MapsContainer container, Restaurant restaurant) {
+    public RestaurantBundle(MapsContainer container, Restaurant restaurant) {
         this.container = container;
         this.restaurant = restaurant;
     }

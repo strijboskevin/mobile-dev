@@ -1,12 +1,10 @@
-package mobile_dev.mobile_dev.connection;
+package mobile_dev.mobile_dev.consumer;
 
-import android.app.Activity;
 import android.os.AsyncTask;
 import android.util.Log;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.Scanner;
 import java.util.concurrent.ExecutionException;
@@ -19,17 +17,17 @@ import mobile_dev.mobile_dev.repository.IRepository;
  * Created by kevin on 03/10/2017.
  */
 
-public class Connection {
+public class Consumer {
 
     private String url = null;
     private IRepository repo;
 
-    public Connection(String url, IRepository repo) {
+    public Consumer(String url, IRepository repo) {
         this.url = url;
         this.repo = repo;
     }
 
-    public Connection(IRepository repo) { this.repo = repo; }
+    public Consumer(IRepository repo) { this.repo = repo; }
 
     public String getUrl() {
         return url;
