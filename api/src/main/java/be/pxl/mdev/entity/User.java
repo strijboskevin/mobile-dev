@@ -22,18 +22,8 @@ public class User {
     private String lastName;
     private String mobileNr;
     private String address;
+    private String city;
     private int radius;
-    @ManyToOne
-    @JsonManagedReference(value = "cities_users")
-    private City city;
-
-    public int getRadius() {
-        return radius;
-    }
-
-    public void setRadius(int radius) {
-        this.radius = radius;
-    }
 
     public String getPassWord() {
         return passWord;
@@ -53,12 +43,30 @@ public class User {
 
     public User() {}
 
-    public User(String username, String firstName, String lastName, String mobileNr, String address) {
+    public User(String username, String firstName, String lastName, String mobileNr, String address, String city, int radius) {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.mobileNr = mobileNr;
         this.address = address;
+        this.city = city;
+        this.radius = radius;
+    }
+
+    public int getRadius() {
+        return radius;
+    }
+
+    public void setRadius(int radius) {
+        this.radius = radius;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 
     public String getUsername() {

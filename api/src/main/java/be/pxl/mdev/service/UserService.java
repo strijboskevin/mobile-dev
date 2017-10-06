@@ -28,4 +28,14 @@ public class UserService implements IUserService {
     public List<User> all() {
         return repo.findAll();
     }
+
+    @Override
+    public void persist(User user) {
+        repo.save(user);
+    }
+
+    @Override
+    public void update(User user) {
+        repo.save(user);
+    }
 }

@@ -12,17 +12,35 @@ public class User implements Serializable {
     private String firstName;
     private String lastName;
     private String passWord;
-    private City city;
+    private String city;
     private String address;
+    private String mobileNr;
     private int radius;
 
-    public User(String username, String firstName, String lastName, String passWord, City city, String address, int radius) {
+    public User(String username, String firstName, String lastName, String passWord, String city, String address, int radius, String mobileNr) {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.passWord = passWord;
         this.city = city;
         this.address = address;
+        this.radius = radius;
+        this.mobileNr = mobileNr;
+    }
+
+    public String getMobileNr() {
+        return mobileNr;
+    }
+
+    public void setMobileNr(String mobileNr) {
+        this.mobileNr = mobileNr;
+    }
+
+    public int getRadius() {
+        return radius;
+    }
+
+    public void setRadius(int radius) {
         this.radius = radius;
     }
 
@@ -34,14 +52,6 @@ public class User implements Serializable {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public int getRadius() {
-        return radius;
-    }
-
-    public void setRadius(int radius) {
-        this.radius = radius;
     }
 
     public String getUserName() {
@@ -76,11 +86,11 @@ public class User implements Serializable {
         this.passWord = passWord;
     }
 
-    public City getCity() {
+    public String  getCity() {
         return city;
     }
 
-    public void setCity(City city) {
+    public void setCity(String  city) {
         this.city = city;
     }
 

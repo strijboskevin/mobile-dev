@@ -11,4 +11,6 @@ public interface IUserService {
 
     public User find(String username);
     public List<User> all();
+    public void persist(User user);
+    public void update(User user);
 }

@@ -20,6 +20,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -28,10 +30,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import mobile_dev.mobile_dev.R;
+import mobile_dev.mobile_dev.activity.container.UserContainer;
+import mobile_dev.mobile_dev.model.User;
+import mobile_dev.mobile_dev.repository.UserRepository;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -136,18 +140,26 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     private void attemptLogin() {
-     /*   UserRepository repo = new UserRepository();
+        UserRepository repo = new UserRepository();
         String userName = mEmailView.getText().toString();
         String passWord = mPasswordView.getText().toString();
         passWord = convertToMD5(passWord);
-        User user = repo.find(userName); */
+        User user = repo.find(userName);
 
-    //    if (user != null && user.getPassWord().equals(passWord)) {
-        /*    UserContainer container = new UserContainer(user); */
+        if (user != null && user.getPassWord().equals(passWord)) {
+            UserContainer container = new UserContainer(user);
             Intent intent = new Intent(LoginActivity.this, DishActivity.class);
-          //  intent.putExtra("user", container);
+            intent.putExtra("user", container);
             startActivity(intent);
-     //   }
+        } else {
+            shake();
+        }
+    }
+
+    private void shake() {
+        Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
+        mEmailView.startAnimation(shake);
+        mPasswordView.startAnimation(shake);
     }
 
     private String convertToMD5(String toConvert) {

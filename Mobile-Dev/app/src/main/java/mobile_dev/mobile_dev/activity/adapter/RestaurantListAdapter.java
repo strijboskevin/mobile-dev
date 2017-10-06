@@ -6,17 +6,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-
 import com.google.gson.Gson;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import mobile_dev.mobile_dev.R;
 import mobile_dev.mobile_dev.activity.adapter.bundle.RestaurantBundle;
 import mobile_dev.mobile_dev.google.DistanceCalculator;
 import mobile_dev.mobile_dev.google.json.MapsContainer;
 import mobile_dev.mobile_dev.model.Restaurant;
+import mobile_dev.mobile_dev.model.User;
+import mobile_dev.mobile_dev.repository.CityRepository;
 
 /**
  * Created by Fred on 3/10/2017.
@@ -24,63 +23,25 @@ import mobile_dev.mobile_dev.model.Restaurant;
 
 public class RestaurantListAdapter extends BaseAdapter {
 
-    private List<Restaurant> restaurants;
     private Context context;
     private LayoutInflater inflater;
-    private String json;
     private List<RestaurantBundle> restaurantBundles;
+    private User user;
 
-    public RestaurantListAdapter(Context context, List<Restaurant> restaurants) {
+    public RestaurantListAdapter(Context context, List<RestaurantBundle> restaurantBundles, User user) {
         this.context = context;
-        this.restaurants = restaurants;
-        restaurantBundles = new ArrayList<RestaurantBundle>();
-        createBundles();
+        this.restaurantBundles = restaurantBundles;
+        this.user = user;
     }
-
-    private void createBundles() {
-        int i;
-
-        for (i=0; i < restaurants.size() ;i++) {
-            String from = "Salvatorstraat 20 Hasselt";
-            String to = restaurants.get(i).getAddress() + " " + restaurants.get(i).getCity().getName();
-            new DistanceCalculator(from, to, this).calculate();
-            MapsContainer mapsContainer = new Gson().fromJson(this.json, MapsContainer.class);
-            restaurantBundles.add(i, new RestaurantBundle(mapsContainer, restaurants.get(i)));
-        }
-
-        sort();
-    }
-
-    private void sort() {
-        int i, j;
-        for (i=0; i < restaurantBundles.size()-1 ; i++) {
-            for(j=1; j < restaurantBundles.size()-i ; j++) {
-                int first, second;
-                first = restaurantBundles.get(j).getContainer().getRows().get(0).getElements().get(0).getDistance().getValue();
-                second = restaurantBundles.get(j-1).getContainer().getRows().get(0).getElements().get(0).getDistance().getValue();
-                if (first < second) {
-                    RestaurantBundle dummy = restaurantBundles.get(j-1);
-                    restaurantBundles.set(j-1, restaurantBundles.get(j));
-                    restaurantBundles.set(j, dummy);
-                }
-            }
-        }
-    }
-
-    public void setJson(String json) {
-        this.json = json;
-    }
-
-    public String getJson() { return json; }
 
     @Override
     public int getCount() {
-        return restaurants.size();
+        return restaurantBundles.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return restaurants.get(position);
+        return restaurantBundles.get(position);
     }
 
     @Override
@@ -102,7 +63,7 @@ public class RestaurantListAdapter extends BaseAdapter {
         String distanceText = restaurantBundles.get(postion).getContainer().getRows().get(0).getElements().get(0).getDistance().getText();
         String durationText = restaurantBundles.get(postion).getContainer().getRows().get(0).getElements().get(0).getDuration().getText();
         name.setText(restaurantBundles.get(postion).getRestaurant().getName());
-        address.setText(restaurantBundles.get(postion).getRestaurant().getAddress() + " " + restaurants.get(postion).getCity().getPostalCode() + " " + restaurants.get(postion).getCity().getName());
+        address.setText(restaurantBundles.get(postion).getRestaurant().getAddress() + " " + restaurantBundles.get(postion).getRestaurant().getCity());
         distance.setText(distanceText);
         duration.setText(durationText);
 

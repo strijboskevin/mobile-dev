@@ -1,4 +1,4 @@
-package mobile_dev.mobile_dev.consumer;
+package mobile_dev.mobile_dev.api;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -68,7 +68,6 @@ public class Consumer {
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setConnectTimeout(5000); //set timeout to 5 seconds
                 connection.setRequestMethod("GET");
-                int res = connection.getResponseCode();
                 InputStream stream = connection.getInputStream();
                 Scanner s = new Scanner(stream).useDelimiter("\\A");
                 result = s.hasNext() ? s.next() : "";

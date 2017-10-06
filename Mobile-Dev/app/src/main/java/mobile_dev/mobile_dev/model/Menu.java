@@ -10,10 +10,20 @@ public class Menu implements Serializable {
 
     private int id;
     private String name;
+    private int price;
 
-    public Menu(int id, String name) {
+    public Menu(int id, String name, int price) {
         this.id = id;
         this.name = name;
+        this.price = price;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
     }
 
     public Menu() {};

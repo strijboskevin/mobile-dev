@@ -17,4 +17,11 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email completions."</string>
     <string name="title_activity_register_actvity">RegisterActvity</string>
     <string name="title_activity_recipe">RecipeActivity</string>
+    <string name="button_menus">Bestellen</string>
+    <string name="menu_address">Verander adres</string>
+    <string name="menu_radius">Voorkeuren</string>
+    <string name="change_address_address">Adres: </string>
+    <string name="change_address_postal_code">Postcode: </string>
+    <string name="change_address_button">Opslaan</string>
+    <string name="radius_button">Veranderen</string>
 </resources>
