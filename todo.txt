@@ -1,0 +1,32 @@
+TODO
+----
+
+1. Let op uw code, zorgt dat ge schone code schrijft (geen spaghetti code, inconsistente benamingen, variabelen die niet gebruikt worden, hoofdletters die niet nodig zijn, ...)
+2. Kijk naar mijn code, kunt ge al veel voorbeelden uithalen
+3. Voordat ge zelf code begint te schrijven, neem mijn code door en zorg dat ge het van het begin tot het einde compleet begrijpt
+4. Gebruik string.xml om strings op te slaan
+
+TAKEN
+-----
+
+1. Registratie scherm, een registratie bevat: username, first name, last name, password, mobile number, address, postal code
+   -> dus GEEN email adres
+2. Facebook registratie, evt. Facebook login
+3. Error handling. Als de gebruiker een fout maakt, moet dit afgehandeld worden.
+   -> Bv. als hij op het voorlaatste scherm (waar hij de menu's moet ingeven) een letter in geeft ipv een cijfer.
+	  Maak duidelijk dat dit niet mag door een shake animatie, deze animatie is al geconfigureerd in de res folder en
+	  ge vindt een voorbeeld in LoginActivity.
+   -> Bv. Bij registratie een letter ingeven in de postal code, los dit weer op met de shake animatie.
+   ---->DE GEBRUIKER MAG DE APP OP GEEN ENKELE MANIER LATEN CRASHEN, DUS LOOP ELKE USE CASE DOOR<----
+4. Paypal implementatie op het einde, voeg een knop "Betalen" toe aan OverviewActivity en geef de optie tot betalen met Paypal.
+5. Overbodige code in LoginActivity verwijderen. Er staan een hoop functies in die niet nodig zijn. 
+6. Loop alle code door, ziet ge ergens een fout of potentiële bug: verbeter het.
+7. Voeg objecten toe in de database zodat we een aantal menus, dishes, restaurants en users hebben.
+8. Creëer een preference voor de radius activiteit. Zorg dat overal wordt gewerkt met de preference over radius ipv met de 
+   radius waarde in de db. Uiteindelijk is het de bedoeling dat de gebruiker niet opnieuw hoeft in te loggen.
+
+WAT GA IK NOG DOEN?
+-------------------
+
+1. De Dagger2 library gebruiken, maw dependency injection.
+2. Zorgen dat alle afbeeldingen in DishesActivity worden geladen voordat de adapter de view gaat initialiseren.
