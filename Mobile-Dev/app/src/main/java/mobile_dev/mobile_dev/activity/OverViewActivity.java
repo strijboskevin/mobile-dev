@@ -1,5 +1,6 @@
 package mobile_dev.mobile_dev.activity;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -50,7 +51,8 @@ public class OverViewActivity extends AppCompatActivity {
         listView.setAdapter(adapter);
         CityRepository cityRepository = new CityRepository();
         String cityName = cityRepository.find(this.user.getCity()).getName();
-        textView.setText("De bestelling zal geleverd worden aan " + this.user.getAddress() + " te " + cityName + " op naam van " + this.user.getFirstName() + " " + this.user.getLastName() + ".");
+        SharedPreferences preferences = getSharedPreferences("prefs", MODE_PRIVATE);
+        textView.setText("De bestelling zal geleverd worden aan " + preferences.getString("address", user.getAddress()) + " " + preferences.getString("postalCode", user.getCity()) + " te " + cityName + " op naam van " + this.user.getFirstName() + " " + this.user.getLastName() + ".");
         total.setText("Totaal: €" + String.valueOf(calcTotal()));
     }
 

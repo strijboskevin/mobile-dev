@@ -1,54 +1,54 @@
 package mobile_dev.mobile_dev.activity;
 
-import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.EditTextPreference;
+import android.preference.PreferenceActivity;
+import android.preference.PreferenceFragment;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import mobile_dev.mobile_dev.R;
 import mobile_dev.mobile_dev.activity.container.UserContainer;
 import mobile_dev.mobile_dev.model.User;
-import mobile_dev.mobile_dev.repository.UserRepository;
 
 /**
  * Created by kevin on 06/10/2017.
  */
 
-public class ChangeAddressActivity extends AppCompatActivity {
+public class ChangeAddressActivity extends PreferenceActivity {
 
-    @BindView(R.id.activity_change_address_address_input) EditText address;
-    @BindView(R.id.activity_change_address_postal_code_input) EditText postalCode;
-    @BindView(R.id.activity_change_address_button) Button button;
-    private User user;
+    private static User user;
+    private static SharedPreferences preferences;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_change_address);
-        ButterKnife.bind(this);
         this.user = (User)((UserContainer) getIntent().getSerializableExtra("user")).getUser();
-        address.setText(user.getAddress());
-        postalCode.setText(user.getCity());
-        setButton();
+        preferences = getSharedPreferences("prefs", MODE_PRIVATE);
+        getFragmentManager().beginTransaction().replace(android.R.id.content, new Fragment()).commit();
     }
 
-    private void setButton() {
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String newAdress = address.getText().toString();
-                String newPostalCode = postalCode.getText().toString();
-                user.setAddress(newAdress);
-                user.setCity(newPostalCode);
-                UserRepository repo = new UserRepository();
-                repo.update(user);
-                Intent intent = new Intent(ChangeAddressActivity.this, LoginActivity.class);
-                startActivity(intent);
-            }
-        });
+    public static class Fragment extends PreferenceFragment {
+        @Override
+        public void onCreate(final Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            addPreferencesFromResource(R.xml.preferences);
+            EditTextPreference address = (EditTextPreference)findPreference("address");
+            EditTextPreference postalCode = (EditTextPreference) findPreference("postalCode");
+            address.setText(preferences.getString("address", user.getAddress()));
+            postalCode.setText(preferences.getString("postalcode", user.getCity()));
+        }
+
+        @Override
+        public void onStop() {
+            super.onStop();
+            String postalCode, address;
+            postalCode = ((EditTextPreference) findPreference("postalCode")).getText();
+            address = ((EditTextPreference) findPreference("address")).getText();
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString("address", address);
+            editor.putString("postalCode", postalCode);
+            editor.commit();
+            System.out.println("test");
+        }
     }
 }

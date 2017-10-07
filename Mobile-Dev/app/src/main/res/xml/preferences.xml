@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="@string/category_title"
+        android:key="category">
+
+        <EditTextPreference
+            android:key="address"
+            android:title="@string/address_title"
+            android:summary="@string/address_summary"
+            android:dialogTitle="@string/address_dialog_title"
+            android:dialogMessage="@string/address_summary" />
+
+        <EditTextPreference
+            android:key="postalCode"
+            android:title="@string/postalcode_title"
+            android:summary="@string/postalcode_summary"
+            android:dialogTitle="@string/postalcode_dialog_title"
+            android:dialogMessage="@string/postalcode_summary" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

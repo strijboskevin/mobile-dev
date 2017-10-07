@@ -6,7 +6,7 @@ import java.util.List;
 
 import mobile_dev.mobile_dev.BuildConfig;
 import mobile_dev.mobile_dev.api.Consumer;
-import mobile_dev.mobile_dev.api.Poster;
+import mobile_dev.mobile_dev.api.Putter;
 import mobile_dev.mobile_dev.model.User;
 
 /**
@@ -32,9 +32,9 @@ public class UserRepository implements IRepository {
     }
 
     public void update(User user) {
-        Poster poster = new Poster(user);
-        poster.setUrl(BuildConfig.SERVER_URL + "/users/update");
-        poster.update();
+        Putter putter = new Putter(user);
+        putter.setUrl(BuildConfig.SERVER_URL + "/users/update");
+        putter.update();
     }
 
     public List<User> all() {

@@ -4,9 +4,10 @@
     <!-- Strings related to login -->
     <string name="prompt_firstname">Voornaam</string>
     <string name="prompt_lastname">Achternaam</string>
-    <string name="prompt_email">Emailadres</string>
+    <string name="prompt_username">Gebruikersnaam</string>
     <string name="prompt_password">Wachtwoord</string>
-    <string name="prompt_age">Gebroortedatum</string>
+    <string name="prompt_postalcode">Postcode</string>
+    <string name="prompt_mobilenr">Telefoonnr</string>
     <string name="prompt_address">Adres</string>
     <string name="action_sign_in">Log in</string>
     <string name="action_register">Registreer</string>
@@ -24,4 +25,11 @@
     <string name="change_address_postal_code">Postcode: </string>
     <string name="change_address_button">Opslaan</string>
     <string name="radius_button">Veranderen</string>
+    <string name="address_title">Adres</string>
+    <string name="address_summary">Voer hier je adres in</string>
+    <string name="address_dialog_title">Je adres</string>
+    <string name="postalcode_title">Postcode</string>
+    <string name="postalcode_summary">Voer hier je postcode in</string>
+    <string name="postalcode_dialog_title">Je postcode</string>
+    <string name="category_title">Adres</string>
 </resources>

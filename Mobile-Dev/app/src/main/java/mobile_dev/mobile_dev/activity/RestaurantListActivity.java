@@ -1,6 +1,7 @@
 package mobile_dev.mobile_dev.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -91,10 +92,11 @@ public class RestaurantListActivity extends AppCompatActivity {
         CityRepository cityRepo = new CityRepository();
 
         for (i=0; i < restaurants.size() ;i++) {
+            SharedPreferences preferences = getSharedPreferences("prefs", MODE_PRIVATE);
             String toName = cityRepo.find(restaurants.get(i).getCity()).getName();
-            String fromName = cityRepo.find(user.getCity()).getName();
             String to = restaurants.get(i).getAddress() + " " + toName;
-            String from = user.getAddress() + " " + fromName;
+            String city = new CityRepository().find(preferences.getString("postalCode", user.getCity())).getName();
+            String from = preferences.getString("address", user.getAddress()) + " " + city;
             new DistanceCalculator(from, to, this).calculate();
             MapsContainer mapsContainer = new Gson().fromJson(this.json, MapsContainer.class);
             restaurantBundles.add(i, new RestaurantBundle(mapsContainer, restaurants.get(i)));

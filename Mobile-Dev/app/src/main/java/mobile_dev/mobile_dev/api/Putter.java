@@ -13,17 +13,17 @@ import mobile_dev.mobile_dev.model.User;
  * Created by kevin on 03/10/2017.
  */
 
-public class Poster {
+public class Putter {
 
     private String url = null;
     private User user;
 
-    public Poster(String url, User user) {
+    public Putter(String url, User user) {
         this.url = url;
         this.user = user;
     }
 
-    public Poster(User user) {
+    public Putter(User user) {
         this.user = user;
     }
 
