@@ -9,6 +9,7 @@
     <string name="prompt_postalcode">Postcode</string>
     <string name="prompt_mobilenr">Telefoonnr</string>
     <string name="prompt_address">Adres</string>
+    <string name="prompt_city">Stad</string>
     <string name="action_sign_in">Log in</string>
     <string name="action_register">Registreer</string>
     <string name="error_invalid_email">Ongeldig emailadres</string>

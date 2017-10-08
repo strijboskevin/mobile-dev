@@ -13,9 +13,6 @@ import java.util.concurrent.TimeoutException;
 
 import mobile_dev.mobile_dev.repository.IRepository;
 
-/**
- * Created by kevin on 03/10/2017.
- */
 
 public class Consumer {
 

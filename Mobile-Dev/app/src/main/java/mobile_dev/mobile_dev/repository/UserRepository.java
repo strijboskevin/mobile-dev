@@ -6,12 +6,9 @@ import java.util.List;
 
 import mobile_dev.mobile_dev.BuildConfig;
 import mobile_dev.mobile_dev.api.Consumer;
+import mobile_dev.mobile_dev.api.Poster;
 import mobile_dev.mobile_dev.api.Putter;
 import mobile_dev.mobile_dev.model.User;
-
-/**
- * Created by kevin on 03/10/2017.
- */
 
 public class UserRepository implements IRepository {
 
@@ -24,6 +21,13 @@ public class UserRepository implements IRepository {
         this.gson = new Gson();
     }
 
+    public List<User> all() {
+        consumer.setUrl(BuildConfig.SERVER_URL + "/users/all");
+        consumer.getString();
+        List<User> users = gson.fromJson(this.result, new TypeToken<List<User>>(){}.getType());
+        return users;
+    }
+
     public User find(String userName) {
         consumer.setUrl(BuildConfig.SERVER_URL + "/users/get/" + userName);
         consumer.getString();
@@ -31,17 +35,16 @@ public class UserRepository implements IRepository {
         return user;
     }
 
+    public void add(User user) {
+        Poster poster = new Poster(user);
+        poster.setUrl(BuildConfig.SERVER_URL + "/users/add");
+        poster.update();
+    }
+
     public void update(User user) {
         Putter putter = new Putter(user);
         putter.setUrl(BuildConfig.SERVER_URL + "/users/update");
         putter.update();
-    }
-
-    public List<User> all() {
-        consumer.setUrl(BuildConfig.SERVER_URL + "/users/all");
-        consumer.getString();
-        List<User> users = gson.fromJson(this.result, new TypeToken<List<User>>(){}.getType());
-        return users;
     }
 
     @Override

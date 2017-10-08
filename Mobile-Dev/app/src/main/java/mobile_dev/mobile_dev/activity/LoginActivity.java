@@ -84,7 +84,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         setPassWordView();
         setEmailSignInButton();
         setRegisterButton();
+        setFacebookLoginButton();
     }
+
+
 
     private void setEmailSignInButton() {
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
@@ -117,7 +120,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 startActivity(i);
             }
         });
+    }
 
+    private void setFacebookLoginButton() {
         loginButton = (LoginButton) findViewById(R.id.login_button);
         textView = (TextView) findViewById(R.id.textView);
         loginButton.setReadPermissions(Arrays.asList(
