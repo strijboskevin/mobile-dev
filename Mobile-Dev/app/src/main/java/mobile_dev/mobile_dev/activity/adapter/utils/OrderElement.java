@@ -4,10 +4,6 @@ import java.io.Serializable;
 
 import mobile_dev.mobile_dev.model.Menu;
 
-/**
- * Created by kevin on 04/10/2017.
- */
-
 public class OrderElement implements Serializable {
 
     private Menu menu;

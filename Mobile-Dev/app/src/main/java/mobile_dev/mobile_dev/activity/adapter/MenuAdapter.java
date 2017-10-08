@@ -13,10 +13,6 @@ import mobile_dev.mobile_dev.R;
 import mobile_dev.mobile_dev.activity.adapter.utils.OrderElement;
 import mobile_dev.mobile_dev.model.Menu;
 
-/**
- * Created by kevin on 04/10/2017.
- */
-
 public class MenuAdapter extends BaseAdapter {
 
     private List<Menu> menus;

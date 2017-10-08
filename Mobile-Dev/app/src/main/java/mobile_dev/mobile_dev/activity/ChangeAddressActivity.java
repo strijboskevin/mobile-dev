@@ -10,10 +10,6 @@ import mobile_dev.mobile_dev.R;
 import mobile_dev.mobile_dev.activity.container.UserContainer;
 import mobile_dev.mobile_dev.model.User;
 
-/**
- * Created by kevin on 06/10/2017.
- */
-
 public class ChangeAddressActivity extends PreferenceActivity {
 
     private static User user;

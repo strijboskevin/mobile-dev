@@ -17,10 +17,6 @@ import mobile_dev.mobile_dev.model.Restaurant;
 import mobile_dev.mobile_dev.model.User;
 import mobile_dev.mobile_dev.repository.CityRepository;
 
-/**
- * Created by Fred on 3/10/2017.
- */
-
 public class RestaurantListAdapter extends BaseAdapter {
 
     private Context context;
