@@ -24,13 +24,8 @@ public class UserRepository implements IRepository {
     }
 
     public User find(String userName) {
-<<<<<<< HEAD
-        connection.setUrl("http://10.0.2.2:4041/mdev-api/users/get/" + userName);
-        connection.getString();
-=======
         consumer.setUrl(BuildConfig.SERVER_URL + "/users/get/" + userName);
         consumer.getString();
->>>>>>> fc47ffafc14dcd97ceec53b7736ec3c2836dfb77
         User user = gson.fromJson(this.result, User.class);
         return user;
     }

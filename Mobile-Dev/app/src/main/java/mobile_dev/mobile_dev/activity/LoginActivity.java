@@ -27,7 +27,6 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-<<<<<<< HEAD
 import android.util.*;
 
 import com.facebook.login.LoginResult;
@@ -42,13 +41,9 @@ import org.w3c.dom.Text;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
-=======
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
->>>>>>> fc47ffafc14dcd97ceec53b7736ec3c2836dfb77
 import mobile_dev.mobile_dev.R;
 
 import static android.Manifest.permission.READ_CONTACTS;
@@ -68,22 +63,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private static final String[] DUMMY_CREDENTIALS = new String[]{
             "foo@example.com:hello", "bar@example.com:world"
     };
-<<<<<<< HEAD
-    /**
-     * Keep track of the login task to ensure we can cancel it if requested.
-     */
-    private UserLoginTask mAuthTask = null;
+
 
     // UI references.
-    private AutoCompleteTextView mEmailView;
-    private EditText mPasswordView;
-    private View mProgressView;
-    private View mLoginFormView;
     private LoginButton loginButton;
     private CallbackManager callbackManager;
     private TextView textView;
-=======
->>>>>>> fc47ffafc14dcd97ceec53b7736ec3c2836dfb77
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,22 +104,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         });
     }
 
-<<<<<<< HEAD
-        Button mEmailSignInButton = (Button) findViewById(R.id.loginButton);
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                attemptLogin();
-            }
-        });
-
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
-
-        registerButton = (Button) findViewById(R.id.registerButton);
-=======
     private void setRegisterButton() {
->>>>>>> fc47ffafc14dcd97ceec53b7736ec3c2836dfb77
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

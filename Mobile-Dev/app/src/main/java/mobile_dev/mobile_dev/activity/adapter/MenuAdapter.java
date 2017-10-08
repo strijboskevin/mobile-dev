@@ -77,7 +77,7 @@ public class MenuAdapter extends BaseAdapter {
         orderElements = new ArrayList<OrderElement>();
 
         for (i=0; i < menus.size() ;i++) {
-            orderElements.add(i, new OrderElement(menus.get(i), 0));
+            orderElements.add(i, new OrderElement(menus.get(i), 5));
         }
     }
 

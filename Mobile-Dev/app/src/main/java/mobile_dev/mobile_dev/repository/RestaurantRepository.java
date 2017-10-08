@@ -24,13 +24,8 @@ public class RestaurantRepository implements IRepository {
     }
 
     public Restaurant find(int id) {
-<<<<<<< HEAD
-        connection.setUrl("http://10.0.2.2:4041/mdev-api/restaurants/get/" + id);
-        connection.getString();
-=======
         consumer.setUrl(BuildConfig.SERVER_URL + "/restaurants/get/" + id);
         consumer.getString();
->>>>>>> fc47ffafc14dcd97ceec53b7736ec3c2836dfb77
         Restaurant restaurant = gson.fromJson(this.result, Restaurant.class);
         return restaurant;
     }
