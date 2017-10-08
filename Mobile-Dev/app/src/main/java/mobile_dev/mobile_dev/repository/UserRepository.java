@@ -5,7 +5,8 @@ import com.google.gson.reflect.TypeToken;
 import java.util.List;
 
 import mobile_dev.mobile_dev.BuildConfig;
-import mobile_dev.mobile_dev.consumer.Consumer;
+import mobile_dev.mobile_dev.api.Consumer;
+import mobile_dev.mobile_dev.api.Putter;
 import mobile_dev.mobile_dev.model.User;
 
 /**
@@ -28,6 +29,12 @@ public class UserRepository implements IRepository {
         consumer.getString();
         User user = gson.fromJson(this.result, User.class);
         return user;
+    }
+
+    public void update(User user) {
+        Putter putter = new Putter(user);
+        putter.setUrl(BuildConfig.SERVER_URL + "/users/update");
+        putter.update();
     }
 
     public List<User> all() {

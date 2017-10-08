@@ -20,12 +20,6 @@ public class City {
     @Id
     private String postalCode;
     private String name;
-    @OneToMany(mappedBy = "city")
-    @JsonBackReference("cities_users")
-    private List<User> users;
-    @OneToMany(mappedBy = "city")
-    @JsonBackReference("cities_restaurants")
-    private List<Restaurant> restaurants;
 
     public City() {};
 

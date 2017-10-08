@@ -47,7 +47,7 @@ public class MenuActivity extends AppCompatActivity {
         this.menus = ((MenuContainer)getIntent().getSerializableExtra("menus")).getMenus();
         this.url = getIntent().getStringExtra("url");
         Picasso.with(this).load(url).into(image);
-  //      this.user = ((UserContainer)getIntent().getSerializableExtra("user")).getUser();
+        this.user = ((UserContainer)getIntent().getSerializableExtra("user")).getUser();
         adapter = new MenuAdapter(MenuActivity.this, menus);
         setListView();
         setButton();

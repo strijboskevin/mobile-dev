@@ -13,11 +13,11 @@ public class Restaurant implements Serializable {
 
     private int id;
     private String name;
-    private City city;
+    private String city;
     private String address;
     private List<Menu> menus;
 
-    public Restaurant(int id, String name, City city, List<Menu> menus) {
+    public Restaurant(int id, String name, String city, List<Menu> menus) {
         this.id = id;
         this.name = name;
         this.city = city;
@@ -50,11 +50,11 @@ public class Restaurant implements Serializable {
         this.name = name;
     }
 
-    public City getCity() {
+    public String  getCity() {
         return city;
     }
 
-    public void setCity(City city) {
+    public void setCity(String  city) {
         this.city = city;
     }
 

@@ -16,14 +16,24 @@ public class Menu {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String name;
+    private int price;
     @ManyToOne
     @JsonBackReference(value = "restaurants_menus")
     private Restaurant restaurant;
 
     public Menu() {};
 
-    public Menu(String name) {
+    public Menu(String name, int price) {
         this.name = name;
+        this.price = price;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
     }
 
     public int getId() {

@@ -1,6 +1,7 @@
 package be.pxl.mdev.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -25,15 +26,14 @@ public class Restaurant {
     @OneToMany(mappedBy = "restaurant")
     @JsonManagedReference(value = "restaurants_menus")
     private List<Menu> menus;
-    @ManyToOne
-    @JsonManagedReference(value = "cities_restaurants")
-    private City city;
+    private String city;
 
     public Restaurant() {};
 
-    public Restaurant(String name, String address) {
+    public Restaurant(String name, String address, String city) {
         this.name = name;
         this.address = address;
+        this.city = city;
     }
 
     public int getId() {
@@ -60,4 +60,11 @@ public class Restaurant {
         this.address = address;
     }
 
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
 }

@@ -12,6 +12,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import mobile_dev.mobile_dev.BuildConfig;
+import mobile_dev.mobile_dev.activity.RestaurantListActivity;
 import mobile_dev.mobile_dev.activity.adapter.RestaurantListAdapter;
 
 /**
@@ -23,12 +25,12 @@ public class DistanceCalculator {
     private String from;
     private String to;
     private String link;
-    private RestaurantListAdapter adapter;
+    private RestaurantListActivity activity;
 
-    public DistanceCalculator(String from, String to, RestaurantListAdapter adapter) {
+    public DistanceCalculator(String from, String to, RestaurantListActivity activity) {
         this.from = from;
         this.to = to;
-        this.adapter = adapter;
+        this.activity = activity;
         build();
     }
 
@@ -51,7 +53,8 @@ public class DistanceCalculator {
     public void build() {
         String[] fromSplit = from.split(" ");
         String[] toSplit = to.split(" ");
-        link = "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=" + fromSplit[0] + "+" + fromSplit[1] + "+" + fromSplit[2] + "&destinations=" + toSplit[0] + "+" + toSplit[1] + "+" + toSplit[2];
+        link = BuildConfig.MATRIX_URL + fromSplit[0] + "+" + fromSplit[1] + "+" + fromSplit[2] + "&destinations=" + toSplit[0] + "+" + toSplit[1] + "+" + toSplit[2] + "&key" + BuildConfig.MATRIX_KEY;
+        System.out.println("test");
     }
 
     public void calculate() {
@@ -59,7 +62,7 @@ public class DistanceCalculator {
             RetrieveInput input = new RetrieveInput();
             input.execute(this.link);
             try {
-                adapter.setJson(input.get(15000, TimeUnit.MILLISECONDS));
+                activity.setJson(input.get(15000, TimeUnit.MILLISECONDS));
             } catch (InterruptedException e) {
                 Log.d("Error", e.getStackTrace().toString());
             } catch (ExecutionException e) {
@@ -103,7 +106,7 @@ public class DistanceCalculator {
 
         @Override
         protected void onPostExecute(String result) {
-            adapter.setJson(result);
+            activity.setJson(result);
         }
     }
 

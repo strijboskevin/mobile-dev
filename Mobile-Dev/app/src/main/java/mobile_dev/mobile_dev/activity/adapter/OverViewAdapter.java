@@ -50,7 +50,7 @@ public class OverViewAdapter extends BaseAdapter {
         TextView amount = (TextView) view.findViewById(R.id.menu_overview_list_element_amount);
 
         menu.setText(orderElements.get(position).getMenu().getName());
-        amount.setText(String.valueOf(orderElements.get(position).getAmount()));
+        amount.setText("€" + orderElements.get(position).getMenu().getPrice() + " x " + String.valueOf(orderElements.get(position).getAmount()));
 
         return view;
     }

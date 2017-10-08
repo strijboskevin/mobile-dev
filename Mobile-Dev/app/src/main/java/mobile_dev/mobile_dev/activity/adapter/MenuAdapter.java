@@ -1,20 +1,14 @@
 package mobile_dev.mobile_dev.activity.adapter;
 
 import android.content.Context;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import butterknife.OnTextChanged;
 import mobile_dev.mobile_dev.R;
 import mobile_dev.mobile_dev.activity.adapter.utils.OrderElement;
 import mobile_dev.mobile_dev.model.Menu;
@@ -65,7 +59,6 @@ public class MenuAdapter extends BaseAdapter {
         amount.setTag(orderElements.get(position));
 
         name.setText(orderElements.get(position).getMenu().getName());
-        amount.setText(String.valueOf(orderElements.get(position).getAmount()));
 
         return view;
     }
