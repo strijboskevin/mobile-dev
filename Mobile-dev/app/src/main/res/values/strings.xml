@@ -9,6 +9,7 @@
     <string name="prompt_postalcode">Postcode</string>
     <string name="prompt_mobilenr">Telefoonnr</string>
     <string name="prompt_address">Adres</string>
+    <string name="prompt_city">Stad</string>
     <string name="action_sign_in">Log in</string>
     <string name="action_register">Registreer</string>
     <string name="error_invalid_email">Ongeldig emailadres</string>
@@ -18,6 +19,8 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email completions."</string>
     <string name="title_activity_register_actvity">RegisterActvity</string>
     <string name="title_activity_recipe">RecipeActivity</string>
+    <string name="facebook_app_id">448612215539677</string>
+    <string name="fb_login_protocol_scheme">fb448612215539677</string>
     <string name="button_menus">Bestellen</string>
     <string name="menu_address">Verander adres</string>
     <string name="menu_radius">Voorkeuren</string>

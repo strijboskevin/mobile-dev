@@ -9,18 +9,17 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import mobile_dev.mobile_dev.model.User;
 
-
-public class Putter {
+public class Poster {
 
     private String url = null;
     private User user;
 
-    public Putter(String url, User user) {
+    public Poster(String url, User user) {
         this.url = url;
         this.user = user;
     }
 
-    public Putter(User user) {
+    public Poster(User user) {
         this.user = user;
     }
 
@@ -52,7 +51,7 @@ public class Putter {
                 URL url = new URL(params[0]);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setConnectTimeout(5000); //set timeout to 5 seconds
-                connection.setRequestMethod("PUT");
+                connection.setRequestMethod("POST");
                 connection.setDoOutput(true);
                 connection.setDoInput(true);
                 connection.setRequestProperty("Content-Type", "application/json");
