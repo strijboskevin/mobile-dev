@@ -21,10 +21,6 @@ import mobile_dev.mobile_dev.activity.container.UserContainer;
 import mobile_dev.mobile_dev.model.User;
 import mobile_dev.mobile_dev.repository.CityRepository;
 
-/**
- * Created by kevin on 04/10/2017.
- */
-
 public class OverViewActivity extends AppCompatActivity {
 
     @BindView(R.id.overview_menus_list) ListView listView;

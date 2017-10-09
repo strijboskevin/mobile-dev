@@ -16,10 +16,6 @@ import mobile_dev.mobile_dev.activity.container.UserContainer;
 import mobile_dev.mobile_dev.model.User;
 import mobile_dev.mobile_dev.repository.UserRepository;
 
-/**
- * Created by kevin on 06/10/2017.
- */
-
 public class ChangeRadiusActivity extends AppCompatActivity {
 
     @BindView(R.id.change_radius_button) Button button;

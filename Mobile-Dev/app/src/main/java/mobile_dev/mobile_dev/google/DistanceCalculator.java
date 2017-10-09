@@ -16,10 +16,6 @@ import mobile_dev.mobile_dev.BuildConfig;
 import mobile_dev.mobile_dev.activity.RestaurantListActivity;
 import mobile_dev.mobile_dev.activity.adapter.RestaurantListAdapter;
 
-/**
- * Created by kevin on 03/10/2017.
- */
-
 public class DistanceCalculator {
 
     private String from;

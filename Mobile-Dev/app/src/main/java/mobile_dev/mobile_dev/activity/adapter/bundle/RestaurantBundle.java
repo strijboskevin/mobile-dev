@@ -3,10 +3,6 @@ package mobile_dev.mobile_dev.activity.adapter.bundle;
 import mobile_dev.mobile_dev.google.json.MapsContainer;
 import mobile_dev.mobile_dev.model.Restaurant;
 
-/**
- * Created by kevin on 04/10/2017.
- */
-
 public class RestaurantBundle {
 
     private MapsContainer container;

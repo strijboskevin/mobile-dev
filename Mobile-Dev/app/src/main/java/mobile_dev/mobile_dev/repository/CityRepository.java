@@ -9,10 +9,6 @@ import mobile_dev.mobile_dev.api.Consumer;
 import mobile_dev.mobile_dev.model.City;
 import mobile_dev.mobile_dev.R;
 
-/**
- * Created by kevin on 03/10/2017.
- */
-
 public class CityRepository implements IRepository {
 
     private Consumer consumer;

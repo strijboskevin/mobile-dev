@@ -3,10 +3,6 @@ package mobile_dev.mobile_dev.model;
 import java.io.Serializable;
 import java.util.List;
 
-/**
- * Created by kevin on 03/10/2017.
- */
-
 public class Dish implements Serializable {
 
     private int id;
