@@ -10,10 +10,6 @@ import java.util.List;
 import mobile_dev.mobile_dev.R;
 import mobile_dev.mobile_dev.activity.adapter.utils.OrderElement;
 
-/**
- * Created by kevin on 04/10/2017.
- */
-
 public class OverViewAdapter extends BaseAdapter {
     private List<OrderElement> orderElements;
     private Context context;
