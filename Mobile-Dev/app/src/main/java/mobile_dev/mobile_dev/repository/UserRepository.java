@@ -29,10 +29,14 @@ public class UserRepository implements IRepository {
     }
 
     public User find(String userName) {
-        consumer.setUrl(BuildConfig.SERVER_URL + "/users/get/" + userName);
-        consumer.getString();
+        configureConsumer(userName);
         User user = gson.fromJson(this.result, User.class);
         return user;
+    }
+
+    private void configureConsumer(String userName) {
+        consumer.setUrl(BuildConfig.SERVER_URL + "/users/get/" + userName);
+        consumer.getString();
     }
 
     public void add(User user) {

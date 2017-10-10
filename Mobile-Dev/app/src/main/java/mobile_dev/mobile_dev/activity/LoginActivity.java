@@ -75,7 +75,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     @OnClick(R.id.loginButton)
-    public void setEmailSignInButton() {
+    public void setLoginButton() {
         attemptLogin();
     }
 

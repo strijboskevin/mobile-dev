@@ -23,7 +23,7 @@
     <string name="fb_login_protocol_scheme">fb448612215539677</string>
     <string name="button_menus">Bestellen</string>
     <string name="menu_address">Verander adres</string>
-    <string name="menu_radius">Voorkeuren</string>
+    <string name="menu_radius">Bepaal afstand</string>
     <string name="change_address_address">Adres: </string>
     <string name="change_address_postal_code">Postcode: </string>
     <string name="change_address_button">Opslaan</string>

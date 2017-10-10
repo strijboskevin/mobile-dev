@@ -38,15 +38,6 @@ public class Consumer {
         if (url != null) {
             RetrieveInput input = new RetrieveInput();
             input.execute(url);
-            try {
-                repo.setString(input.get(15000, TimeUnit.MILLISECONDS));
-            } catch (InterruptedException e) {
-                Log.d("Error", e.getStackTrace().toString());
-            } catch (ExecutionException e) {
-                Log.d("Error", e.getStackTrace().toString());
-            } catch (TimeoutException e) {
-                Log.d("Error", e.getStackTrace().toString());
-            }
         }
     }
 
@@ -73,8 +64,6 @@ public class Consumer {
             } catch (Exception ex)
                 {
                     ex.getStackTrace();
-
-
             } finally {
                 return result;
             }
