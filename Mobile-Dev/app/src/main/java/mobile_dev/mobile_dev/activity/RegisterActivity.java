@@ -39,20 +39,27 @@ public class RegisterActivity extends AppCompatActivity {
     public void attemptRegister(){
         getTextEditText();
         if (!(username.equals("") || firstname.equals("") || lastname.equals("") || password.equals("") || mobilenumber.equals("") || address.equals("") || postalcode.equals(""))) {
-            if (postalcode.matches("[0-9]+") && postalcode.length() == 4) {
-                UserRepository repo = new UserRepository();
-                User user = new User();
-                user = makeUser(user);
-                repo.add(user);
-                UserContainer container = new UserContainer(user);
-                Intent intent = new Intent(RegisterActivity.this, DishActivity.class);
-                intent.putExtra("user", container);
-                startActivity(intent);
+            if (mobilenumber.matches("[0-9]+")) {
+                if (postalcode.matches("[0-9]+") && postalcode.length() == 4) {
+                    UserRepository repo = new UserRepository();
+                    User user = new User();
+                    user = makeUser(user);
+                    repo.add(user);
+                    UserContainer container = new UserContainer(user);
+                    Intent intent = new Intent(RegisterActivity.this, DishActivity.class);
+                    intent.putExtra("user", container);
+                    startActivity(intent);
+                } else
+                {
+                    Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
+                    postalEditText.startAnimation(shake);
+                }
             } else
             {
                 Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
-                postalEditText.startAnimation(shake);
+                mobilenumberEditText.startAnimation(shake);
             }
+
         } else
         {
             shake();

@@ -71,26 +71,12 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-        setPassWordView();
         setFacebookLoginButton();
     }
 
     @OnClick(R.id.loginButton)
     public void setEmailSignInButton() {
         attemptLogin();
-    }
-
-    private void setPassWordView() {
-        passwordEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
-                    return true;
-                }
-                return false;
-            }
-        });
     }
 
     @OnClick(R.id.registerButton)
