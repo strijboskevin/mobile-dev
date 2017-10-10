@@ -24,9 +24,9 @@ public class RegisterActivity extends AppCompatActivity {
     @BindView(R.id.password) EditText passwordEditText;
     @BindView(R.id.mobilenumber) EditText mobilenumberEditText;
     @BindView(R.id.address) EditText addressEditText;
-    @BindView(R.id.city) EditText postalEditText;
+    @BindView(R.id.postalcode) EditText postalEditText;
     @BindView(R.id.registerButton) Button registerButton;
-    String username, firstname, lastname, password, mobilenumber, address, city;
+    String username, firstname, lastname, password, mobilenumber, address, postalcode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,15 +38,21 @@ public class RegisterActivity extends AppCompatActivity {
     @OnClick(R.id.registerButton)
     public void attemptRegister(){
         getTextEditText();
-        if (!(username.equals("") || firstname.equals("") || lastname.equals("") || password.equals("") || mobilenumber.equals("") || address.equals("") || city.equals(""))) {
-            UserRepository repo = new UserRepository();
-            User user = new User();
-            user = makeUser(user);
-            repo.add(user);
-            UserContainer container = new UserContainer(user);
-            Intent intent = new Intent(RegisterActivity.this, DishActivity.class);
-            intent.putExtra("user", container);
-            startActivity(intent);
+        if (!(username.equals("") || firstname.equals("") || lastname.equals("") || password.equals("") || mobilenumber.equals("") || address.equals("") || postalcode.equals(""))) {
+            if (postalcode.matches("[0-9]+") && postalcode.length() == 4) {
+                UserRepository repo = new UserRepository();
+                User user = new User();
+                user = makeUser(user);
+                repo.add(user);
+                UserContainer container = new UserContainer(user);
+                Intent intent = new Intent(RegisterActivity.this, DishActivity.class);
+                intent.putExtra("user", container);
+                startActivity(intent);
+            } else
+            {
+                Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
+                postalEditText.startAnimation(shake);
+            }
         } else
         {
             shake();
@@ -61,7 +67,7 @@ public class RegisterActivity extends AppCompatActivity {
         password = convertToMD5(password);
         mobilenumber = mobilenumberEditText.getText().toString();
         address = addressEditText.getText().toString();
-        city = postalEditText.getText().toString();
+        postalcode = postalEditText.getText().toString();
     }
 
     public User makeUser(User user) {
@@ -71,7 +77,7 @@ public class RegisterActivity extends AppCompatActivity {
         user.setPassWord(password);
         user.setMobileNr(mobilenumber);
         user.setAddress(address);
-        user.setCity(city);
+        user.setCity(postalcode);
         user.setRadius(20);
         return user;
     }
