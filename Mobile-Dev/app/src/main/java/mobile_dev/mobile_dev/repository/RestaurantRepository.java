@@ -8,10 +8,6 @@ import mobile_dev.mobile_dev.BuildConfig;
 import mobile_dev.mobile_dev.api.Consumer;
 import mobile_dev.mobile_dev.model.Restaurant;
 
-/**
- * Created by kevin on 03/10/2017.
- */
-
 public class RestaurantRepository implements IRepository {
 
     private Consumer consumer;

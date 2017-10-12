@@ -47,6 +47,7 @@ import java.util.*;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import mobile_dev.mobile_dev.R;
 import mobile_dev.mobile_dev.activity.container.UserContainer;
 import mobile_dev.mobile_dev.model.User;
@@ -54,6 +55,7 @@ import mobile_dev.mobile_dev.repository.UserRepository;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
+<<<<<<< HEAD
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor>, IActivity {
 
     @BindView(R.id.registerButton) Button registerButton;
@@ -73,9 +75,17 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             "foo@example.com:hello", "bar@example.com:world"
     };
 
+=======
+public class LoginActivity extends AppCompatActivity {
+
+    @BindView(R.id.registerButton) Button registerButton;
+    @BindView(R.id.email) AutoCompleteTextView emailTextView;
+    @BindView(R.id.password) EditText passwordEditText;
+    @BindView(R.id.loginButton) Button loginButton;
+>>>>>>> f31dff05e80327986c0fb6ebbd8403edc9e35bbf
 
     // UI references.
-    private LoginButton loginButton;
+    private LoginButton fbLoginButton;
     private CallbackManager callbackManager;
     private TextView textView;
 
@@ -84,56 +94,28 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-        populateAutoComplete();
-        setPassWordView();
-        setEmailSignInButton();
-        setRegisterButton();
         setFacebookLoginButton();
     }
 
-
-
-    private void setEmailSignInButton() {
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                attemptLogin();
-            }
-        });
-
+    @OnClick(R.id.loginButton)
+    public void setLoginButton() {
+        attemptLogin();
     }
 
-    private void setPassWordView() {
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
-                    return true;
-                }
-                return false;
-            }
-        });
-    }
-
-    private void setRegisterButton() {
-        registerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(LoginActivity.this, RegisterActivity.class);
-                startActivity(i);
-            }
-        });
+    @OnClick(R.id.registerButton)
+    public void setRegisterButton() {
+        Intent i = new Intent(LoginActivity.this, RegisterActivity.class);
+        startActivity(i);
     }
 
     private void setFacebookLoginButton() {
-        loginButton = (LoginButton) findViewById(R.id.login_button);
+        fbLoginButton = (LoginButton) findViewById(R.id.login_button);
         textView = (TextView) findViewById(R.id.textView);
-        loginButton.setReadPermissions(Arrays.asList(
+        fbLoginButton.setReadPermissions(Arrays.asList(
                 "public_profile"));
         callbackManager = CallbackManager.Factory.create();
         Log.v("Output", "Test");
-        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+        fbLoginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 GraphRequest request = GraphRequest.newMeRequest(
@@ -210,58 +192,24 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         return null;
     }
 
-    private void populateAutoComplete() {
-        if (!mayRequestContacts()) {
-            return;
-        }
-
-        getLoaderManager().initLoader(0, null, this);
-    }
-
-    private boolean mayRequestContacts() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            return true;
-        }
-        if (checkSelfPermission(READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
-            return true;
-        }
-        if (shouldShowRequestPermissionRationale(READ_CONTACTS)) {
-            Snackbar.make(mEmailView, R.string.permission_rationale, Snackbar.LENGTH_INDEFINITE)
-                    .setAction(android.R.string.ok, new View.OnClickListener() {
-                        @Override
-                        @TargetApi(Build.VERSION_CODES.M)
-                        public void onClick(View v) {
-                            requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS);
-                        }
-                    });
-        } else {
-            requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS);
-        }
-        return false;
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        if (requestCode == REQUEST_READ_CONTACTS) {
-            if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                populateAutoComplete();
-            }
-        }
-    }
-
     private void attemptLogin() {
+<<<<<<< HEAD
         UserRepository repo = new UserRepository(this);
         String userName = mEmailView.getText().toString();
         passWord = mPasswordView.getText().toString();
+=======
+        UserRepository repo = new UserRepository();
+        String userName = emailTextView.getText().toString();
+        String passWord = passwordEditText.getText().toString();
+>>>>>>> f31dff05e80327986c0fb6ebbd8403edc9e35bbf
         passWord = convertToMD5(passWord);
         repo.find(userName);
     }
 
     private void shake() {
         Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
-        mEmailView.startAnimation(shake);
-        mPasswordView.startAnimation(shake);
+        emailTextView.startAnimation(shake);
+        passwordEditText.startAnimation(shake);
     }
 
     private String convertToMD5(String toConvert) {
@@ -277,6 +225,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
         return null;
     }
+<<<<<<< HEAD
 
     private boolean isEmailValid(String email) {
         return email.contains("@");
@@ -389,5 +338,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         int ADDRESS = 0;
         int IS_PRIMARY = 1;
     }
+=======
+>>>>>>> f31dff05e80327986c0fb6ebbd8403edc9e35bbf
 }
 

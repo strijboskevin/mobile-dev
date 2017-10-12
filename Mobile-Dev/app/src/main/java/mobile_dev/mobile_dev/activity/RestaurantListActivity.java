@@ -29,10 +29,6 @@ import mobile_dev.mobile_dev.model.Restaurant;
 import mobile_dev.mobile_dev.model.User;
 import mobile_dev.mobile_dev.repository.CityRepository;
 
-/**
- * Created by kevin on 03/10/2017.
- */
-
 public class RestaurantListActivity extends AppCompatActivity {
 
     @BindView(R.id.listview_restaurants) ListView listView;

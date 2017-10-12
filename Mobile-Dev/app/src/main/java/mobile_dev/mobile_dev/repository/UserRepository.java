@@ -31,7 +31,19 @@ public class UserRepository implements IRepository {
         return users;
     }
 
+<<<<<<< HEAD
     public void find(String userName) {
+        consumer.setUrl(BuildConfig.SERVER_URL + "/users/get/" + userName);
+        consumer.getString();
+=======
+    public User find(String userName) {
+        configureConsumer(userName);
+        User user = gson.fromJson(this.result, User.class);
+        return user;
+>>>>>>> f31dff05e80327986c0fb6ebbd8403edc9e35bbf
+    }
+
+    private void configureConsumer(String userName) {
         consumer.setUrl(BuildConfig.SERVER_URL + "/users/get/" + userName);
         consumer.getString();
     }

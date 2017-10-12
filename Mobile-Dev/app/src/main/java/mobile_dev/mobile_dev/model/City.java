@@ -5,10 +5,6 @@ import android.os.Parcelable;
 
 import java.io.Serializable;
 
-/**
- * Created by kevin on 03/10/2017.
- */
-
 public class City implements Serializable {
 
     private String postalCode;

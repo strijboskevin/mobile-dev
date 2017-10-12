@@ -5,10 +5,6 @@ import android.os.Parcelable;
 import java.io.Serializable;
 import java.util.List;
 
-/**
- * Created by kevin on 03/10/2017.
- */
-
 public class Restaurant implements Serializable {
 
     private int id;

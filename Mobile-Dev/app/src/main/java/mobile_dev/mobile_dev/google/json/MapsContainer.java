@@ -2,10 +2,6 @@ package mobile_dev.mobile_dev.google.json;
 
 import java.util.List;
 
-/**
- * Created by kevin on 03/10/2017.
- */
-
 public class MapsContainer {
 
     private List<String> destination_addresses;

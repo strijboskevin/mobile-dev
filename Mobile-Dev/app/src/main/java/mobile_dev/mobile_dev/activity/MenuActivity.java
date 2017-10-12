@@ -25,10 +25,6 @@ import mobile_dev.mobile_dev.activity.container.UserContainer;
 import mobile_dev.mobile_dev.model.Menu;
 import mobile_dev.mobile_dev.model.User;
 
-/**
- * Created by kevin on 04/10/2017.
- */
-
 public class MenuActivity extends AppCompatActivity {
 
     @BindView(R.id.listview_menus) ListView listView;

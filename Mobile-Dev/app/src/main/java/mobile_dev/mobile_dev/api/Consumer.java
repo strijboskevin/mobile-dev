@@ -65,8 +65,6 @@ public class Consumer {
             } catch (Exception ex)
                 {
                     ex.getStackTrace();
-
-
             } finally {
                 return result;
             }
