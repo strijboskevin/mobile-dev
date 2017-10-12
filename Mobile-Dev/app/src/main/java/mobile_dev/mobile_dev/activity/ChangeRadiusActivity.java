@@ -16,7 +16,7 @@ import mobile_dev.mobile_dev.activity.container.UserContainer;
 import mobile_dev.mobile_dev.model.User;
 import mobile_dev.mobile_dev.repository.UserRepository;
 
-public class ChangeRadiusActivity extends AppCompatActivity {
+public class ChangeRadiusActivity extends AppCompatActivity implements IActivity {
 
     @BindView(R.id.change_radius_button) Button button;
     @BindView(R.id.change_radius_seekbar) SeekBar seekBar;
@@ -38,7 +38,7 @@ public class ChangeRadiusActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                UserRepository repo = new UserRepository();
+                UserRepository repo = new UserRepository(this);
                 user.setRadius(radius);
                 repo.update(user);
                 Intent intent = new Intent(ChangeRadiusActivity.this, LoginActivity.class);
@@ -66,5 +66,10 @@ public class ChangeRadiusActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public void setJson(String json) {
+        
     }
 }

@@ -11,20 +11,21 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import mobile_dev.mobile_dev.activity.IActivity;
 import mobile_dev.mobile_dev.repository.IRepository;
 
 
 public class Consumer {
 
     private String url = null;
-    private IRepository repo;
+    private IActivity activity;
 
-    public Consumer(String url, IRepository repo) {
+    public Consumer(String url, IActivity activity) {
         this.url = url;
-        this.repo = repo;
+        this.activity = activity;
     }
 
-    public Consumer(IRepository repo) { this.repo = repo; }
+    public Consumer(IActivity activity) { this.activity = activity; }
 
     public String getUrl() {
         return url;
@@ -38,15 +39,6 @@ public class Consumer {
         if (url != null) {
             RetrieveInput input = new RetrieveInput();
             input.execute(url);
-            try {
-                repo.setString(input.get(15000, TimeUnit.MILLISECONDS));
-            } catch (InterruptedException e) {
-                Log.d("Error", e.getStackTrace().toString());
-            } catch (ExecutionException e) {
-                Log.d("Error", e.getStackTrace().toString());
-            } catch (TimeoutException e) {
-                Log.d("Error", e.getStackTrace().toString());
-            }
         }
     }
 
@@ -82,7 +74,7 @@ public class Consumer {
 
         @Override
         protected void onPostExecute(String result) {
-            repo.setString(result);
+            activity.setJson(result);
         }
     }
 

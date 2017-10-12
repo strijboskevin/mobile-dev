@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import java.util.List;
 
 import mobile_dev.mobile_dev.BuildConfig;
+import mobile_dev.mobile_dev.activity.IActivity;
 import mobile_dev.mobile_dev.api.Consumer;
 import mobile_dev.mobile_dev.api.Poster;
 import mobile_dev.mobile_dev.api.Putter;
@@ -15,9 +16,11 @@ public class UserRepository implements IRepository {
     private Consumer consumer;
     private String result;
     private Gson gson;
+    private IActivity activity;
 
-    public UserRepository() {
-        this.consumer = new Consumer(this);
+    public UserRepository(IActivity activity) {
+        this.consumer = new Consumer(activity);
+        this.activity = activity;
         this.gson = new Gson();
     }
 
@@ -28,11 +31,9 @@ public class UserRepository implements IRepository {
         return users;
     }
 
-    public User find(String userName) {
+    public void find(String userName) {
         consumer.setUrl(BuildConfig.SERVER_URL + "/users/get/" + userName);
         consumer.getString();
-        User user = gson.fromJson(this.result, User.class);
-        return user;
     }
 
     public void add(User user) {

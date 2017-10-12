@@ -34,6 +34,7 @@ import android.util.*;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.facebook.*;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -53,7 +54,7 @@ import mobile_dev.mobile_dev.repository.UserRepository;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
-public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
+public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor>, IActivity {
 
     @BindView(R.id.registerButton) Button registerButton;
     @BindView(R.id.email) AutoCompleteTextView mEmailView;
@@ -61,7 +62,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     @BindView(R.id.loginButton) Button mEmailSignInButton;
     @BindView(R.id.login_progress) View mProgressView;
     @BindView(R.id.login_form) View mLoginFormView;
-    private UserLoginTask mAuthTask = null;
+
+    private String json;
+    private Gson gson;
+    private String passWord;
 
     private static final int REQUEST_READ_CONTACTS = 0;
 
@@ -247,20 +251,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     private void attemptLogin() {
-        UserRepository repo = new UserRepository();
+        UserRepository repo = new UserRepository(this);
         String userName = mEmailView.getText().toString();
-        String passWord = mPasswordView.getText().toString();
+        passWord = mPasswordView.getText().toString();
         passWord = convertToMD5(passWord);
-        User user = repo.find(userName);
-
-        if (user != null && user.getPassWord().equals(passWord)) {
-            UserContainer container = new UserContainer(user);
-            Intent intent = new Intent(LoginActivity.this, DishActivity.class);
-            intent.putExtra("user", container);
-            startActivity(intent);
-        } else {
-            shake();
-        }
+        repo.find(userName);
     }
 
     private void shake() {
@@ -367,6 +362,24 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mEmailView.setAdapter(adapter);
     }
 
+    @Override
+    public void setJson(String json) {
+        this.json = json;
+        goToDishes();
+    }
+
+    private void goToDishes() {
+        User user = gson.fromJson(this.json, User.class);
+        if (user != null && user.getPassWord().equals(passWord)) {
+            UserContainer container = new UserContainer(user);
+            Intent intent = new Intent(LoginActivity.this, DishActivity.class);
+            intent.putExtra("user", container);
+            startActivity(intent);
+        } else {
+            shake();
+        }
+    }
+
     private interface ProfileQuery {
         String[] PROJECTION = {
                 ContactsContract.CommonDataKinds.Email.ADDRESS,
@@ -375,59 +388,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         int ADDRESS = 0;
         int IS_PRIMARY = 1;
-    }
-
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
-
-        private final String mEmail;
-        private final String mPassword;
-
-        UserLoginTask(String email, String password) {
-            mEmail = email;
-            mPassword = password;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
-
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
-                }
-            }
-
-            // TODO: register the new account here.
-            return true;
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-            showProgress(false);
-
-            if (success) {
-                finish();
-            } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            mAuthTask = null;
-            showProgress(false);
-        }
     }
 }
 
