@@ -7,12 +7,8 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Scanner;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 import mobile_dev.mobile_dev.activity.IActivity;
-import mobile_dev.mobile_dev.repository.IRepository;
 
 
 public class Consumer {

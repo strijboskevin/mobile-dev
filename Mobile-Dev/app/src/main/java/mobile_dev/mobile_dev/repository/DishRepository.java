@@ -5,36 +5,29 @@ import com.google.gson.reflect.TypeToken;
 import java.util.List;
 
 import mobile_dev.mobile_dev.BuildConfig;
+import mobile_dev.mobile_dev.activity.IActivity;
 import mobile_dev.mobile_dev.api.Consumer;
 import mobile_dev.mobile_dev.model.Dish;
 
-public class DishRepository implements IRepository {
+public class DishRepository {
 
     private Consumer consumer;
     private String result;
     private Gson gson;
+    private IActivity activity;
 
-    public DishRepository() {
-        this.consumer = new Consumer(this);
-        this.gson = new Gson();
+    public DishRepository(IActivity activity) {
+        this.consumer = new Consumer(activity);
+        this.activity = activity;
     }
 
-    public Dish find(int id) {
+    public void find(int id) {
         consumer.setUrl(BuildConfig.SERVER_URL + "/dishes/get/" + id);
         consumer.getString();
-        Dish dish = gson.fromJson(this.result, Dish.class);
-        return dish;
     }
 
-    public List<Dish> all() {
+    public void all() {
         consumer.setUrl(BuildConfig.SERVER_URL + "/dishes/all");
         consumer.getString();
-        List<Dish> dishes = gson.fromJson(this.result, new TypeToken<List<Dish>>(){}.getType());
-        return dishes;
-    }
-
-    @Override
-    public void setString(String result) {
-        this.result = result;
     }
 }

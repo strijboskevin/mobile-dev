@@ -21,7 +21,7 @@ import mobile_dev.mobile_dev.activity.container.UserContainer;
 import mobile_dev.mobile_dev.model.User;
 import mobile_dev.mobile_dev.repository.CityRepository;
 
-public class OverViewActivity extends AppCompatActivity {
+public class OverViewActivity extends AppCompatActivity implements IActivity {
 
     @BindView(R.id.overview_menus_list) ListView listView;
     @BindView(R.id.overview_menus_textview) TextView textView;
@@ -45,10 +45,10 @@ public class OverViewActivity extends AppCompatActivity {
         this.user = ((UserContainer)getIntent().getSerializableExtra("user")).getUser();
         adapter = new OverViewAdapter(OverViewActivity.this, orderElements);
         listView.setAdapter(adapter);
-        CityRepository cityRepository = new CityRepository();
-        String cityName = cityRepository.find(this.user.getCity()).getName();
+        CityRepository cityRepository = new CityRepository(this);
+     //   String cityName = cityRepository.find(this.user.getCity()).getName();
         SharedPreferences preferences = getSharedPreferences("prefs", MODE_PRIVATE);
-        textView.setText("De bestelling zal geleverd worden aan " + preferences.getString("address", user.getAddress()) + " " + preferences.getString("postalCode", user.getCity()) + " te " + cityName + " op naam van " + this.user.getFirstName() + " " + this.user.getLastName() + ".");
+   //     textView.setText("De bestelling zal geleverd worden aan " + preferences.getString("address", user.getAddress()) + " " + preferences.getString("postalCode", user.getCity()) + " te " + cityName + " op naam van " + this.user.getFirstName() + " " + this.user.getLastName() + ".");
         total.setText("Totaal: €" + String.valueOf(calcTotal()));
     }
 
@@ -76,4 +76,8 @@ public class OverViewActivity extends AppCompatActivity {
         return total;
     }
 
+    @Override
+    public void setJson(String json) {
+
+    }
 }

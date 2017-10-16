@@ -17,7 +17,7 @@ import mobile_dev.mobile_dev.activity.container.UserContainer;
 import mobile_dev.mobile_dev.model.User;
 import mobile_dev.mobile_dev.repository.UserRepository;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity implements IActivity {
     @BindView(R.id.username) EditText usernameEditText;
     @BindView(R.id.firstname) EditText firstnameEditText;
     @BindView(R.id.lastname) EditText lastnameEditText;
@@ -26,7 +26,9 @@ public class RegisterActivity extends AppCompatActivity {
     @BindView(R.id.address) EditText addressEditText;
     @BindView(R.id.postalcode) EditText postalEditText;
     @BindView(R.id.registerButton) Button registerButton;
+
     String username, firstname, lastname, password, mobilenumber, address, postalcode;
+    private String json;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +43,7 @@ public class RegisterActivity extends AppCompatActivity {
         if (!(username.equals("") || firstname.equals("") || lastname.equals("") || password.equals("") || mobilenumber.equals("") || address.equals("") || postalcode.equals(""))) {
             if (mobilenumber.matches("[0-9]+")) {
                 if (postalcode.matches("[0-9]+") && postalcode.length() == 4) {
-                    UserRepository repo = new UserRepository();
+                    UserRepository repo = new UserRepository(this);
                     User user = new User();
                     user = makeUser(user);
                     repo.add(user);
@@ -112,5 +114,10 @@ public class RegisterActivity extends AppCompatActivity {
         mobilenumberEditText.startAnimation(shake);
         addressEditText.startAnimation(shake);
         postalEditText.startAnimation(shake);
+    }
+
+    @Override
+    public void setJson(String json) {
+        this.json = json;
     }
 }

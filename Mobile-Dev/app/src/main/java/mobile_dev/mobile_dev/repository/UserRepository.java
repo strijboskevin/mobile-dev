@@ -11,39 +11,23 @@ import mobile_dev.mobile_dev.api.Poster;
 import mobile_dev.mobile_dev.api.Putter;
 import mobile_dev.mobile_dev.model.User;
 
-public class UserRepository implements IRepository {
+public class UserRepository  {
 
     private Consumer consumer;
     private String result;
-    private Gson gson;
     private IActivity activity;
 
     public UserRepository(IActivity activity) {
         this.consumer = new Consumer(activity);
         this.activity = activity;
-        this.gson = new Gson();
     }
 
-    public List<User> all() {
+    public void all() {
         consumer.setUrl(BuildConfig.SERVER_URL + "/users/all");
         consumer.getString();
-        List<User> users = gson.fromJson(this.result, new TypeToken<List<User>>(){}.getType());
-        return users;
     }
 
-<<<<<<< HEAD
     public void find(String userName) {
-        consumer.setUrl(BuildConfig.SERVER_URL + "/users/get/" + userName);
-        consumer.getString();
-=======
-    public User find(String userName) {
-        configureConsumer(userName);
-        User user = gson.fromJson(this.result, User.class);
-        return user;
->>>>>>> f31dff05e80327986c0fb6ebbd8403edc9e35bbf
-    }
-
-    private void configureConsumer(String userName) {
         consumer.setUrl(BuildConfig.SERVER_URL + "/users/get/" + userName);
         consumer.getString();
     }
@@ -58,10 +42,5 @@ public class UserRepository implements IRepository {
         Putter putter = new Putter(user);
         putter.setUrl(BuildConfig.SERVER_URL + "/users/update");
         putter.update();
-    }
-
-    @Override
-    public void setString(String result) {
-        this.result = result;
     }
 }

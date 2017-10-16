@@ -9,10 +9,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
-
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
-
 import java.util.ArrayList;
 import java.util.List;
 import butterknife.BindView;
@@ -25,20 +23,26 @@ import mobile_dev.mobile_dev.activity.container.RestaurantContainer;
 import mobile_dev.mobile_dev.activity.container.UserContainer;
 import mobile_dev.mobile_dev.google.DistanceCalculator;
 import mobile_dev.mobile_dev.google.json.MapsContainer;
+import mobile_dev.mobile_dev.model.City;
 import mobile_dev.mobile_dev.model.Restaurant;
 import mobile_dev.mobile_dev.model.User;
 import mobile_dev.mobile_dev.repository.CityRepository;
 
-public class RestaurantListActivity extends AppCompatActivity {
+public class RestaurantListActivity extends AppCompatActivity implements IActivity {
 
     @BindView(R.id.listview_restaurants) ListView listView;
     @BindView(R.id.activity_restaurant_list_image) ImageView image;
+
     private List<Restaurant> restaurants;
     private List<RestaurantBundle> restaurantBundles;
+    private List<City> cities = new ArrayList<City>();
     private RestaurantListAdapter adapter;
     private User user;
     private String url;
     private String json;
+    private Gson gson = new Gson();
+    private int threadCount = 0;
+    private CityRepository cityRepo = new CityRepository(this);
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,11 +54,15 @@ public class RestaurantListActivity extends AppCompatActivity {
         this.url = getIntent().getStringExtra("url");
         this.restaurantBundles = new ArrayList<RestaurantBundle>();
         Picasso.with(this).load(url).into(image);
-        createBundles();
-        removeBundles();
-        sort();
-        adapter = new RestaurantListAdapter(RestaurantListActivity.this, restaurantBundles, user);
-        setListView();
+        getCities();
+    }
+
+    private void getCities() {
+        int i;
+
+        for (i=0; i < restaurants.size() ;i++) {
+            cityRepo.find(restaurants.get(i).getCity());
+        }
     }
 
     private void setListView() {
@@ -85,14 +93,12 @@ public class RestaurantListActivity extends AppCompatActivity {
 
     private void createBundles() {
         int i;
-        CityRepository cityRepo = new CityRepository();
 
         for (i=0; i < restaurants.size() ;i++) {
             SharedPreferences preferences = getSharedPreferences("prefs", MODE_PRIVATE);
-            String toName = cityRepo.find(restaurants.get(i).getCity()).getName();
-            String to = restaurants.get(i).getAddress() + " " + toName;
-            String city = new CityRepository().find(preferences.getString("postalCode", user.getCity())).getName();
-            String from = preferences.getString("address", user.getAddress()) + " " + city;
+            String toCity = cities.get(i).getName();
+            String to = restaurants.get(i).getAddress() + " " + toCity;
+            String from = preferences.getString("address", user.getAddress()) + " " + preferences.getString("postalCode", user.getCity());
             new DistanceCalculator(from, to, this).calculate();
             MapsContainer mapsContainer = new Gson().fromJson(this.json, MapsContainer.class);
             restaurantBundles.add(i, new RestaurantBundle(mapsContainer, restaurants.get(i)));
@@ -115,10 +121,20 @@ public class RestaurantListActivity extends AppCompatActivity {
         }
     }
 
+    @Override
     public void setJson(String json) {
         this.json = json;
-    }
+        City city = gson.fromJson(json, City.class);
+        cities.add(city);
+        this.threadCount += 1;
 
-    public String getJson() { return json; }
+        if (this.threadCount == restaurants.size()) {
+            createBundles();
+            removeBundles();
+            sort();
+            adapter = new RestaurantListAdapter(RestaurantListActivity.this, restaurantBundles, user);
+            setListView();
+        }
+    }
 
 }

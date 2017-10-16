@@ -8,14 +8,14 @@ import mobile_dev.mobile_dev.BuildConfig;
 import mobile_dev.mobile_dev.api.Consumer;
 import mobile_dev.mobile_dev.model.Menu;
 
-public class MenuRepository implements IRepository {
+public class MenuRepository {
 
     private Consumer consumer;
     private String result;
     private Gson gson;
 
     public MenuRepository() {
-        this.consumer = new Consumer(this);
+      //  this.consumer = new Consumer(this);
         this.gson = new Gson();
     }
 
@@ -31,10 +31,5 @@ public class MenuRepository implements IRepository {
         consumer.getString();
         List<Menu> menus = gson.fromJson(this.result, new TypeToken<List<Menu>>(){}.getType());
         return menus;
-    }
-
-    @Override
-    public void setString(String result) {
-        this.result = result;
     }
 }

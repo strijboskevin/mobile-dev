@@ -5,37 +5,28 @@ import com.google.gson.reflect.TypeToken;
 import java.util.List;
 
 import mobile_dev.mobile_dev.BuildConfig;
+import mobile_dev.mobile_dev.activity.IActivity;
 import mobile_dev.mobile_dev.api.Consumer;
 import mobile_dev.mobile_dev.model.City;
 import mobile_dev.mobile_dev.R;
 
-public class CityRepository implements IRepository {
+public class CityRepository  {
 
     private Consumer consumer;
-    private String result;
-    private Gson gson;
+    private IActivity activity;
 
-    public CityRepository() {
-        this.consumer = new Consumer(this);
-        this.gson = new Gson();
+    public CityRepository(IActivity activity) {
+        this.consumer = new Consumer(activity);
+        this.activity = activity;
     }
 
-    public City find(String postalCode) {
+    public void find(String postalCode) {
         consumer.setUrl(BuildConfig.SERVER_URL + "/cities/get/" + postalCode);
         consumer.getString();
-        City city = gson.fromJson(this.result, City.class);
-        return city;
     }
 
-    public List<City> all() {
+    public void all() {
         consumer.setUrl(BuildConfig.SERVER_URL + "/cities/all");
         consumer.getString();
-        List<City> cities = gson.fromJson(this.result, new TypeToken<List<City>>(){}.getType());
-        return cities;
-    }
-
-    @Override
-    public void setString(String result) {
-        this.result = result;
     }
 }

@@ -13,6 +13,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import mobile_dev.mobile_dev.BuildConfig;
+import mobile_dev.mobile_dev.activity.IActivity;
 import mobile_dev.mobile_dev.activity.RestaurantListActivity;
 import mobile_dev.mobile_dev.activity.adapter.RestaurantListAdapter;
 
@@ -21,7 +22,7 @@ public class DistanceCalculator {
     private String from;
     private String to;
     private String link;
-    private RestaurantListActivity activity;
+    private IActivity activity;
 
     public DistanceCalculator(String from, String to, RestaurantListActivity activity) {
         this.from = from;

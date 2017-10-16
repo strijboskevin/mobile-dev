@@ -9,6 +9,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -20,22 +22,16 @@ import mobile_dev.mobile_dev.model.Dish;
 import mobile_dev.mobile_dev.model.User;
 import mobile_dev.mobile_dev.repository.DishRepository;
 
-public class DishActivity extends AppCompatActivity {
+public class DishActivity extends AppCompatActivity implements IActivity {
 
     @BindView(R.id.gridview) GridView gridView;
-    private final List<Dish> dishes = new DishRepository().all();
+
+    private List<Dish> dishes;
+    private String json;
     private User user;
     private DishAdapter adapter;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dishes_list);
-        ButterKnife.bind(this);
-        this.user = ((UserContainer) getIntent().getSerializableExtra("user")).getUser();
-        adapter = new DishAdapter(DishActivity.this, dishes);
-        setGridView();
-    }
+    private DishRepository repo = new DishRepository(this);
+    private Gson gson = new Gson();
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -61,6 +57,23 @@ public class DishActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    public void setJson(String json) {
+        this.json = json;
+        this.dishes = gson.fromJson(json, new TypeToken<List<Dish>>(){}.getType());
+        adapter = new DishAdapter(DishActivity.this, dishes, user);
+        setGridView();
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_dishes_list);
+        ButterKnife.bind(this);
+        this.user = ((UserContainer) getIntent().getSerializableExtra("user")).getUser();
+        repo.all();
+    }
+
     private void setGridView() {
         gridView.setAdapter(adapter);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -75,5 +88,6 @@ public class DishActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
     }
 }
