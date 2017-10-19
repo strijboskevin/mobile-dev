@@ -29,37 +29,31 @@ import mobile_dev.mobile_dev.repository.DishRepository;
 public class DishActivity extends AppCompatActivity implements IActivity {
 
     @BindView(R.id.gridview) GridView gridView;
-    @BindView(R.id.drawerlayout) DrawerLayout drawerLayout;
-    @BindView(R.id.navigationview) NavigationView navigationView;
 
     private List<Dish> dishes;
     private User user;
     private DishRepository repo = new DishRepository(this);
 
-    private ActionBarDrawerToggle actionBarDrawerToggle;
 
-    /*@Override
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
         return true;
-    }*/
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
-            if (item.getItemId() == R.id.menu_change_address) {
-                Intent intent = new Intent(DishActivity.this, ChangeAddressActivity.class);
-                UserContainer userContainer = new UserContainer(this.user);
-                intent.putExtra("user", userContainer);
-                startActivity(intent);
-            } else if (item.getItemId() == R.id.menu_change_radius){
-                Intent intent = new Intent(DishActivity.this, ChangeRadiusActivity.class);
-                UserContainer userContainer = new UserContainer(this.user);
-                intent.putExtra("user", userContainer);
-                startActivity(intent);
-            }
-            return true;
+        if (item.getItemId() == R.id.menu_change_address) {
+            Intent intent = new Intent(DishActivity.this, ChangeAddressActivity.class);
+            UserContainer userContainer = new UserContainer(this.user);
+            intent.putExtra("user", userContainer);
+            startActivity(intent);
+        } else if (item.getItemId() == R.id.menu_change_radius){
+            Intent intent = new Intent(DishActivity.this, ChangeRadiusActivity.class);
+            UserContainer userContainer = new UserContainer(this.user);
+            intent.putExtra("user", userContainer);
+            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -78,36 +72,7 @@ public class DishActivity extends AppCompatActivity implements IActivity {
         ButterKnife.bind(this);
         this.user = ((UserContainer) getIntent().getSerializableExtra("user")).getUser();
         repo.all();
-<<<<<<< HEAD
         setGridView();
-=======
-        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
-        drawerLayout.addDrawerListener(actionBarDrawerToggle);
-        actionBarDrawerToggle.syncState();
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //setNavigationItemSelectedListener();
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                if (item.getItemId() == R.id.menu_change_address) {
-                    Intent intent = new Intent(DishActivity.this, ChangeAddressActivity.class);
-                    UserContainer userContainer = new UserContainer(user);
-                    intent.putExtra("user", userContainer);
-                    startActivity(intent);
-                } else if (item.getItemId() == R.id.menu_change_radius){
-                    Intent intent = new Intent(DishActivity.this, ChangeRadiusActivity.class);
-                    UserContainer userContainer = new UserContainer(user);
-                    intent.putExtra("user", userContainer);
-                    startActivity(intent);
-                }
-                return false;
-            }
-        });
-    }
-
-    private void setNavigationItemSelectedListener() {
-
->>>>>>> a831924ceb42526cd7767b3e61b30d52655a486f
     }
 
     private void setGridView() {
