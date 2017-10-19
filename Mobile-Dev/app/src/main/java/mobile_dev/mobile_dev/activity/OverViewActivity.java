@@ -7,8 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
-
 import java.util.ArrayList;
 import java.util.List;
 import butterknife.BindView;
@@ -18,6 +18,7 @@ import mobile_dev.mobile_dev.activity.adapter.OverViewAdapter;
 import mobile_dev.mobile_dev.activity.adapter.utils.OrderElement;
 import mobile_dev.mobile_dev.activity.adapter.utils.OrderElementContainer;
 import mobile_dev.mobile_dev.activity.container.UserContainer;
+import mobile_dev.mobile_dev.model.City;
 import mobile_dev.mobile_dev.model.User;
 import mobile_dev.mobile_dev.repository.CityRepository;
 
@@ -27,10 +28,12 @@ public class OverViewActivity extends AppCompatActivity implements IActivity {
     @BindView(R.id.overview_menus_textview) TextView textView;
     @BindView(R.id.overview_menus_list_image) ImageView image;
     @BindView(R.id.overview_menus_textview_total_price) TextView total;
+
     private List<OrderElement> orderElements;
     private OverViewAdapter adapter;
     private User user;
     private String url;
+    private SharedPreferences preferences;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,10 +49,9 @@ public class OverViewActivity extends AppCompatActivity implements IActivity {
         adapter = new OverViewAdapter(OverViewActivity.this, orderElements);
         listView.setAdapter(adapter);
         CityRepository cityRepository = new CityRepository(this);
-     //   String cityName = cityRepository.find(this.user.getCity()).getName();
-        SharedPreferences preferences = getSharedPreferences("prefs", MODE_PRIVATE);
-   //     textView.setText("De bestelling zal geleverd worden aan " + preferences.getString("address", user.getAddress()) + " " + preferences.getString("postalCode", user.getCity()) + " te " + cityName + " op naam van " + this.user.getFirstName() + " " + this.user.getLastName() + ".");
-        total.setText("Totaal: €" + String.valueOf(calcTotal()));
+        cityRepository.find(this.user.getCity());
+        preferences = getSharedPreferences("prefs", MODE_PRIVATE);
+
     }
 
     private void trimOrderElements() {
@@ -78,6 +80,8 @@ public class OverViewActivity extends AppCompatActivity implements IActivity {
 
     @Override
     public void setJson(String json) {
-
+        City city = new Gson().fromJson(json, City.class);
+        textView.setText("De bestelling zal geleverd worden aan " + preferences.getString("address", user.getAddress()) + " te " + city.getName() + " op naam van " + this.user.getFirstName() + " " + this.user.getLastName() + ".");
+        total.setText("Totaal: €" + String.valueOf(calcTotal()));
     }
 }

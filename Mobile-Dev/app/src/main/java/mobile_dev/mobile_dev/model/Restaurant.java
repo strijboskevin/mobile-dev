@@ -1,7 +1,5 @@
 package mobile_dev.mobile_dev.model;
 
-import android.os.Parcelable;
-
 import java.io.Serializable;
 import java.util.List;
 

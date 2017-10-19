@@ -1,8 +1,5 @@
 package mobile_dev.mobile_dev.model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import java.io.Serializable;
 
 public class City implements Serializable {

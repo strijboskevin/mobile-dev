@@ -1,7 +1,6 @@
 package mobile_dev.mobile_dev.activity.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,11 +11,8 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+
 import mobile_dev.mobile_dev.R;
-import mobile_dev.mobile_dev.activity.DishActivity;
-import mobile_dev.mobile_dev.activity.RestaurantListActivity;
-import mobile_dev.mobile_dev.activity.container.RestaurantContainer;
-import mobile_dev.mobile_dev.activity.container.UserContainer;
 import mobile_dev.mobile_dev.model.Dish;
 import mobile_dev.mobile_dev.model.User;
 
@@ -57,7 +53,7 @@ public class DishAdapter extends BaseAdapter {
 
         ImageView image = (ImageView) view.findViewById(R.id.gridview_element_imageview);
         TextView word = (TextView) view.findViewById(R.id.gridview_element_textview);
-        Picasso.with(context).load(dishes.get(postion).getImage()).resize(300,300).into(image);
+        Picasso.with(context).load(dishes.get(postion).getImage()).resize(300, 300).into(image);
         word.setText(dishes.get(postion).getName());
 
         return view;

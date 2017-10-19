@@ -27,11 +27,11 @@ public class ChangeAddressActivity extends PreferenceActivity {
         @Override
         public void onCreate(final Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            addPreferencesFromResource(R.xml.preferences);
+            addPreferencesFromResource(R.xml.address_preferences);
             EditTextPreference address = (EditTextPreference)findPreference("address");
             EditTextPreference postalCode = (EditTextPreference) findPreference("postalCode");
             address.setText(preferences.getString("address", user.getAddress()));
-            postalCode.setText(preferences.getString("postalcode", user.getCity()));
+            postalCode.setText(preferences.getString("postalCode", user.getCity()));
         }
 
         @Override

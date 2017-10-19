@@ -27,11 +27,8 @@ public class DishActivity extends AppCompatActivity implements IActivity {
     @BindView(R.id.gridview) GridView gridView;
 
     private List<Dish> dishes;
-    private String json;
     private User user;
-    private DishAdapter adapter;
     private DishRepository repo = new DishRepository(this);
-    private Gson gson = new Gson();
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -59,10 +56,9 @@ public class DishActivity extends AppCompatActivity implements IActivity {
 
     @Override
     public void setJson(String json) {
-        this.json = json;
-        this.dishes = gson.fromJson(json, new TypeToken<List<Dish>>(){}.getType());
-        adapter = new DishAdapter(DishActivity.this, dishes, user);
-        setGridView();
+        this.dishes = new Gson().fromJson(json, new TypeToken<List<Dish>>(){}.getType());
+        DishAdapter adapter = new DishAdapter(DishActivity.this, dishes, user);
+        gridView.setAdapter(adapter);
     }
 
     @Override
@@ -72,10 +68,10 @@ public class DishActivity extends AppCompatActivity implements IActivity {
         ButterKnife.bind(this);
         this.user = ((UserContainer) getIntent().getSerializableExtra("user")).getUser();
         repo.all();
+        setGridView();
     }
 
     private void setGridView() {
-        gridView.setAdapter(adapter);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long l) {

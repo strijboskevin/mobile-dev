@@ -1,9 +1,5 @@
 package mobile_dev.mobile_dev.repository;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import java.util.List;
-
 import mobile_dev.mobile_dev.BuildConfig;
 import mobile_dev.mobile_dev.activity.IActivity;
 import mobile_dev.mobile_dev.api.Consumer;
@@ -14,12 +10,9 @@ import mobile_dev.mobile_dev.model.User;
 public class UserRepository  {
 
     private Consumer consumer;
-    private String result;
-    private IActivity activity;
 
     public UserRepository(IActivity activity) {
         this.consumer = new Consumer(activity);
-        this.activity = activity;
     }
 
     public void all() {

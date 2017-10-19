@@ -5,14 +5,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
-
 import com.squareup.picasso.Picasso;
-
 import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,6 +27,7 @@ public class MenuActivity extends AppCompatActivity {
     @BindView(R.id.listview_menus) ListView listView;
     @BindView(R.id.activity_menus_list_image) ImageView image;
     @BindView(R.id.listview_menus_button) Button button;
+
     private List<Menu> menus;
     private MenuAdapter adapter;
     private User user;
@@ -79,5 +77,8 @@ public class MenuActivity extends AppCompatActivity {
             int amount = Integer.parseInt(edit.getText().toString());
             orderElements.get(i).setAmount(amount);
         }
+    }
+
+    public void setJson(String json) {
     }
 }
