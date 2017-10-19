@@ -35,4 +35,6 @@
     <string name="postalcode_summary">Voer hier je postcode in</string>
     <string name="postalcode_dialog_title">Je postcode</string>
     <string name="category_title">Adres</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
 </resources>
