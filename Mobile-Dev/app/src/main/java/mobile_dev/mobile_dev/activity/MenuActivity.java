@@ -21,6 +21,7 @@ import mobile_dev.mobile_dev.activity.container.MenuContainer;
 import mobile_dev.mobile_dev.activity.container.UserContainer;
 import mobile_dev.mobile_dev.model.Menu;
 import mobile_dev.mobile_dev.model.User;
+import mobile_dev.mobile_dev.sqlite.SQLite;
 
 public class MenuActivity extends AppCompatActivity {
 
@@ -32,6 +33,7 @@ public class MenuActivity extends AppCompatActivity {
     private MenuAdapter adapter;
     private User user;
     private String url;
+    private SQLite myDb;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,8 +45,10 @@ public class MenuActivity extends AppCompatActivity {
         Picasso.with(this).load(url).into(image);
         this.user = ((UserContainer)getIntent().getSerializableExtra("user")).getUser();
         adapter = new MenuAdapter(MenuActivity.this, menus);
+        myDb = new SQLite(this);
         setListView();
         setButton();
+        addMenusToSQLiteDb();
     }
 
     private void setListView() {
@@ -80,5 +84,11 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     public void setJson(String json) {
+    }
+
+    private void addMenusToSQLiteDb() {
+        for (int i = 0; i < menus.size(); i++) {
+            myDb.insertMenus(menus.get(i).getId(), menus.get(i).getName(), menus.get(i).getPrice());
+        }
     }
 }

@@ -39,6 +39,7 @@ import mobile_dev.mobile_dev.model.City;
 import mobile_dev.mobile_dev.model.Restaurant;
 import mobile_dev.mobile_dev.model.User;
 import mobile_dev.mobile_dev.repository.CityRepository;
+import mobile_dev.mobile_dev.sqlite.SQLite;
 
 public class RestaurantListActivity extends AppCompatActivity implements IActivity, IDistanceCalculatorActivity, ActivityCompat.OnRequestPermissionsResultCallback, ICoordinatesConverterActivity {
 
@@ -47,7 +48,7 @@ public class RestaurantListActivity extends AppCompatActivity implements IActivi
     @BindView(R.id.activity_restaurant_list_image)
     ImageView image;
 
-    private List<Restaurant> restaurants;
+    private static List<Restaurant> restaurants;
     private List<RestaurantBundle> restaurantBundles;
     private List<City> cities = new ArrayList<City>();
     private List<MapsContainer> maps = new ArrayList<MapsContainer>();
@@ -62,16 +63,32 @@ public class RestaurantListActivity extends AppCompatActivity implements IActivi
     private LocationManager locationManager;
     private final int PERMISSION_REQUEST_RESULT = 1;
     private String from;
+    private SQLite myDb;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurants_list);
         ButterKnife.bind(this);
+        myDb = new SQLite(this);
         getData();
         Picasso.with(this).load(url).into(image);
         getCities();
         getUserCity();
+        addRestaurantsToSQLiteDb();
+        addCitiesToSQLiteDb();
+    }
+
+    private void addRestaurantsToSQLiteDb() {
+        for (int i = 0; i < restaurants.size(); i++) {
+            myDb.insertRestaurants(restaurants.get(i).getId(), restaurants.get(i).getAddress(), restaurants.get(i).getCity(), restaurants.get(i).getName());
+        }
+    }
+
+    private void addCitiesToSQLiteDb() {
+        for (int i = 0; i < cities.size(); i++) {
+            myDb.insertCities(cities.get(i).getPostalCode(), cities.get(i).getName());
+        }
     }
 
     private void getData() {
