@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -36,6 +37,7 @@ import mobile_dev.mobile_dev.google.CoordinatesConverter;
 import mobile_dev.mobile_dev.google.DistanceCalculator;
 import mobile_dev.mobile_dev.google.json.MapsContainer;
 import mobile_dev.mobile_dev.model.City;
+import mobile_dev.mobile_dev.model.Dish;
 import mobile_dev.mobile_dev.model.Restaurant;
 import mobile_dev.mobile_dev.model.User;
 import mobile_dev.mobile_dev.repository.CityRepository;
@@ -51,6 +53,7 @@ public class RestaurantListActivity extends AppCompatActivity implements IActivi
     private static List<Restaurant> restaurants;
     private List<RestaurantBundle> restaurantBundles;
     private List<City> cities = new ArrayList<City>();
+    private List<City> citiesSQLite = new ArrayList<City>();
     private List<MapsContainer> maps = new ArrayList<MapsContainer>();
     private RestaurantListAdapter adapter;
     private User user;
@@ -59,11 +62,13 @@ public class RestaurantListActivity extends AppCompatActivity implements IActivi
     private CityRepository cityRepo = new CityRepository(this);
     private SharedPreferences preferences;
     private City userCity;
+    private City city;
     private LocationListener locationListener;
     private LocationManager locationManager;
     private final int PERMISSION_REQUEST_RESULT = 1;
     private String from;
     private SQLite myDb;
+    private int i = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -76,7 +81,6 @@ public class RestaurantListActivity extends AppCompatActivity implements IActivi
         getCities();
         getUserCity();
         addRestaurantsToSQLiteDb();
-        addCitiesToSQLiteDb();
     }
 
     private void addRestaurantsToSQLiteDb() {
@@ -148,13 +152,22 @@ public class RestaurantListActivity extends AppCompatActivity implements IActivi
 
     @Override
     public void setJson(String json) {
-        City city = new Gson().fromJson(json, City.class);
+        city = new Gson().fromJson(json, City.class);
         cities.add(city);
+        addCitiesToSQLiteDb();
+        Cursor res = myDb.getAllCities();
+        while (res.moveToNext()) {
+            city = new City();
+            city.setPostalCode(res.getString(0));
+            city.setName(res.getString(1));
+            citiesSQLite.add(city);
+            i++;
+        }
         this.threadCount += 1;
 
         if (this.threadCount == restaurants.size() + 1) {
-            this.userCity = cities.get(cities.size() - 1);
-            cities.remove(cities.size() - 1);
+            this.userCity = citiesSQLite.get(cities.size() - 1);
+            citiesSQLite.remove(cities.size() - 1);
             threadCount = 0;
             from = preferences.getString("address", user.getAddress()) + " " + userCity.getName();
             calcDistances();
@@ -164,8 +177,8 @@ public class RestaurantListActivity extends AppCompatActivity implements IActivi
     private void calcDistances() {
         int i;
 
-        for (i = 0; i < cities.size(); i++) {
-            String to = restaurants.get(i).getAddress() + " " + cities.get(i).getName();
+        for (i = 0; i < citiesSQLite.size(); i++) {
+            String to = restaurants.get(i).getAddress() + " " + citiesSQLite.get(i).getName();
             new DistanceCalculator(from, to, this).calculate();
         }
     }
@@ -175,7 +188,7 @@ public class RestaurantListActivity extends AppCompatActivity implements IActivi
         maps.add(mapsContainer);
         threadCount += 1;
 
-        if (threadCount == cities.size()) {
+        if (threadCount == citiesSQLite.size()) {
             createBundles();
             removeBundles();
             sort();

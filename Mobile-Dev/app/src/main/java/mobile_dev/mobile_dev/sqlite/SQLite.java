@@ -156,4 +156,16 @@ public class SQLite extends SQLiteOpenHelper {
         else
             return true;
     }
+
+    public Cursor getAllDishes() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor res = db.rawQuery("SELECT * FROM " + TABLE_DISHES, null);
+        return res;
+    }
+
+    public Cursor getAllCities() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor res = db.rawQuery("SELECT * FROM " + TABLE_CITIES, null);
+        return res;
+    }
 }

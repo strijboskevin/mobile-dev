@@ -1,6 +1,7 @@
 package mobile_dev.mobile_dev.activity;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -16,6 +17,8 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
+import java.util.ArrayList;
 import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,9 +36,12 @@ public class DishActivity extends AppCompatActivity implements IActivity {
     @BindView(R.id.gridview) GridView gridView;
 
     private List<Dish> dishes;
+    private List<Dish> dishesSQLite = new ArrayList<Dish>();
+    private Dish dish;
     private User user;
     private DishRepository repo = new DishRepository(this);
     private SQLite myDb;
+    private int i = 0;
 
 
     @Override
@@ -65,7 +71,19 @@ public class DishActivity extends AppCompatActivity implements IActivity {
     public void setJson(String json) {
         this.dishes = new Gson().fromJson(json, new TypeToken<List<Dish>>(){}.getType());
         addDishesToSQLiteDb();
-        DishAdapter adapter = new DishAdapter(DishActivity.this, dishes, user);
+        Cursor res = myDb.getAllDishes();
+        while (res.moveToNext()) {
+            Dish dish = new Dish();
+            dish.setId(res.getInt(0));
+            dish.setImage(res.getString(1));
+            dish.setRestaurants(dishes.get(i).getRestaurants());
+            dish.setName(res.getString(2));
+            dishesSQLite.add(dish);
+
+            i++;
+
+        }
+        DishAdapter adapter = new DishAdapter(DishActivity.this, dishesSQLite, user);
         gridView.setAdapter(adapter);
     }
 
@@ -84,7 +102,7 @@ public class DishActivity extends AppCompatActivity implements IActivity {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long l) {
-                RestaurantContainer restaurantsContainer = new RestaurantContainer(dishes.get(position).getRestaurants());
+                RestaurantContainer restaurantsContainer = new RestaurantContainer(dishesSQLite.get(position).getRestaurants());
                 UserContainer userContainer = new UserContainer(user);
                 Intent intent = new Intent(DishActivity.this, RestaurantListActivity.class);
                 intent.putExtra("restaurants", restaurantsContainer);
