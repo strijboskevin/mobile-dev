@@ -10,6 +10,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.util.*;
+import android.widget.Toast;
+
+import com.facebook.login.Login;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.facebook.*;
@@ -33,12 +37,14 @@ public class LoginActivity extends AppCompatActivity implements IActivity {
     @BindView(R.id.email) AutoCompleteTextView emailTextView;
     @BindView(R.id.password) EditText passwordEditText;
     @BindView(R.id.loginButton) Button loginButton;
+    @BindView(R.id.fbLoginButton) LoginButton fbLoginButton;
 
     private String json;
     private String passWord;
     private User user;
     private Gson gson = new Gson();
     private UserRepository repo = new UserRepository(this);
+    private CallbackManager callbackManager;
 
     @Override
     public void setJson(String json) {
@@ -68,88 +74,65 @@ public class LoginActivity extends AppCompatActivity implements IActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-     //   setFacebookLoginButton();
+        setFacebookLoginButton();
     }
 
- /*   private void setFacebookLoginButton() {
-        fbLoginButton = (LoginButton) findViewById(R.id.login_button);
-        textView = (TextView) findViewById(R.id.textView);
-        fbLoginButton.setReadPermissions(Arrays.asList(
-                "public_profile"));
+    private void setFacebookLoginButton() {
+        fbLoginButton.setReadPermissions(Arrays.asList("public_profile", "email", "user_birthday", "user_friends"));
         callbackManager = CallbackManager.Factory.create();
-        Log.v("Output", "Test");
         fbLoginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
+                AccessToken accessToken = loginResult.getAccessToken();
+                Profile profile = Profile.getCurrentProfile();
+
                 GraphRequest request = GraphRequest.newMeRequest(
                         loginResult.getAccessToken(),
                         new GraphRequest.GraphJSONObjectCallback() {
                             @Override
-                            public void onCompleted(JSONObject object, GraphResponse response) {
-                                Bundle bFacebookData = getFacebookData(object);
-                                textView.setText("Accessed onSuccesMethod");
+                            public void onCompleted(
+                                    JSONObject object,
+                                    GraphResponse response) {
+                                Log.v("LoginActivity Response ", response.toString());
+
+                                try {
+                                    String name = object.getString("name");
+                                    user = new User();
+                                    user.setUsername(name);
+                                    repo.add(user);
+                                    LoginManager.getInstance().logOut();
+                                    Intent intent = new Intent(LoginActivity.this, DishActivity.class);
+                                    intent.putExtra("user", new UserContainer(user));
+                                    startActivity(intent);
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
                             }
                         });
-                textView.setText("Accessed registerCallback");
-               *Bundle parameters = new Bundle();
-                parameters.putString("fields", "id, first_name, last_name");
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "id,name,email,gender, birthday");
                 request.setParameters(parameters);
                 request.executeAsync();
-                textView.setText(parameters.getString("last_name") + " " + parameters.getString("first_name"));*/
-                /*Intent intent = new Intent(LoginActivity.this, DishActivity.class);
-                startActivity(intent);
             }
 
             @Override
             public void onCancel() {
-
-                textView.setText("Login cancelled");
+                
             }
 
             @Override
-            public void onError() {
-                    FacebookException error) {
+            public void onError(FacebookException error) {
+
             }
         });
-    }  */
+    }
 
- /*   private Bundle getFacebookData(JSONObject object) {
-
-        try {
-            Bundle bundle = new Bundle();
-            String id = object.getString("id");
-
-            try {
-                URL profile_pic = new URL("https://graph.facebook.com/" + id + "/picture?width=200&height=150");
-                Log.i("profile_pic", profile_pic + "");
-                bundle.putString("profile_pic", profile_pic.toString());
-
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-                return null;
-            }
-
-            bundle.putString("idFacebook", id);
-            if (object.has("first_name"))
-                bundle.putString("first_name", object.getString("first_name"));
-            if (object.has("last_name"))
-                bundle.putString("last_name", object.getString("last_name"));
-            if (object.has("email"))
-                bundle.putString("email", object.getString("email"));
-            if (object.has("gender"))
-                bundle.putString("gender", object.getString("gender"));
-            if (object.has("birthday"))
-                bundle.putString("birthday", object.getString("birthday"));
-            if (object.has("location"))
-                bundle.putString("location", object.getJSONObject("location").getString("name"));
-
-            return bundle;
-        }
-        catch(JSONException e) {
-            Log.d("error","Error parsing JSON");
-        }
-        return null;
-    } */
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
 
     private void shake() {
         Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
