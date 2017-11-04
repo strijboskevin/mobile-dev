@@ -23,7 +23,7 @@ public class ChangeRadiusActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    //    setContentView(R.xml.radius_preferences);
+        //setContentView(R.xml.radius_preferences);
         this.user = ((UserContainer) getIntent().getSerializableExtra("user")).getUser();
         ButterKnife.bind(this);
         SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);

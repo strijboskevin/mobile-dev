@@ -14,14 +14,6 @@
     tools:context="mobile_dev.mobile_dev.activity.LoginActivity">
 
     <!-- Login progress -->
-    <ProgressBar
-    android:id="@+id/login_progress"
-    style="?android:attr/progressBarStyleLarge"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp"
-    android:visibility="gone" />
-
     <ScrollView
         android:id="@+id/login_form"
         android:layout_width="match_parent"
@@ -38,13 +30,12 @@
                 android:layout_height="wrap_content">
 
                 <AutoCompleteTextView
-                    android:id="@+id/email"
+                    android:id="@+id/username"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/prompt_username"
-                    android:inputType="textEmailAddress"
                     android:layout_marginLeft="40dp"
                     android:layout_marginRight="40dp"
+                    android:hint="@string/prompt_username"
                     android:maxLines="1"
                     android:singleLine="true" />
 
@@ -58,9 +49,9 @@
                     android:id="@+id/password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/prompt_password"
                     android:layout_marginLeft="40dp"
                     android:layout_marginRight="40dp"
+                    android:hint="@string/prompt_password"
                     android:imeActionId="@+id/login"
                     android:imeActionLabel="@string/action_sign_in"
                     android:inputType="textPassword"
@@ -69,31 +60,39 @@
 
             </android.support.design.widget.TextInputLayout>
 
+            <CheckBox
+                android:id="@+id/rememberMeCheckBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:text="@string/remember_me" />
+
             <Button
                 android:id="@+id/loginButton"
                 style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/roundedbutton"
-                android:textColor="@android:color/background_light"
                 android:text="@string/action_sign_in"
-                android:textStyle="bold"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp"/>
+                android:textColor="@android:color/background_light"
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/registerButton"
                 style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/roundedbutton"
-                android:textColor="@android:color/background_light"
                 android:text="@string/action_register"
-                android:textStyle="bold"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp"/>
+                android:textColor="@android:color/background_light"
+                android:textStyle="bold" />
 
 
             <com.facebook.login.widget.LoginButton
@@ -101,8 +100,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="30dp"
-                android:layout_marginBottom="30dp" />
+                android:layout_marginBottom="30dp"
+                android:layout_marginTop="30dp" />
         </LinearLayout>
     </ScrollView>
+
+    <ProgressBar
+    android:id="@+id/login_progress"
+    style="?android:attr/progressBarStyleLarge"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    android:visibility="gone" />
+
 </LinearLayout>
