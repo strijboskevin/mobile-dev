@@ -9,11 +9,11 @@ import java.net.URL;
 import java.util.Scanner;
 import mobile_dev.mobile_dev.activity.IActivity;
 
-public class RetrieveInput extends AsyncTask<String, Void, String> {
+public class GetInput extends AsyncTask<String, Void, String> {
 
     private IActivity activity;
 
-    public RetrieveInput(IActivity activity) {
+    public GetInput(IActivity activity) {
         this.activity = activity;
     }
 

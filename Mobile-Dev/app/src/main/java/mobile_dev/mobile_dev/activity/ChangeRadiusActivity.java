@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -23,7 +24,7 @@ public class ChangeRadiusActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    //    setContentView(R.xml.radius_preferences);
+        setContentView(R.layout.radius_preferences);
         this.user = ((UserContainer) getIntent().getSerializableExtra("user")).getUser();
         ButterKnife.bind(this);
         SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);

@@ -42,26 +42,30 @@ import mobile_dev.mobile_dev.repository.CityRepository;
 
 public class RestaurantListActivity extends AppCompatActivity implements IActivity, IDistanceCalculatorActivity, ActivityCompat.OnRequestPermissionsResultCallback, ICoordinatesConverterActivity {
 
-    @BindView(R.id.listview_restaurants)
-    ListView listView;
-    @BindView(R.id.activity_restaurant_list_image)
-    ImageView image;
+    @BindView(R.id.listview_restaurants) ListView listView;
+    @BindView(R.id.activity_restaurant_list_image) ImageView image;
 
     private List<Restaurant> restaurants;
     private List<RestaurantBundle> restaurantBundles;
     private List<City> cities = new ArrayList<City>();
     private List<MapsContainer> maps = new ArrayList<MapsContainer>();
+
     private RestaurantListAdapter adapter;
+
+    private City userCity;
     private User user;
+
     private String url;
-    private int threadCount = 0;
+    private String from;
+
     private CityRepository cityRepo = new CityRepository(this);
     private SharedPreferences preferences;
-    private City userCity;
+
+    private final int PERMISSION_REQUEST_RESULT = 1;
+    private int threadCount = 0;
+
     private LocationListener locationListener;
     private LocationManager locationManager;
-    private final int PERMISSION_REQUEST_RESULT = 1;
-    private String from;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -101,6 +105,7 @@ public class RestaurantListActivity extends AppCompatActivity implements IActivi
         for (i = 0; i < restaurantBundles.size(); i++) {
             if (restaurantBundles.get(i).getContainer().getRows().get(0).getElements().get(0).getDistance().getValue() > radius * 1000) {
                 restaurantBundles.remove(i);
+                i -= 1;
             }
         }
     }

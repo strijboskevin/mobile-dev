@@ -1,7 +1,7 @@
 package mobile_dev.mobile_dev.api;
 
 import mobile_dev.mobile_dev.activity.IActivity;
-import mobile_dev.mobile_dev.util.RetrieveInput;
+import mobile_dev.mobile_dev.util.GetInput;
 
 
 public class Consumer {
@@ -26,7 +26,7 @@ public class Consumer {
 
     public void getString() {
         if (url != null) {
-            RetrieveInput input = new RetrieveInput(activity);
+            GetInput input = new GetInput(activity);
             input.execute(url);
         }
     }
