@@ -19,7 +19,7 @@ public class CoordinatesConverter {
     }
 
     private void build() {
-        this.link = BuildConfig.GEOCODING_URL + String.valueOf(latitude) + ",%" + String.valueOf(longitude) + "&key=" + BuildConfig.GEOCODING_KEY;
+        this.link = BuildConfig.GEOCODING_URL + String.valueOf(latitude) + "," + String.valueOf(longitude) + "&key=" + BuildConfig.GEOCODING_KEY;
     }
 
     public void convert() {

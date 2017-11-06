@@ -39,6 +39,11 @@ public class RestaurantListAdapter extends BaseAdapter {
     }
 
     @Override
+    public void notifyDataSetChanged() {
+        super.notifyDataSetChanged();
+    }
+
+    @Override
     public int getCount() {
         return restaurantBundles.size();
     }

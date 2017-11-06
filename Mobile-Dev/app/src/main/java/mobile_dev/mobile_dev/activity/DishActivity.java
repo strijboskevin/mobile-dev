@@ -41,12 +41,7 @@ public class DishActivity extends AppCompatActivity implements IActivity {
     private User user;
     private DishRepository repo = new DishRepository(this);
     private SQLite myDb;
-    private int i = 0;
 
-<<<<<<< HEAD
-=======
-
->>>>>>> b2de75e3f828053dfd887cc5d89f08a37f26bb9e
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -61,11 +56,7 @@ public class DishActivity extends AppCompatActivity implements IActivity {
             UserContainer userContainer = new UserContainer(this.user);
             intent.putExtra("user", userContainer);
             startActivity(intent);
-<<<<<<< HEAD
         } else if (item.getItemId() == R.id.menu_change_radius) {
-=======
-        } else if (item.getItemId() == R.id.menu_change_radius){
->>>>>>> b2de75e3f828053dfd887cc5d89f08a37f26bb9e
             Intent intent = new Intent(DishActivity.this, ChangeRadiusActivity.class);
             UserContainer userContainer = new UserContainer(this.user);
             intent.putExtra("user", userContainer);
@@ -77,6 +68,7 @@ public class DishActivity extends AppCompatActivity implements IActivity {
 
     @Override
     public void setJson(String json) {
+        int i = 0;
         this.dishes = new Gson().fromJson(json, new TypeToken<List<Dish>>(){}.getType());
         addDishesToSQLiteDb();
         Cursor res = myDb.getAllDishes();

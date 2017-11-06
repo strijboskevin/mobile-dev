@@ -53,25 +53,12 @@ public class RestaurantListActivity extends AppCompatActivity implements IActivi
     private List<City> cities = new ArrayList<City>();
     private List<City> citiesSQLite = new ArrayList<City>();
     private List<MapsContainer> maps = new ArrayList<MapsContainer>();
-
     private RestaurantListAdapter adapter;
-
-    private City userCity;
     private User user;
-
     private String url;
-    private String from;
-
     private CityRepository cityRepo = new CityRepository(this);
     private SharedPreferences preferences;
-<<<<<<< HEAD
-
-    private final int PERMISSION_REQUEST_RESULT = 1;
     private int threadCount = 0;
-
-    private LocationListener locationListener;
-    private LocationManager locationManager;
-=======
     private City userCity;
     private City city;
     private LocationListener locationListener;
@@ -79,8 +66,6 @@ public class RestaurantListActivity extends AppCompatActivity implements IActivi
     private final int PERMISSION_REQUEST_RESULT = 1;
     private String from;
     private SQLite myDb;
-    private int i = 0;
->>>>>>> b2de75e3f828053dfd887cc5d89f08a37f26bb9e
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -90,6 +75,8 @@ public class RestaurantListActivity extends AppCompatActivity implements IActivi
         myDb = new SQLite(this);
         getData();
         Picasso.with(this).load(url).into(image);
+        adapter = new RestaurantListAdapter(RestaurantListActivity.this, restaurantBundles, user, url);
+        listView.setAdapter(adapter);
         getCities();
         getUserCity();
         addRestaurantsToSQLiteDb();
@@ -165,6 +152,7 @@ public class RestaurantListActivity extends AppCompatActivity implements IActivi
 
     @Override
     public void setJson(String json) {
+        int i = 0;
         city = new Gson().fromJson(json, City.class);
         cities.add(city);
         addCitiesToSQLiteDb();
@@ -179,8 +167,8 @@ public class RestaurantListActivity extends AppCompatActivity implements IActivi
         this.threadCount += 1;
 
         if (this.threadCount == restaurants.size() + 1) {
-            this.userCity = citiesSQLite.get(cities.size() - 1);
-            citiesSQLite.remove(cities.size() - 1);
+            this.userCity = cities.get(cities.size() - 1);
+            cities.remove(cities.size() - 1);
             threadCount = 0;
             from = preferences.getString("address", user.getAddress()) + " " + userCity.getName();
             calcDistances();
@@ -190,8 +178,8 @@ public class RestaurantListActivity extends AppCompatActivity implements IActivi
     private void calcDistances() {
         int i;
 
-        for (i = 0; i < citiesSQLite.size(); i++) {
-            String to = restaurants.get(i).getAddress() + " " + citiesSQLite.get(i).getName();
+        for (i = 0; i < cities.size(); i++) {
+            String to = restaurants.get(i).getAddress() + " " + cities.get(i).getName();
             new DistanceCalculator(from, to, this).calculate();
         }
     }
@@ -201,12 +189,11 @@ public class RestaurantListActivity extends AppCompatActivity implements IActivi
         maps.add(mapsContainer);
         threadCount += 1;
 
-        if (threadCount == citiesSQLite.size()) {
+        if (threadCount == cities.size()) {
             createBundles();
             removeBundles();
             sort();
-            adapter = new RestaurantListAdapter(RestaurantListActivity.this, restaurantBundles, user, url);
-            listView.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
             setLocationParams();
         }
     }
@@ -263,11 +250,12 @@ public class RestaurantListActivity extends AppCompatActivity implements IActivi
 
     @Override
     public void setAddress(String json) {
-        JsonParser parser = new JsonParser();
-        JsonObject obj = parser.parse(json).getAsJsonObject();
-        JsonObject results = obj.get("results").getAsJsonObject();
-        this.from = results.get("formatted_address").getAsString();
+        int start = json.indexOf("formatted_address");
+        int end = json.indexOf("\",", start);
+        String line = json.substring(start, end);
+        from = line.substring(22, line.length());
         Toast.makeText(this, this.from, Toast.LENGTH_SHORT).show();
+        this.threadCount = 0;
         calcDistances();
     }
 }
