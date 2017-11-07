@@ -129,6 +129,8 @@ public class RestaurantListActivity extends AppCompatActivity implements IActivi
     private void createBundles() {
         int i;
 
+        restaurantBundles.clear();
+
         for (i = 0; i < restaurants.size(); i++) {
             restaurantBundles.add(new RestaurantBundle(maps.get(i), restaurants.get(i)));
         }
@@ -256,6 +258,8 @@ public class RestaurantListActivity extends AppCompatActivity implements IActivi
         from = line.substring(22, line.length());
         Toast.makeText(this, this.from, Toast.LENGTH_SHORT).show();
         this.threadCount = 0;
+        maps.clear();
+        restaurantBundles.clear();
         calcDistances();
     }
 }

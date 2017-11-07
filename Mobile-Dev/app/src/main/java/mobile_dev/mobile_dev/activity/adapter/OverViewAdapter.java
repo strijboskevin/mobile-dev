@@ -39,7 +39,7 @@ public class OverViewAdapter extends BaseAdapter {
     public View getView(int position, View view, ViewGroup viewGroup) {
         if (view == null) {
             inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.activity_over_menus_list_element, null);
+            view = inflater.inflate(R.layout.activity_overview_menus_list_element, null);
         }
 
         TextView menu = (TextView) view.findViewById(R.id.menu_overview_list_element_menu);
