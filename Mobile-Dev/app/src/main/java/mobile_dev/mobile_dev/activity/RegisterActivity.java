@@ -3,11 +3,29 @@ package mobile_dev.mobile_dev.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.Profile;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Arrays;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,22 +44,26 @@ public class RegisterActivity extends AppCompatActivity implements IActivity {
     @BindView(R.id.address) EditText addressEditText;
     @BindView(R.id.postalcode) EditText postalEditText;
     @BindView(R.id.registerButton) Button registerButton;
+    @BindView(R.id.fbLoginButton) LoginButton fbLoginButton;
 
-    String username, firstname, lastname, password, mobilenumber, address, postalcode;
+    private String username, firstname, lastname, password, mobilenumber, address, postalcode;
     private String json;
+    private User user;
+    private CallbackManager callbackManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         ButterKnife.bind(this);
+        setFacebookLoginButton();
     }
 
     @OnClick(R.id.registerButton)
     public void attemptRegister(){
         getTextEditText();
         if (!(username.equals("") || firstname.equals("") || lastname.equals("") || password.equals("") || mobilenumber.equals("") || address.equals("") || postalcode.equals(""))) {
-            if (mobilenumber.matches("[0-9]+")) {
+            if (mobilenumber.matches("[0-9]+") && mobilenumber.length() == 10) {
                 if (postalcode.matches("[0-9]+") && postalcode.length() == 4) {
                     UserRepository repo = new UserRepository(this);
                     User user = new User();
@@ -66,6 +88,61 @@ public class RegisterActivity extends AppCompatActivity implements IActivity {
         {
             shake();
         }
+    }
+
+    private void setFacebookLoginButton() {
+        fbLoginButton.setReadPermissions(Arrays.asList("public_profile", "email", "user_birthday", "user_friends"));
+        callbackManager = CallbackManager.Factory.create();
+        fbLoginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                loginResult.getAccessToken();
+                Profile.getCurrentProfile();
+
+                GraphRequest request = GraphRequest.newMeRequest(
+                        loginResult.getAccessToken(),
+                        new GraphRequest.GraphJSONObjectCallback() {
+                            @Override
+                            public void onCompleted(
+                                    JSONObject object,
+                                    GraphResponse response) {
+                                Log.v("LoginActivity Response ", response.toString());
+
+                                try {
+                                    String first_name = object.getString("first_name");
+                                    String last_name = object.getString("last_name");
+                                    firstnameEditText.setText(first_name);
+                                    lastnameEditText.setText(last_name);
+                                    fbLoginButton.setVisibility(View.GONE);
+                                    LoginManager.getInstance().logOut();
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "id,name,email,gender, birthday, first_name, last_name");
+                request.setParameters(parameters);
+                request.executeAsync();
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+
+            }
+        });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
     public void getTextEditText() {

@@ -44,7 +44,6 @@ public class LoginActivity extends AppCompatActivity implements IActivity {
     @BindView(R.id.username) AutoCompleteTextView usernameTextView;
     @BindView(R.id.password) EditText passwordEditText;
     @BindView(R.id.loginButton) Button loginButton;
-    @BindView(R.id.fbLoginButton) LoginButton fbLoginButton;
     @BindView(R.id.rememberMeCheckBox) CheckBox rememberMeCheckBox;
 
     private String json;
@@ -52,7 +51,6 @@ public class LoginActivity extends AppCompatActivity implements IActivity {
     private User user;
     private Gson gson = new Gson();
     private UserRepository repo = new UserRepository(this);
-    private CallbackManager callbackManager;
 
     @Override
     public void setJson(String json) {
@@ -87,9 +85,8 @@ public class LoginActivity extends AppCompatActivity implements IActivity {
         usernameTextView.setText(prefs.getString("username", ""));
         passwordEditText.setText(prefs.getString("password", ""));
         checkIfPreferencesAreSet();
-        setFacebookLoginButton();
-    }
 
+    }
 
     private void commitPreferencesIfCheckBoxIsCheckedElseCommitNull(){
         if (rememberMeCheckBox.isChecked())
@@ -113,63 +110,6 @@ public class LoginActivity extends AppCompatActivity implements IActivity {
         SecureSharedPreferences prefs = new SecureSharedPreferences(this);
         if (!(prefs.getString("username", "").equals("") || prefs.getString("password", "").equals("")))
             rememberMeCheckBox.setChecked(true);
-    }
-
-    private void setFacebookLoginButton() {
-        fbLoginButton.setReadPermissions(Arrays.asList("public_profile", "email", "user_birthday", "user_friends"));
-        callbackManager = CallbackManager.Factory.create();
-        fbLoginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                AccessToken accessToken = loginResult.getAccessToken();
-                Profile profile = Profile.getCurrentProfile();
-
-                GraphRequest request = GraphRequest.newMeRequest(
-                        loginResult.getAccessToken(),
-                        new GraphRequest.GraphJSONObjectCallback() {
-                            @Override
-                            public void onCompleted(
-                                    JSONObject object,
-                                    GraphResponse response) {
-                                Log.v("LoginActivity Response ", response.toString());
-
-                                try {
-                                    String name = object.getString("name");
-                                    user = new User();
-                                    user.setUsername(name);
-                                    repo.add(user);
-                                    LoginManager.getInstance().logOut();
-                                    Intent intent = new Intent(LoginActivity.this, DishActivity.class);
-                                    intent.putExtra("user", new UserContainer(user));
-                                    startActivity(intent);
-
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        });
-                Bundle parameters = new Bundle();
-                parameters.putString("fields", "id,name,email,gender, birthday");
-                request.setParameters(parameters);
-                request.executeAsync();
-            }
-
-            @Override
-            public void onCancel() {
-                
-            }
-
-            @Override
-            public void onError(FacebookException error) {
-
-            }
-        });
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
     private void shake() {
