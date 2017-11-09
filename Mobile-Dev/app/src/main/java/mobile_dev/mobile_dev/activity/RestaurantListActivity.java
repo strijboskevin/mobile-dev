@@ -254,7 +254,7 @@ public class RestaurantListActivity extends AppCompatActivity implements IActivi
         int end = json.indexOf("\",", start);
         String line = json.substring(start, end);
         from = line.substring(22, line.length());
-        Toast.makeText(this, this.from, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, this.from, Toast.LENGTH_SHORT).show();
         this.threadCount = 0;
         calcDistances();
     }

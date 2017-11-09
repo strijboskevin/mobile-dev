@@ -38,4 +38,17 @@
         android:layout_marginTop="10dp"
         android:textSize="15dp"/>
 
+    <Button
+        android:id="@+id/paypalButton"
+        style="?android:textAppearanceSmall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/roundedbutton"
+        android:text="@string/paypal"
+        android:textColor="@android:color/background_light"
+        android:textStyle="bold" />
+
 </LinearLayout>
