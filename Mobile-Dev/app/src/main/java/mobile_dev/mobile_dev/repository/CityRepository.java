@@ -1,15 +1,15 @@
 package mobile_dev.mobile_dev.repository;
 
 import mobile_dev.mobile_dev.BuildConfig;
-import mobile_dev.mobile_dev.activity.IActivity;
+import mobile_dev.mobile_dev.activity.ICallback;
 import mobile_dev.mobile_dev.api.Consumer;
 
 public class CityRepository  {
 
     private Consumer consumer;
 
-    public CityRepository(IActivity activity) {
-        this.consumer = new Consumer(activity);
+    public CityRepository(ICallback callback) {
+        this.consumer = new Consumer(callback);
     }
 
     public void find(String postalCode) {

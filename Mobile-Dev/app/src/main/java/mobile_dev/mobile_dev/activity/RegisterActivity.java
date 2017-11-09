@@ -35,7 +35,8 @@ import mobile_dev.mobile_dev.activity.container.UserContainer;
 import mobile_dev.mobile_dev.model.User;
 import mobile_dev.mobile_dev.repository.UserRepository;
 
-public class RegisterActivity extends AppCompatActivity implements IActivity {
+public class RegisterActivity extends AppCompatActivity{
+
     @BindView(R.id.username) EditText usernameEditText;
     @BindView(R.id.firstname) EditText firstnameEditText;
     @BindView(R.id.lastname) EditText lastnameEditText;
@@ -47,9 +48,12 @@ public class RegisterActivity extends AppCompatActivity implements IActivity {
     @BindView(R.id.fbLoginButton) LoginButton fbLoginButton;
 
     private String username, firstname, lastname, password, mobilenumber, address, postalcode;
+<<<<<<< HEAD
     private String json;
     private User user;
     private CallbackManager callbackManager;
+=======
+>>>>>>> 7cf3302c2488800d4686c5563968c68a19db9155
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,31 +69,28 @@ public class RegisterActivity extends AppCompatActivity implements IActivity {
         if (!(username.equals("") || firstname.equals("") || lastname.equals("") || password.equals("") || mobilenumber.equals("") || address.equals("") || postalcode.equals(""))) {
             if (mobilenumber.matches("[0-9]+") && mobilenumber.length() == 10) {
                 if (postalcode.matches("[0-9]+") && postalcode.length() == 4) {
-                    UserRepository repo = new UserRepository(this);
                     User user = new User();
                     user = makeUser(user);
-                    repo.add(user);
+                    addUser(user);
                     UserContainer container = new UserContainer(user);
                     Intent intent = new Intent(RegisterActivity.this, DishActivity.class);
                     intent.putExtra("user", container);
                     startActivity(intent);
-                } else
-                {
+                } else {
                     Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
                     postalEditText.startAnimation(shake);
                 }
-            } else
-            {
+            } else {
                 Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
                 mobilenumberEditText.startAnimation(shake);
             }
 
-        } else
-        {
+        } else {
             shake();
         }
     }
 
+<<<<<<< HEAD
     private void setFacebookLoginButton() {
         fbLoginButton.setReadPermissions(Arrays.asList("public_profile", "email", "user_birthday", "user_friends"));
         callbackManager = CallbackManager.Factory.create();
@@ -143,6 +144,15 @@ public class RegisterActivity extends AppCompatActivity implements IActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
+=======
+    private void addUser(User user) {
+        new UserRepository(new ICallback() {
+            @Override
+            public void execute(String json) {
+                Toast.makeText(RegisterActivity.this, "Account created!", Toast.LENGTH_SHORT);
+            }
+        }).add(user);
+>>>>>>> 7cf3302c2488800d4686c5563968c68a19db9155
     }
 
     public void getTextEditText() {
@@ -193,8 +203,4 @@ public class RegisterActivity extends AppCompatActivity implements IActivity {
         postalEditText.startAnimation(shake);
     }
 
-    @Override
-    public void setJson(String json) {
-        this.json = json;
-    }
 }

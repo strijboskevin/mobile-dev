@@ -2,13 +2,8 @@ package mobile_dev.mobile_dev.activity;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -17,7 +12,6 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
 import java.util.ArrayList;
 import java.util.List;
 import butterknife.BindView;
@@ -31,15 +25,13 @@ import mobile_dev.mobile_dev.model.User;
 import mobile_dev.mobile_dev.repository.DishRepository;
 import mobile_dev.mobile_dev.sqlite.SQLite;
 
-public class DishActivity extends AppCompatActivity implements IActivity {
+public class DishActivity extends AppCompatActivity {
 
     @BindView(R.id.gridview) GridView gridView;
 
     private List<Dish> dishes;
     private List<Dish> dishesSQLite = new ArrayList<Dish>();
-    private Dish dish;
     private User user;
-    private DishRepository repo = new DishRepository(this);
     private SQLite myDb;
 
     @Override
@@ -67,35 +59,38 @@ public class DishActivity extends AppCompatActivity implements IActivity {
     }
 
     @Override
-    public void setJson(String json) {
-        int i = 0;
-        this.dishes = new Gson().fromJson(json, new TypeToken<List<Dish>>(){}.getType());
-        addDishesToSQLiteDb();
-        Cursor res = myDb.getAllDishes();
-        while (res.moveToNext()) {
-            Dish dish = new Dish();
-            dish.setId(res.getInt(0));
-            dish.setImage(res.getString(1));
-            dish.setRestaurants(dishes.get(i).getRestaurants());
-            dish.setName(res.getString(2));
-            dishesSQLite.add(dish);
-
-            i++;
-
-        }
-        DishAdapter adapter = new DishAdapter(DishActivity.this, dishesSQLite, user);
-        gridView.setAdapter(adapter);
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dishes_list);
         ButterKnife.bind(this);
         myDb = new SQLite(this);
         this.user = ((UserContainer) getIntent().getSerializableExtra("user")).getUser();
-        repo.all();
+        setDishes();
         setGridView();
+    }
+
+    private void setDishes() {
+        new DishRepository(new ICallback() {
+            @Override
+            public void execute(String json) {
+                int i = 0;
+                DishActivity.this.dishes = new Gson().fromJson(json, new TypeToken<List<Dish>>(){}.getType());
+                addDishesToSQLiteDb();
+                Cursor res = myDb.getAllDishes();
+                while (res.moveToNext()) {
+                    Dish dish = new Dish();
+                    dish.setId(res.getInt(0));
+                    dish.setImage(res.getString(1));
+                    dish.setRestaurants(dishes.get(i).getRestaurants());
+                    dish.setName(res.getString(2));
+                    dishesSQLite.add(dish);
+                    i++;
+
+                }
+                DishAdapter adapter = new DishAdapter(DishActivity.this, dishesSQLite, user);
+                gridView.setAdapter(adapter);
+            }
+        }).all();
     }
 
     private void setGridView() {

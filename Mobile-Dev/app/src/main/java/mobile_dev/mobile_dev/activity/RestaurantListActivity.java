@@ -12,17 +12,10 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Toast;
-
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.squareup.picasso.Picasso;
-import org.json.JSONException;
-import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 import butterknife.BindView;
@@ -37,13 +30,13 @@ import mobile_dev.mobile_dev.google.CoordinatesConverter;
 import mobile_dev.mobile_dev.google.DistanceCalculator;
 import mobile_dev.mobile_dev.google.json.MapsContainer;
 import mobile_dev.mobile_dev.model.City;
-import mobile_dev.mobile_dev.model.Dish;
 import mobile_dev.mobile_dev.model.Restaurant;
 import mobile_dev.mobile_dev.model.User;
 import mobile_dev.mobile_dev.repository.CityRepository;
 import mobile_dev.mobile_dev.sqlite.SQLite;
+import mobile_dev.mobile_dev.util.GLOBALS;
 
-public class RestaurantListActivity extends AppCompatActivity implements IActivity, IDistanceCalculatorActivity, ActivityCompat.OnRequestPermissionsResultCallback, ICoordinatesConverterActivity {
+public class RestaurantListActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
 
     @BindView(R.id.listview_restaurants) ListView listView;
     @BindView(R.id.activity_restaurant_list_image) ImageView image;
@@ -56,7 +49,6 @@ public class RestaurantListActivity extends AppCompatActivity implements IActivi
     private RestaurantListAdapter adapter;
     private User user;
     private String url;
-    private CityRepository cityRepo = new CityRepository(this);
     private SharedPreferences preferences;
     private int threadCount = 0;
     private City userCity;
@@ -95,28 +87,30 @@ public class RestaurantListActivity extends AppCompatActivity implements IActivi
     }
 
     private void getData() {
-        this.restaurants = ((RestaurantContainer) getIntent().getSerializableExtra("restaurants")).getRestaurants();
-        this.user = ((UserContainer) getIntent().getSerializableExtra("user")).getUser();
-        this.url = getIntent().getStringExtra("url");
+        this.restaurants = ((RestaurantContainer) getIntent().getSerializableExtra(GLOBALS.RESTAURANTS)).getRestaurants();
+        this.user = ((UserContainer) getIntent().getSerializableExtra(GLOBALS.USER)).getUser();
+        this.user.setAddress(getSharedPreferences("prefs", MODE_PRIVATE).getString("address", user.getAddress()));
+        this.user.setCity(getSharedPreferences("prefs", MODE_PRIVATE).getString("postalCode", user.getCity()));
+        this.url = getIntent().getStringExtra(GLOBALS.URL);
         this.restaurantBundles = new ArrayList<RestaurantBundle>();
-        preferences = getSharedPreferences("prefs", MODE_PRIVATE);
+        preferences = getSharedPreferences(GLOBALS.PREFS, MODE_PRIVATE);
     }
 
     private void getCities() {
         int i;
 
         for (i = 0; i < restaurants.size(); i++) {
-            cityRepo.find(restaurants.get(i).getCity());
+            findCity(restaurants.get(i).getCity());
         }
     }
 
     private void getUserCity() {
-        cityRepo.find(preferences.getString("postalCode", user.getCity()));
+        findCity(preferences.getString(GLOBALS.POSTALCODE, user.getCity()));
     }
 
     private void removeBundles() {
         int i;
-        int radius = preferences.getInt("seekBarValue", user.getRadius());
+        int radius = preferences.getInt(GLOBALS.SEEKBARVALUE, user.getRadius());
 
         for (i = 0; i < restaurantBundles.size(); i++) {
             if (restaurantBundles.get(i).getContainer().getRows().get(0).getElements().get(0).getDistance().getValue() > radius * 1000) {
@@ -128,6 +122,8 @@ public class RestaurantListActivity extends AppCompatActivity implements IActivi
 
     private void createBundles() {
         int i;
+
+        restaurantBundles.clear();
 
         for (i = 0; i < restaurants.size(); i++) {
             restaurantBundles.add(new RestaurantBundle(maps.get(i), restaurants.get(i)));
@@ -150,29 +146,36 @@ public class RestaurantListActivity extends AppCompatActivity implements IActivi
         }
     }
 
-    @Override
-    public void setJson(String json) {
-        int i = 0;
-        city = new Gson().fromJson(json, City.class);
-        cities.add(city);
-        addCitiesToSQLiteDb();
-        Cursor res = myDb.getAllCities();
-        while (res.moveToNext()) {
-            city = new City();
-            city.setPostalCode(res.getString(0));
-            city.setName(res.getString(1));
-            citiesSQLite.add(city);
-            i++;
-        }
-        this.threadCount += 1;
+    public void findCity(String postalCode) {
+        new CityRepository(new ICallback() {
+            @Override
+            public void execute(String json) {
+                int i = 0;
+                city = new Gson().fromJson(json, City.class);
+                cities.add(city);
+                addCitiesToSQLiteDb();
+                Cursor res = myDb.getAllCities();
 
-        if (this.threadCount == restaurants.size() + 1) {
-            this.userCity = cities.get(cities.size() - 1);
-            cities.remove(cities.size() - 1);
-            threadCount = 0;
-            from = preferences.getString("address", user.getAddress()) + " " + userCity.getName();
-            calcDistances();
-        }
+                while (res.moveToNext()) {
+                    city = new City();
+                    city.setPostalCode(res.getString(0));
+                    city.setName(res.getString(1));
+                    citiesSQLite.add(city);
+                    i++;
+                }
+
+                RestaurantListActivity.this.threadCount += 1;
+
+                if (RestaurantListActivity.this.threadCount == restaurants.size() + 1) {
+                    RestaurantListActivity.this.userCity = cities.get(cities.size() - 1);
+                    cities.remove(cities.size() - 1);
+                    threadCount = 0;
+                    from = preferences.getString(GLOBALS.ADDRESS, user.getAddress()) + " " + userCity.getName();
+                    calcDistances();
+                }
+            }
+        }).find(postalCode);
+
     }
 
     private void calcDistances() {
@@ -180,22 +183,27 @@ public class RestaurantListActivity extends AppCompatActivity implements IActivi
 
         for (i = 0; i < cities.size(); i++) {
             String to = restaurants.get(i).getAddress() + " " + cities.get(i).getName();
-            new DistanceCalculator(from, to, this).calculate();
+            setDistance(from, to);
         }
     }
 
-    public void setMapsContainer(String json) {
-        MapsContainer mapsContainer = new Gson().fromJson(json, MapsContainer.class);
-        maps.add(mapsContainer);
-        threadCount += 1;
+    public void setDistance(String form, String to) {
+        new DistanceCalculator(from, to, new ICallback() {
+            @Override
+            public void execute(String json) {
+                MapsContainer mapsContainer = new Gson().fromJson(json, MapsContainer.class);
+                maps.add(mapsContainer);
+                RestaurantListActivity.this.threadCount += 1;
 
-        if (threadCount == cities.size()) {
-            createBundles();
-            removeBundles();
-            sort();
-            adapter.notifyDataSetChanged();
-            setLocationParams();
-        }
+                if (RestaurantListActivity.this.threadCount == cities.size()) {
+                    createBundles();
+                    removeBundles();
+                    sort();
+                    adapter.notifyDataSetChanged();
+                    setLocationParams();
+                }
+            }
+        }).calculate();
     }
 
     private void setLocationParams() {
@@ -208,7 +216,7 @@ public class RestaurantListActivity extends AppCompatActivity implements IActivi
                 longitude = location.getLongitude();
                 latitude = location.getLatitude();
 
-                new CoordinatesConverter(longitude, latitude, RestaurantListActivity.this).convert();
+                setAddress(longitude, latitude);
             }
 
             @Override
@@ -248,6 +256,7 @@ public class RestaurantListActivity extends AppCompatActivity implements IActivi
         }
     }
 
+<<<<<<< HEAD
     @Override
     public void setAddress(String json) {
         int start = json.indexOf("formatted_address");
@@ -257,5 +266,23 @@ public class RestaurantListActivity extends AppCompatActivity implements IActivi
         //Toast.makeText(this, this.from, Toast.LENGTH_SHORT).show();
         this.threadCount = 0;
         calcDistances();
+=======
+    private void setAddress(double longitude, double latitude) {
+        new CoordinatesConverter(longitude, latitude, new ICallback() {
+            @Override
+            public void execute(String json) {
+                int start = json.indexOf(GLOBALS.FORMATTED_ADDRESS);
+                int end = json.indexOf("\",", start);
+                String line = json.substring(start, end);
+                from = line.substring(GLOBALS.FORMATTED_ADDRESS_LENGTH, line.length());
+                RestaurantListActivity.this.threadCount = 0;
+                maps.clear();
+                restaurantBundles.clear();
+                calcDistances();
+                RestaurantListActivity.this.user.setAddress(from);
+                RestaurantListActivity.this.user.setCity("");
+            }
+        }).convert();
+>>>>>>> 7cf3302c2488800d4686c5563968c68a19db9155
     }
 }

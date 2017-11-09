@@ -1,20 +1,20 @@
 package mobile_dev.mobile_dev.api;
 
-import mobile_dev.mobile_dev.activity.IActivity;
+import mobile_dev.mobile_dev.activity.ICallback;
 import mobile_dev.mobile_dev.util.GetInput;
 
 
 public class Consumer {
 
     private String url = null;
-    private IActivity activity;
+    private ICallback callback;
 
-    public Consumer(String url, IActivity activity) {
+    public Consumer(String url, ICallback callback) {
         this.url = url;
-        this.activity = activity;
+        this.callback = callback;
     }
 
-    public Consumer(IActivity activity) { this.activity = activity; }
+    public Consumer(ICallback callback) { this.callback = callback; }
 
     public String getUrl() {
         return url;
@@ -26,7 +26,7 @@ public class Consumer {
 
     public void getString() {
         if (url != null) {
-            GetInput input = new GetInput(activity);
+            GetInput input = new GetInput(callback);
             input.execute(url);
         }
     }
