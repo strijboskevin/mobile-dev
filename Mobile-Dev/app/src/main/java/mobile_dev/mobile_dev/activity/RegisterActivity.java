@@ -17,7 +17,8 @@ import mobile_dev.mobile_dev.activity.container.UserContainer;
 import mobile_dev.mobile_dev.model.User;
 import mobile_dev.mobile_dev.repository.UserRepository;
 
-public class RegisterActivity extends AppCompatActivity implements IActivity {
+public class RegisterActivity extends AppCompatActivity{
+
     @BindView(R.id.username) EditText usernameEditText;
     @BindView(R.id.firstname) EditText firstnameEditText;
     @BindView(R.id.lastname) EditText lastnameEditText;
@@ -27,8 +28,7 @@ public class RegisterActivity extends AppCompatActivity implements IActivity {
     @BindView(R.id.postalcode) EditText postalEditText;
     @BindView(R.id.registerButton) Button registerButton;
 
-    String username, firstname, lastname, password, mobilenumber, address, postalcode;
-    private String json;
+    private String username, firstname, lastname, password, mobilenumber, address, postalcode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,29 +43,34 @@ public class RegisterActivity extends AppCompatActivity implements IActivity {
         if (!(username.equals("") || firstname.equals("") || lastname.equals("") || password.equals("") || mobilenumber.equals("") || address.equals("") || postalcode.equals(""))) {
             if (mobilenumber.matches("[0-9]+")) {
                 if (postalcode.matches("[0-9]+") && postalcode.length() == 4) {
-                    UserRepository repo = new UserRepository(this);
                     User user = new User();
                     user = makeUser(user);
-                    repo.add(user);
+                    addUser(user);
                     UserContainer container = new UserContainer(user);
                     Intent intent = new Intent(RegisterActivity.this, DishActivity.class);
                     intent.putExtra("user", container);
                     startActivity(intent);
-                } else
-                {
+                } else {
                     Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
                     postalEditText.startAnimation(shake);
                 }
-            } else
-            {
+            } else {
                 Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
                 mobilenumberEditText.startAnimation(shake);
             }
 
-        } else
-        {
+        } else {
             shake();
         }
+    }
+
+    private void addUser(User user) {
+        new UserRepository(new ICallback() {
+            @Override
+            public void execute(String json) {
+                Toast.makeText(RegisterActivity.this, "Account created!", Toast.LENGTH_SHORT);
+            }
+        }).add(user);
     }
 
     public void getTextEditText() {
@@ -116,8 +121,4 @@ public class RegisterActivity extends AppCompatActivity implements IActivity {
         postalEditText.startAnimation(shake);
     }
 
-    @Override
-    public void setJson(String json) {
-        this.json = json;
-    }
 }

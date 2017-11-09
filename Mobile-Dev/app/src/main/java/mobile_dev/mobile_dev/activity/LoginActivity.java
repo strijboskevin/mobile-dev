@@ -1,7 +1,6 @@
 package mobile_dev.mobile_dev.activity;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.animation.Animation;
@@ -10,12 +9,9 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.TextView;
 import android.util.*;
 import android.widget.Toast;
 
-import com.facebook.login.Login;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
@@ -24,8 +20,6 @@ import com.github.rtoshiro.secure.SecureSharedPreferences;
 import com.google.gson.Gson;
 import org.json.JSONException;
 import org.json.JSONObject;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.*;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,10 +29,7 @@ import mobile_dev.mobile_dev.activity.container.UserContainer;
 import mobile_dev.mobile_dev.model.User;
 import mobile_dev.mobile_dev.repository.UserRepository;
 
-import static mobile_dev.mobile_dev.R.id.rememberMeCheckBox;
-import static mobile_dev.mobile_dev.R.id.username;
-
-public class LoginActivity extends AppCompatActivity implements IActivity {
+public class LoginActivity extends AppCompatActivity {
 
     @BindView(R.id.registerButton) Button registerButton;
     @BindView(R.id.username) AutoCompleteTextView usernameTextView;
@@ -47,21 +38,10 @@ public class LoginActivity extends AppCompatActivity implements IActivity {
     @BindView(R.id.fbLoginButton) LoginButton fbLoginButton;
     @BindView(R.id.rememberMeCheckBox) CheckBox rememberMeCheckBox;
 
-    private String json;
     private String passWord;
     private User user;
     private Gson gson = new Gson();
-    private UserRepository repo = new UserRepository(this);
     private CallbackManager callbackManager;
-
-    @Override
-    public void setJson(String json) {
-        this.json = json;
-        this.user = gson.fromJson(json, User.class);
-        Intent intent = new Intent(LoginActivity.this, DishActivity.class);
-        intent.putExtra("user", new UserContainer(user));
-        startActivity(intent);
-    }
 
     @OnClick(R.id.registerButton)
     public void setRegisterButton() {
@@ -75,7 +55,15 @@ public class LoginActivity extends AppCompatActivity implements IActivity {
         passWord = passwordEditText.getText().toString();
         passWord = convertToMD5(passWord);
         commitPreferencesIfCheckBoxIsCheckedElseCommitNull();
-        repo.find(userName);
+        new UserRepository(new ICallback() {
+            @Override
+            public void execute(String json) {
+                LoginActivity.this.user = gson.fromJson(json, User.class);
+                Intent intent = new Intent(LoginActivity.this, DishActivity.class);
+                intent.putExtra("user", new UserContainer(LoginActivity.this.user));
+                startActivity(intent);
+            }
+        }).find(userName);
     }
 
     @Override
@@ -137,7 +125,12 @@ public class LoginActivity extends AppCompatActivity implements IActivity {
                                     String name = object.getString("name");
                                     user = new User();
                                     user.setUsername(name);
-                                    repo.add(user);
+                                    new UserRepository(new ICallback() {
+                                        @Override
+                                        public void execute(String json) {
+                                            Toast.makeText(LoginActivity.this, "Account created!", Toast.LENGTH_SHORT);
+                                        }
+                                    }).add(user);
                                     LoginManager.getInstance().logOut();
                                     Intent intent = new Intent(LoginActivity.this, DishActivity.class);
                                     intent.putExtra("user", new UserContainer(user));

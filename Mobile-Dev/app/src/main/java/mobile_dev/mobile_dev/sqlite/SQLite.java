@@ -5,14 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
-
-import java.util.List;
-
-import mobile_dev.mobile_dev.activity.IActivity;
-import mobile_dev.mobile_dev.activity.RestaurantListActivity;
-import mobile_dev.mobile_dev.model.*;
-import mobile_dev.mobile_dev.repository.UserRepository;
 
 public class SQLite extends SQLiteOpenHelper {
     // Database Version

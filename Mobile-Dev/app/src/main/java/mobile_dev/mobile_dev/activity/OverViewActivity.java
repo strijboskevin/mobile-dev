@@ -22,7 +22,7 @@ import mobile_dev.mobile_dev.model.City;
 import mobile_dev.mobile_dev.model.User;
 import mobile_dev.mobile_dev.repository.CityRepository;
 
-public class OverViewActivity extends AppCompatActivity implements IActivity {
+public class OverViewActivity extends AppCompatActivity {
 
     @BindView(R.id.overview_menus_list) ListView listView;
     @BindView(R.id.overview_menus_textview) TextView textView;
@@ -48,8 +48,7 @@ public class OverViewActivity extends AppCompatActivity implements IActivity {
         this.user = ((UserContainer)getIntent().getSerializableExtra("user")).getUser();
         adapter = new OverViewAdapter(OverViewActivity.this, orderElements);
         listView.setAdapter(adapter);
-        CityRepository cityRepository = new CityRepository(this);
-        cityRepository.find(this.user.getCity());
+        setCity(this.user.getCity());
         preferences = getSharedPreferences("prefs", MODE_PRIVATE);
 
     }
@@ -78,10 +77,14 @@ public class OverViewActivity extends AppCompatActivity implements IActivity {
         return total;
     }
 
-    @Override
-    public void setJson(String json) {
-        City city = new Gson().fromJson(json, City.class);
-        textView.setText("De bestelling zal geleverd worden aan " + preferences.getString("address", user.getAddress()) + " te " + city.getName() + " op naam van " + this.user.getFirstName() + " " + this.user.getLastName() + ".");
-        total.setText("Totaal: €" + String.valueOf(calcTotal()));
+    public void setCity(String postalCode) {
+        new CityRepository(new ICallback() {
+            @Override
+            public void execute(String json) {
+                City city = new Gson().fromJson(json, City.class);
+                textView.setText("De bestelling zal geleverd worden aan " + preferences.getString("address", user.getAddress()) + " te " + city.getName() + " op naam van " + OverViewActivity.this.user.getFirstName() + " " + OverViewActivity.this.user.getLastName() + ".");
+                total.setText("Totaal: €" + String.valueOf(calcTotal()));
+            }
+        }).find(postalCode);
     }
 }

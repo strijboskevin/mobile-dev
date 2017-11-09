@@ -7,14 +7,15 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Scanner;
-import mobile_dev.mobile_dev.activity.IActivity;
+
+import mobile_dev.mobile_dev.activity.ICallback;
 
 public class GetInput extends AsyncTask<String, Void, String> {
 
-    private IActivity activity;
+    private ICallback callback;
 
-    public GetInput(IActivity activity) {
-        this.activity = activity;
+    public GetInput(ICallback callback) {
+        this.callback = callback;
     }
 
     @Override
@@ -44,7 +45,7 @@ public class GetInput extends AsyncTask<String, Void, String> {
 
     @Override
     protected void onPostExecute(String result) {
-        activity.setJson(result);
+        callback.execute(result);
     }
 }
 

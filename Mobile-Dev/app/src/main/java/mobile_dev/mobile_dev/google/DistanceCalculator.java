@@ -1,20 +1,20 @@
 package mobile_dev.mobile_dev.google;
 
 import mobile_dev.mobile_dev.BuildConfig;
-import mobile_dev.mobile_dev.activity.IDistanceCalculatorActivity;
-import mobile_dev.mobile_dev.util.DistanceCalculatorInput;
+import mobile_dev.mobile_dev.activity.ICallback;
+import mobile_dev.mobile_dev.util.GetInput;
 
 public class DistanceCalculator {
 
     private String from;
     private String to;
     private String link;
-    private IDistanceCalculatorActivity activity;
+    private ICallback callback;
 
-    public DistanceCalculator(String from, String to, IDistanceCalculatorActivity activity) {
+    public DistanceCalculator(String from, String to, ICallback callback) {
         this.from = from;
         this.to = to;
-        this.activity = activity;
+        this.callback = callback;
         build();
     }
 
@@ -42,7 +42,7 @@ public class DistanceCalculator {
 
     public void calculate() {
         if (link != null) {
-            DistanceCalculatorInput input = new DistanceCalculatorInput(activity);
+            GetInput input = new GetInput(callback);
             input.execute(this.link);
         }
     }
