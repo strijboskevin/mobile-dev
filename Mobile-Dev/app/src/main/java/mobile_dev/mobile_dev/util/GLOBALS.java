@@ -1,9 +1,5 @@
 package mobile_dev.mobile_dev.util;
 
-/**
- * Created by kevin on 07/11/2017.
- */
-
 public class GLOBALS {
 
     public static final String URL = "url";

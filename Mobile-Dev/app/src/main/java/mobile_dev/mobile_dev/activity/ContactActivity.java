@@ -2,20 +2,14 @@ package mobile_dev.mobile_dev.activity;
 
 import android.Manifest;
 import android.content.ContentResolver;
-import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 import butterknife.BindView;
@@ -23,14 +17,10 @@ import butterknife.ButterKnife;
 import mobile_dev.mobile_dev.R;
 import mobile_dev.mobile_dev.activity.adapter.ContactAdapter;
 
-/**
- * Created by kevin on 10/11/2017.
- */
-
 public class ContactActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback{
 
     @BindView(R.id.activity_contacts_list) ListView listView;
-    private TextView textView;
+    @BindView(R.id.contacts_element_text) TextView textView;
     private List<String> names;
 
     private static final int PERMISSION_REQUEST_RESULT = 1;
@@ -40,7 +30,6 @@ public class ContactActivity extends AppCompatActivity implements ActivityCompat
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contacts);
         ButterKnife.bind(this);
-        this.textView = (TextView) (findViewById(R.id.contacts_element_text));
         this.names = new ArrayList<String>();
         getPermission();
     }
@@ -81,14 +70,13 @@ public class ContactActivity extends AppCompatActivity implements ActivityCompat
                             ContactsContract.CommonDataKinds.Phone.CONTACT_ID +" = ?",
                             new String[]{id}, null);
                     while (pCur.moveToNext()) {
-                        String phoneNo = pCur.getString(pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                        pCur.getString(pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
                         names.add(name);
                     }
                     pCur.close();
                 }
             }
         }
-
         setAdapter();
     }
 
@@ -96,7 +84,4 @@ public class ContactActivity extends AppCompatActivity implements ActivityCompat
         ContactAdapter adapter = new ContactAdapter(this, names);
         this.listView.setAdapter(adapter);
     }
-
-
-
 }

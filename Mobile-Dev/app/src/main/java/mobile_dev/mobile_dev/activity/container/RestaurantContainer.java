@@ -4,10 +4,6 @@ import java.io.Serializable;
 import java.util.List;
 import mobile_dev.mobile_dev.model.Restaurant;
 
-/**
- * Created by kevin on 03/10/2017.
- */
-
 public class RestaurantContainer implements Serializable {
 
     private List<Restaurant> restaurants;

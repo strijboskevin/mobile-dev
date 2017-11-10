@@ -31,5 +31,4 @@ public class Putter {
             input.execute(url);
         }
     }
-
 }

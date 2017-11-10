@@ -2,7 +2,6 @@ package mobile_dev.mobile_dev.google;
 
 import mobile_dev.mobile_dev.BuildConfig;
 import mobile_dev.mobile_dev.activity.ICallback;
-import mobile_dev.mobile_dev.activity.container.ICoordinatesConverterActivity;
 import mobile_dev.mobile_dev.util.GetInput;
 
 public class CoordinatesConverter {

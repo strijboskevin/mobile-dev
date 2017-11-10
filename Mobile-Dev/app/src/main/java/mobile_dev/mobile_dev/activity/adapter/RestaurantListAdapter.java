@@ -7,20 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-import com.google.gson.Gson;
-import java.util.ArrayList;
 import java.util.List;
 import mobile_dev.mobile_dev.R;
 import mobile_dev.mobile_dev.activity.MenuActivity;
-import mobile_dev.mobile_dev.activity.RestaurantListActivity;
 import mobile_dev.mobile_dev.activity.adapter.bundle.RestaurantBundle;
 import mobile_dev.mobile_dev.activity.container.MenuContainer;
 import mobile_dev.mobile_dev.activity.container.UserContainer;
-import mobile_dev.mobile_dev.google.DistanceCalculator;
-import mobile_dev.mobile_dev.google.json.MapsContainer;
-import mobile_dev.mobile_dev.model.Restaurant;
 import mobile_dev.mobile_dev.model.User;
-import mobile_dev.mobile_dev.repository.CityRepository;
 
 public class RestaurantListAdapter extends BaseAdapter {
 

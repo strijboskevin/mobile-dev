@@ -31,7 +31,4 @@ public class Poster {
             input.execute(url);
         }
     }
-
-
-
 }

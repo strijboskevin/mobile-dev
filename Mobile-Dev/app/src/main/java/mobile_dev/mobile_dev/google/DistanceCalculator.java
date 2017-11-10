@@ -46,6 +46,4 @@ public class DistanceCalculator {
             input.execute(this.link);
         }
     }
-
-
 }

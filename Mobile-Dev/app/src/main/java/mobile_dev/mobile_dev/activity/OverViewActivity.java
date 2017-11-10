@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.google.gson.Gson;
 import com.paypal.android.sdk.payments.PayPalConfiguration;
 import com.paypal.android.sdk.payments.PayPalPayment;
@@ -20,8 +19,6 @@ import com.paypal.android.sdk.payments.PayPalService;
 import com.paypal.android.sdk.payments.PaymentActivity;
 import com.paypal.android.sdk.payments.PaymentConfirmation;
 import com.squareup.picasso.Picasso;
-import org.json.JSONException;
-import org.json.JSONObject;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -83,7 +80,6 @@ public class OverViewActivity extends AppCompatActivity {
             if (orderElements.get(i).getAmount() > 0)
                 newOrderElements.add(orderElements.get(i));
         }
-
         this.orderElements = newOrderElements;
     }
 
@@ -95,7 +91,6 @@ public class OverViewActivity extends AppCompatActivity {
         for (i=0; i < orderElements.size() ;i++) {
             total += orderElements.get(i).getMenu().getPrice() * orderElements.get(i).getAmount();
         }
-
         return total;
     }
 

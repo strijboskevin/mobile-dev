@@ -23,7 +23,6 @@ import butterknife.ButterKnife;
 import mobile_dev.mobile_dev.R;
 import mobile_dev.mobile_dev.activity.adapter.RestaurantListAdapter;
 import mobile_dev.mobile_dev.activity.adapter.bundle.RestaurantBundle;
-import mobile_dev.mobile_dev.activity.container.ICoordinatesConverterActivity;
 import mobile_dev.mobile_dev.activity.container.RestaurantContainer;
 import mobile_dev.mobile_dev.activity.container.UserContainer;
 import mobile_dev.mobile_dev.google.CoordinatesConverter;

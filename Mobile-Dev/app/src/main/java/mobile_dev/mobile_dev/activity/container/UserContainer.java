@@ -4,10 +4,6 @@ import java.io.Serializable;
 
 import mobile_dev.mobile_dev.model.User;
 
-/**
- * Created by kevin on 04/10/2017.
- */
-
 public class UserContainer implements Serializable {
 
     private User user;

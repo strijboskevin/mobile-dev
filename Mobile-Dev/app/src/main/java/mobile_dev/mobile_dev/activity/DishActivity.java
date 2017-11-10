@@ -95,7 +95,6 @@ public class DishActivity extends AppCompatActivity {
                     dish.setName(res.getString(2));
                     dishesSQLite.add(dish);
                     i++;
-
                 }
                 DishAdapter adapter = new DishAdapter(DishActivity.this, dishesSQLite, user);
                 gridView.setAdapter(adapter);
@@ -116,7 +115,6 @@ public class DishActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
     }
 
     private void addDishesToSQLiteDb() {

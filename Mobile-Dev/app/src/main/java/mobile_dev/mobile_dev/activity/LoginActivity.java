@@ -9,18 +9,8 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.util.*;
-import android.widget.Toast;
-
-import com.facebook.login.LoginManager;
-import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
-import com.facebook.*;
 import com.github.rtoshiro.secure.SecureSharedPreferences;
 import com.google.gson.Gson;
-import org.json.JSONException;
-import org.json.JSONObject;
-import java.util.*;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -77,7 +67,6 @@ public class LoginActivity extends AppCompatActivity {
         usernameTextView.setText(prefs.getString("username", ""));
         passwordEditText.setText(prefs.getString("password", ""));
         checkIfPreferencesAreSet();
-
     }
 
     private void commitPreferencesIfCheckBoxIsCheckedElseCommitNull(){

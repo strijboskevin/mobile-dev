@@ -44,7 +44,6 @@ public class ChangeAddressActivity extends PreferenceActivity {
             editor.putString("address", address);
             editor.putString("postalCode", postalCode);
             editor.commit();
-            System.out.println("test");
         }
     }
 }

@@ -5,10 +5,6 @@ import java.util.List;
 
 import mobile_dev.mobile_dev.model.Menu;
 
-/**
- * Created by kevin on 04/10/2017.
- */
-
 public class MenuContainer implements Serializable {
 
     private List<Menu> menus;

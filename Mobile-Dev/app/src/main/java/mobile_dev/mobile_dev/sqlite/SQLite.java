@@ -18,12 +18,10 @@ public class SQLite extends SQLiteOpenHelper {
     private static final String TABLE_DISHES = "dishes";
     private static final String TABLE_MENUS = "menus";
     private static final String TABLE_RESTAURANTS = "restaurants";
-    private static final String TABLE_RESTAURANTS_DISHES = "restaurant_dishes";
 
     // Common column names
     private static final String KEY_ID = "id";
     private static final String KEY_NAME = "name";
-    private static final String KEY_RESTAURANT_ID = "restaurant_id";
     private static final String KEY_ADDRESS = "address";
 
     // TABLE_CITIES - column names
@@ -37,9 +35,6 @@ public class SQLite extends SQLiteOpenHelper {
 
     // TABLE_RESTAURANTS - column names
     private static final String KEY_CITY = "city";
-
-    // TABLE_RESTAURANTS_DISHES - column names
-    private static final String KEY_DISHES_ID = "dishes_id";
 
 
     // Table Create Statements
@@ -63,11 +58,6 @@ public class SQLite extends SQLiteOpenHelper {
             + TABLE_RESTAURANTS + "(" + KEY_ID + " INTEGER PRIMARY KEY,"
             + KEY_ADDRESS + " TEXT," + KEY_CITY + " TEXT," + KEY_NAME + " TEXT)";
 
-    // TABLE_RESTAURANTS_DISHES - create statement
-    private static final String CREATE_TABLE_RESTAURANTS_DISHES = "CREATE TABLE "
-            + TABLE_RESTAURANTS_DISHES + "(" + KEY_RESTAURANT_ID + " INTEGER PRIMARY KEY,"
-            + KEY_DISHES_ID + " INTEGER)";
-
     public SQLite(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.getWritableDatabase();
@@ -81,7 +71,6 @@ public class SQLite extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_DISHES);
         db.execSQL(CREATE_TABLE_MENUS);
         db.execSQL(CREATE_TABLE_RESTAURANTS);
-        //db.execSQL(CREATE_TABLE_RESTAURANTS_DISHES);
     }
 
     @Override
@@ -91,7 +80,6 @@ public class SQLite extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_DISHES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_MENUS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_RESTAURANTS);
-        //db.execSQL("DROP TABLE IF EXISTS " + TABLE_RESTAURANTS_DISHES);
 
         // create new tables
         onCreate(db);

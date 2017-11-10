@@ -2,7 +2,6 @@ package mobile_dev.mobile_dev.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -81,7 +80,6 @@ public class MenuActivity extends AppCompatActivity {
         else {
             Toast.makeText(this, "Bestel minstens 1 gerecht.", Toast.LENGTH_SHORT).show();
         }
-
     }
 
     private void adjustOrderElements(List<OrderElement> orderElements) {

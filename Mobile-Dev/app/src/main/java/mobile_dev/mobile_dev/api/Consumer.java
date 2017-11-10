@@ -30,5 +30,4 @@ public class Consumer {
             input.execute(url);
         }
     }
-
 }

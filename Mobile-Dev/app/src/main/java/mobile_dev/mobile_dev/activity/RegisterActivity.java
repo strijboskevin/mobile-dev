@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -79,7 +78,6 @@ public class RegisterActivity extends AppCompatActivity{
                 Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
                 mobilenumberEditText.startAnimation(shake);
             }
-
         } else {
             shake();
         }
@@ -196,5 +194,4 @@ public class RegisterActivity extends AppCompatActivity{
         addressEditText.startAnimation(shake);
         postalEditText.startAnimation(shake);
     }
-
 }
