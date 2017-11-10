@@ -48,12 +48,16 @@ public class LoginActivity extends AppCompatActivity {
             public void execute(String json) {
                 if (!json.equals("")) {
                     LoginActivity.this.user = gson.fromJson(json, User.class);
-                    Intent intent = new Intent(LoginActivity.this, DishActivity.class);
-                    intent.putExtra("user", new UserContainer(LoginActivity.this.user));
-                    startActivity(intent);
-                } else {
+                    if (passWord.equals(user.getPassWord()))
+                    {
+                        Intent intent = new Intent(LoginActivity.this, DishActivity.class);
+                        intent.putExtra("user", new UserContainer(LoginActivity.this.user));
+                        startActivity(intent);
+                    }
+                    else
+                        shake();
+                } else
                     shake();
-                }
             }
         }).find(userName);
     }
