@@ -9,6 +9,8 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Toast;
+
 import com.github.rtoshiro.secure.SecureSharedPreferences;
 import com.google.gson.Gson;
 import butterknife.BindView;
@@ -16,6 +18,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import mobile_dev.mobile_dev.R;
 import mobile_dev.mobile_dev.activity.container.UserContainer;
+import mobile_dev.mobile_dev.appstatus.AppStatus;
 import mobile_dev.mobile_dev.model.User;
 import mobile_dev.mobile_dev.repository.UserRepository;
 
@@ -39,27 +42,31 @@ public class LoginActivity extends AppCompatActivity {
 
     @OnClick(R.id.loginButton)
     public void attemptLogin() {
-        String userName = usernameTextView.getText().toString();
-        passWord = passwordEditText.getText().toString();
-        passWord = convertToMD5(passWord);
-        commitPreferencesIfCheckBoxIsCheckedElseCommitNull();
-        new UserRepository(new ICallback() {
-            @Override
-            public void execute(String json) {
-                if (!json.equals("")) {
-                    LoginActivity.this.user = gson.fromJson(json, User.class);
-                    if (passWord.equals(user.getPassWord()))
-                    {
-                        Intent intent = new Intent(LoginActivity.this, DishActivity.class);
-                        intent.putExtra("user", new UserContainer(LoginActivity.this.user));
-                        startActivity(intent);
-                    }
-                    else
+        if (AppStatus.getInstance(this).isOnline()) {
+            String userName = usernameTextView.getText().toString();
+            passWord = passwordEditText.getText().toString();
+            passWord = convertToMD5(passWord);
+            commitPreferencesIfCheckBoxIsCheckedElseCommitNull();
+            new UserRepository(new ICallback() {
+                @Override
+                public void execute(String json) {
+                    if (!json.equals("")) {
+                        LoginActivity.this.user = gson.fromJson(json, User.class);
+                        if (passWord.equals(user.getPassWord()))
+                        {
+                            Intent intent = new Intent(LoginActivity.this, DishActivity.class);
+                            intent.putExtra("user", new UserContainer(LoginActivity.this.user));
+                            startActivity(intent);
+                        }
+                        else
+                            shake();
+                    } else
                         shake();
-                } else
-                    shake();
-            }
-        }).find(userName);
+                }
+            }).find(userName);
+        } else {
+            Toast.makeText(this,"Dit toestel heeft geen internetverbinding.",Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
