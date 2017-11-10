@@ -19,7 +19,6 @@ public class ChangeRadiusActivity extends AppCompatActivity {
     @BindView(R.id.change_radius_seekbar) SeekBar seekBar;
     @BindView(R.id.change_radius_seekbar_text) TextView textView;
     private User user;
-    private int radius = 0;
     private static SharedPreferences prefs;
 
     @Override
@@ -29,8 +28,8 @@ public class ChangeRadiusActivity extends AppCompatActivity {
         setContentView(R.layout.activity_change_radius);
         ButterKnife.bind(this);
         prefs = getSharedPreferences("prefs", MODE_PRIVATE);
-        seekBar.setProgress(prefs.getInt("seekBarValue", 0));
-        textView.setText(prefs.getString("textViewValue", "0km"));
+        seekBar.setProgress(prefs.getInt("seekBarValue", user.getRadius()));
+        textView.setText(prefs.getString("textViewValue", String.valueOf(user.getRadius())));
         setSeekBar();
     }
 
@@ -39,11 +38,11 @@ public class ChangeRadiusActivity extends AppCompatActivity {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int radius, boolean b) {
-                textView.setText(radius + "km");
+                textView.setText(radius+20 + "km");
                 prefs = getSharedPreferences("prefs", MODE_PRIVATE);
                 SharedPreferences.Editor editor = prefs.edit();
-                editor.putInt("seekBarValue", radius);
-                editor.putString("textViewValue", radius + "km");
+                editor.putInt("seekBarValue", radius+20);
+                editor.putString("textViewValue", radius+20 + "km");
                 editor.commit();
             }
 
