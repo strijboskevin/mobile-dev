@@ -14,6 +14,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.gson.Gson;
+import com.paypal.android.sdk.payments.PayPalConfiguration;
+import com.paypal.android.sdk.payments.PayPalPayment;
+import com.paypal.android.sdk.payments.PayPalService;
+import com.paypal.android.sdk.payments.PaymentActivity;
+import com.paypal.android.sdk.payments.PaymentConfirmation;
 import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -44,7 +49,10 @@ public class OverViewActivity extends AppCompatActivity {
     private User user;
     private String url;
     private SharedPreferences preferences;
-    String paypalClientId = "AaadvnDGI9Yjhx7cdwPjJYV_XwjJNGjpvFu4__NisSq7cudBv9XT2E9O6kqhf61D1xkmHWLZAipncFuP";
+    private Intent paypalIntent;
+    private int ppRequestCode = 999;
+    private PayPalConfiguration ppConfig;
+    private String paypalClientId = "AbA8LQ4s-CchWCS7V_mmrtVePqI5wRzUEURQiBOVQ5Qq1qzJ6NdAYDkhJvaRJy2VUc8xSWhS7DMFeZdh";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,6 +69,10 @@ public class OverViewActivity extends AppCompatActivity {
         listView.setAdapter(adapter);
         setCity(this.user.getCity());
         preferences = getSharedPreferences("prefs", MODE_PRIVATE);
+        ppConfig = new PayPalConfiguration().environment(PayPalConfiguration.ENVIRONMENT_SANDBOX).clientId(paypalClientId);
+        paypalIntent = new Intent(OverViewActivity.this, PayPalService.class);
+        paypalIntent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, ppConfig);
+        startService(paypalIntent);
     }
 
     private void trimOrderElements() {
@@ -95,5 +107,29 @@ public class OverViewActivity extends AppCompatActivity {
                 total.setText("Totaal: €" + String.valueOf(calcTotal()));
             }
         }).find(postalCode);
+    }
+
+    @OnClick(R.id.paypalButton)
+    public void pay(View view) {
+        PayPalPayment payment = new PayPalPayment(new BigDecimal(calcTotal()), "EUR", "Paypal Payment", PayPalPayment.PAYMENT_INTENT_SALE);
+        Intent intent = new Intent(OverViewActivity.this, PaymentActivity.class);
+        intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, ppConfig);
+        intent.putExtra(PaymentActivity.EXTRA_PAYMENT, payment);
+        startActivityForResult(intent, ppRequestCode);
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == ppRequestCode) {
+            if (resultCode == Activity.RESULT_OK) {
+                PaymentConfirmation confirm = data.getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);
+                if (confirm != null && confirm.getProofOfPayment().getState().equals("approved")){
+                    Log.e("Payment", "confirmed");
+                } else {
+                    Log.e("Payment", "error");
+                }
+            }
+        }
     }
 }

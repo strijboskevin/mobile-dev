@@ -10,10 +10,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
+
 import com.squareup.picasso.Picasso;
 import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import mobile_dev.mobile_dev.R;
 import mobile_dev.mobile_dev.activity.adapter.MenuAdapter;
 import mobile_dev.mobile_dev.activity.adapter.utils.OrderElement;
@@ -49,7 +52,6 @@ public class MenuActivity extends AppCompatActivity {
         adapter = new MenuAdapter(MenuActivity.this, menus);
         myDb = new SQLite(this);
         setListView();
-        setButton();
         addMenusToSQLiteDb();
     }
 
@@ -57,21 +59,29 @@ public class MenuActivity extends AppCompatActivity {
         listView.setAdapter(adapter);
     }
 
-    private void setButton() {
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                List<OrderElement> orderElements = adapter.getOrderElements();
-                adjustOrderElements(orderElements);
-                OrderElementContainer orderElementContainer = new OrderElementContainer(orderElements);
-                Intent intent = new Intent(MenuActivity.this, OverViewActivity.class);
-                intent.putExtra(GLOBALS.URL, url);
-                UserContainer userContainer = new UserContainer(user);
-                intent.putExtra(GLOBALS.USER, userContainer);
-                intent.putExtra(GLOBALS.ORDERELEMENTS, orderElementContainer);
-                startActivity(intent);
-            }
-        });
+    @OnClick(R.id.listview_menus_button)
+    public void clickButton() {
+        boolean atLeastOneOrder = false;
+        List<OrderElement> orderElements = adapter.getOrderElements();
+        adjustOrderElements(orderElements);
+        OrderElementContainer orderElementContainer = new OrderElementContainer(orderElements);
+        for (int i = 0; i < orderElements.size(); i++) {
+            if (orderElements.get(i).getAmount() > 0)
+                atLeastOneOrder = true;
+        }
+        if (atLeastOneOrder)
+        {
+            Intent intent = new Intent(MenuActivity.this, OverViewActivity.class);
+            intent.putExtra(GLOBALS.URL, url);
+            UserContainer userContainer = new UserContainer(user);
+            intent.putExtra(GLOBALS.USER, userContainer);
+            intent.putExtra(GLOBALS.ORDERELEMENTS, orderElementContainer);
+            startActivity(intent);
+        }
+        else {
+            Toast.makeText(this, "Bestel minstens 1 gerecht.", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     private void adjustOrderElements(List<OrderElement> orderElements) {
