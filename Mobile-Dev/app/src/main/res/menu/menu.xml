@@ -9,4 +9,8 @@
         android:id="@+id/menu_change_radius"
         android:title="@string/menu_radius" />
 
+    <item
+        android:id="@+id/menu_invite_contact"
+        android:title="@string/invite_contact" />
+
 </menu>

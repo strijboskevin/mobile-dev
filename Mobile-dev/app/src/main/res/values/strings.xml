@@ -37,4 +37,5 @@
     <string name="category_title">Adres</string>
     <string name="remember_me">Onthoud mij</string>
     <string name="paypal">Betaal met paypal</string>
+    <string name="invite_contact">Invite</string>
 </resources>

@@ -13,14 +13,10 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.gson.Gson;
-import com.paypal.android.sdk.payments.*;
 import com.squareup.picasso.Picasso;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +45,6 @@ public class OverViewActivity extends AppCompatActivity {
     private User user;
     private String url;
     private SharedPreferences preferences;
-    private static PayPalConfiguration ppConfig;
     String paypalClientId = "AaadvnDGI9Yjhx7cdwPjJYV_XwjJNGjpvFu4__NisSq7cudBv9XT2E9O6kqhf61D1xkmHWLZAipncFuP";
 
     @Override
@@ -67,7 +62,6 @@ public class OverViewActivity extends AppCompatActivity {
         listView.setAdapter(adapter);
         setCity(this.user.getCity());
         preferences = getSharedPreferences("prefs", MODE_PRIVATE);
-        ppConfig = new PayPalConfiguration().environment(PayPalConfiguration.ENVIRONMENT_SANDBOX).clientId(paypalClientId);
     }
 
     private void trimOrderElements() {
@@ -103,51 +97,5 @@ public class OverViewActivity extends AppCompatActivity {
                 total.setText("Totaal: €" + String.valueOf(calcTotal()));
             }
         }).find(postalCode);
-    }
-
-    public void pay(View view) {
-        PayPalPayment payment = new PayPalPayment(new BigDecimal(calcTotal()), "EUR", "sample item",
-                PayPalPayment.PAYMENT_INTENT_SALE);
-
-        Intent intent = new Intent(this, PaymentActivity.class);
-        intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, ppConfig);
-        intent.putExtra(PaymentActivity.EXTRA_PAYMENT, payment);
-
-        startActivityForResult(intent, 0);
-
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == Activity.RESULT_OK) {
-            PaymentConfirmation confirm = data.getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);
-            if (confirm != null) {
-                try {
-                    Log.i("paymentExample", confirm.toJSONObject().toString(4));
-
-                    if (confirm != null) {
-                        try {
-
-                            JSONObject jsonObject = new JSONObject(confirm.toJSONObject().toString(4));
-                            JSONObject response = new JSONObject(jsonObject.getString("response"));
-
-                            Toast.makeText(this, "Payment Successful transction Id:-" + response.getString("id"), Toast.LENGTH_SHORT).show();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    // TODO: send 'confirm' to your server for verification.
-                    // see https://developer.paypal.com/webapps/developer/docs/integration/mobile/verify-mobile-payment/
-                    // for more details.
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        } else if (resultCode == Activity.RESULT_CANCELED) {
-            Log.i("paymentExample", "The user canceled.");
-        } else if (resultCode == PaymentActivity.RESULT_EXTRAS_INVALID) {
-            Log.i("paymentExample", "An invalid Payment or PayPalConfiguration was submitted. Please see the docs.");
-        }
     }
 }

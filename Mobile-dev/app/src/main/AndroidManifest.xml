@@ -11,6 +11,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-feature android:name="android.hardware.location.gps" />
 
     <application
@@ -38,6 +39,7 @@
         <activity android:name=".activity.OverViewActivity" />
         <activity android:name=".activity.ChangeAddressActivity" />
         <activity android:name=".activity.ChangeRadiusActivity" />
+        <activity android:name=".activity.ContactActivity" />
     </application>
 
 </manifest>

@@ -10,10 +10,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import mobile_dev.mobile_dev.activity.adapter.DishAdapter;
@@ -27,7 +30,8 @@ import mobile_dev.mobile_dev.sqlite.SQLite;
 
 public class DishActivity extends AppCompatActivity {
 
-    @BindView(R.id.gridview) GridView gridView;
+    @BindView(R.id.gridview)
+    GridView gridView;
 
     private List<Dish> dishes;
     private List<Dish> dishesSQLite = new ArrayList<Dish>();
@@ -53,6 +57,11 @@ public class DishActivity extends AppCompatActivity {
             UserContainer userContainer = new UserContainer(this.user);
             intent.putExtra("user", userContainer);
             startActivity(intent);
+        } else if (item.getItemId() == R.id.menu_invite_contact) {
+            Intent intent = new Intent(DishActivity.this, ContactActivity.class);
+            UserContainer userContainer = new UserContainer(this.user);
+            intent.putExtra("user", userContainer);
+            startActivity(intent);
         }
 
         return true;
@@ -74,7 +83,8 @@ public class DishActivity extends AppCompatActivity {
             @Override
             public void execute(String json) {
                 int i = 0;
-                DishActivity.this.dishes = new Gson().fromJson(json, new TypeToken<List<Dish>>(){}.getType());
+                DishActivity.this.dishes = new Gson().fromJson(json, new TypeToken<List<Dish>>() {
+                }.getType());
                 addDishesToSQLiteDb();
                 Cursor res = myDb.getAllDishes();
                 while (res.moveToNext()) {

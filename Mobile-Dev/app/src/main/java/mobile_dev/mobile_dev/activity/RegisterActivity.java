@@ -48,12 +48,7 @@ public class RegisterActivity extends AppCompatActivity{
     @BindView(R.id.fbLoginButton) LoginButton fbLoginButton;
 
     private String username, firstname, lastname, password, mobilenumber, address, postalcode;
-<<<<<<< HEAD
-    private String json;
-    private User user;
     private CallbackManager callbackManager;
-=======
->>>>>>> 7cf3302c2488800d4686c5563968c68a19db9155
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +85,6 @@ public class RegisterActivity extends AppCompatActivity{
         }
     }
 
-<<<<<<< HEAD
     private void setFacebookLoginButton() {
         fbLoginButton.setReadPermissions(Arrays.asList("public_profile", "email", "user_birthday", "user_friends"));
         callbackManager = CallbackManager.Factory.create();
@@ -144,7 +138,8 @@ public class RegisterActivity extends AppCompatActivity{
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
-=======
+    }
+
     private void addUser(User user) {
         new UserRepository(new ICallback() {
             @Override
@@ -152,7 +147,6 @@ public class RegisterActivity extends AppCompatActivity{
                 Toast.makeText(RegisterActivity.this, "Account created!", Toast.LENGTH_SHORT);
             }
         }).add(user);
->>>>>>> 7cf3302c2488800d4686c5563968c68a19db9155
     }
 
     public void getTextEditText() {

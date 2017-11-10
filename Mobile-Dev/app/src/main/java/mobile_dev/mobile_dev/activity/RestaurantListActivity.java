@@ -87,13 +87,13 @@ public class RestaurantListActivity extends AppCompatActivity implements Activit
     }
 
     private void getData() {
+        preferences = getSharedPreferences(GLOBALS.PREFS, MODE_PRIVATE);
         this.restaurants = ((RestaurantContainer) getIntent().getSerializableExtra(GLOBALS.RESTAURANTS)).getRestaurants();
         this.user = ((UserContainer) getIntent().getSerializableExtra(GLOBALS.USER)).getUser();
-        this.user.setAddress(getSharedPreferences("prefs", MODE_PRIVATE).getString("address", user.getAddress()));
-        this.user.setCity(getSharedPreferences("prefs", MODE_PRIVATE).getString("postalCode", user.getCity()));
+        this.user.setAddress(preferences.getString("address", user.getAddress()));
+        this.user.setCity(preferences.getString("postalCode", user.getCity()));
         this.url = getIntent().getStringExtra(GLOBALS.URL);
         this.restaurantBundles = new ArrayList<RestaurantBundle>();
-        preferences = getSharedPreferences(GLOBALS.PREFS, MODE_PRIVATE);
     }
 
     private void getCities() {
@@ -256,17 +256,6 @@ public class RestaurantListActivity extends AppCompatActivity implements Activit
         }
     }
 
-<<<<<<< HEAD
-    @Override
-    public void setAddress(String json) {
-        int start = json.indexOf("formatted_address");
-        int end = json.indexOf("\",", start);
-        String line = json.substring(start, end);
-        from = line.substring(22, line.length());
-        //Toast.makeText(this, this.from, Toast.LENGTH_SHORT).show();
-        this.threadCount = 0;
-        calcDistances();
-=======
     private void setAddress(double longitude, double latitude) {
         new CoordinatesConverter(longitude, latitude, new ICallback() {
             @Override
@@ -283,6 +272,5 @@ public class RestaurantListActivity extends AppCompatActivity implements Activit
                 RestaurantListActivity.this.user.setCity("");
             }
         }).convert();
->>>>>>> 7cf3302c2488800d4686c5563968c68a19db9155
     }
 }
