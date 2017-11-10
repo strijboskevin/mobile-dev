@@ -21,8 +21,8 @@ public class SQLite extends SQLiteOpenHelper {
     private static final String TABLE_RESTAURANTS_DISHES = "restaurant_dishes";
 
     // Common column names
-    private static final String KEY_ID = "id";
-    private static final String KEY_NAME = "name";
+    public static final String KEY_ID = "id";
+    public static final String KEY_NAME = "name";
     private static final String KEY_RESTAURANT_ID = "restaurant_id";
     private static final String KEY_ADDRESS = "address";
 
@@ -30,7 +30,7 @@ public class SQLite extends SQLiteOpenHelper {
     private static final String KEY_POSTAL_CODE = "postal_code";
 
     // TABLE_DISHES - column names
-    private static final String KEY_IMAGE = "image";
+    public static final String KEY_IMAGE = "image";
 
     // TABLE_MENUS - column names
     private static final String KEY_PRICE = "price";
