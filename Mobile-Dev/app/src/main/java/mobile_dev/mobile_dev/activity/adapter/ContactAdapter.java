@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,18 +11,8 @@ import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.util.List;
-import java.util.Properties;
-
 import mobile_dev.mobile_dev.R;
-import mobile_dev.mobile_dev.activity.ContactActivity;
-import mobile_dev.mobile_dev.model.Dish;
-import mobile_dev.mobile_dev.model.User;
-
-/**
- * Created by kevin on 10/11/2017.
- */
 
 public class ContactAdapter extends BaseAdapter {
 
