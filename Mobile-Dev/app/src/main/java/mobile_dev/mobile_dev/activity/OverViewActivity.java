@@ -39,7 +39,7 @@ public class OverViewActivity extends AppCompatActivity {
     @BindView(R.id.overview_menus_list) ListView listView;
     @BindView(R.id.overview_menus_list_image) ImageView image;
     @BindView(R.id.overview_menus_textview_total_price) TextView total;
-    @BindView(R.id.paypalButton) Button paypalButton;
+    private Button paypalButton;
 
     private List<OrderElement> orderElements;
     private OverViewAdapter adapter;
@@ -57,6 +57,7 @@ public class OverViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_overview_menus_list);
         this.user = ((UserContainer)getIntent().getSerializableExtra("user")).getUser();
         ButterKnife.bind(this);
+        this.paypalButton = (Button) (findViewById(R.id.paypalButton));
         this.orderElements = ((OrderElementContainer)getIntent().getSerializableExtra("orderElements")).getOrderElements();
         trimOrderElements();
         this.url = getIntent().getStringExtra("url");
@@ -64,11 +65,11 @@ public class OverViewActivity extends AppCompatActivity {
         this.user = ((UserContainer)getIntent().getSerializableExtra("user")).getUser();
         adapter = new OverViewAdapter(OverViewActivity.this, orderElements);
         listView.setAdapter(adapter);
-        setCity(this.user.getCity());
         preferences = getSharedPreferences("prefs", MODE_PRIVATE);
         ppConfig = new PayPalConfiguration().environment(PayPalConfiguration.ENVIRONMENT_SANDBOX).clientId(paypalClientId);
         paypalIntent = new Intent(OverViewActivity.this, PayPalService.class);
         paypalIntent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, ppConfig);
+        pay();
         startService(paypalIntent);
     }
 
@@ -94,23 +95,17 @@ public class OverViewActivity extends AppCompatActivity {
         return total;
     }
 
-    public void setCity(String postalCode) {
-        new CityRepository(new ICallback() {
+    public void pay() {
+        this.paypalButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void execute(String json) {
-                City city = new Gson().fromJson(json, City.class);
-                total.setText("Totaal: €" + String.valueOf(calcTotal()));
+            public void onClick(View v) {
+                PayPalPayment payment = new PayPalPayment(new BigDecimal(calcTotal()), "EUR", "Paypal Payment", PayPalPayment.PAYMENT_INTENT_SALE);
+                Intent intent = new Intent(OverViewActivity.this, PaymentActivity.class);
+                intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, ppConfig);
+                intent.putExtra(PaymentActivity.EXTRA_PAYMENT, payment);
+                startActivityForResult(intent, ppRequestCode);
             }
-        }).find(postalCode);
-    }
-
-    @OnClick(R.id.paypalButton)
-    public void pay(View view) {
-        PayPalPayment payment = new PayPalPayment(new BigDecimal(calcTotal()), "EUR", "Paypal Payment", PayPalPayment.PAYMENT_INTENT_SALE);
-        Intent intent = new Intent(OverViewActivity.this, PaymentActivity.class);
-        intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, ppConfig);
-        intent.putExtra(PaymentActivity.EXTRA_PAYMENT, payment);
-        startActivityForResult(intent, ppRequestCode);
+        });
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

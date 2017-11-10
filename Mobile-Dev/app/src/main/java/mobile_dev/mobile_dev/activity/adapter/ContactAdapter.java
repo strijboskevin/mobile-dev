@@ -11,7 +11,6 @@ import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.util.List;
 import mobile_dev.mobile_dev.R;
 

@@ -20,15 +20,15 @@ public class SQLite extends SQLiteOpenHelper {
     private static final String TABLE_RESTAURANTS = "restaurants";
 
     // Common column names
-    private static final String KEY_ID = "id";
-    private static final String KEY_NAME = "name";
+    public static final String KEY_ID = "id";
+    public static final String KEY_NAME = "name";
     private static final String KEY_ADDRESS = "address";
 
     // TABLE_CITIES - column names
     private static final String KEY_POSTAL_CODE = "postal_code";
 
     // TABLE_DISHES - column names
-    private static final String KEY_IMAGE = "image";
+    public static final String KEY_IMAGE = "image";
 
     // TABLE_MENUS - column names
     private static final String KEY_PRICE = "price";
@@ -65,7 +65,6 @@ public class SQLite extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-
         // creating required tables
         db.execSQL(CREATE_TABLE_CITIES);
         db.execSQL(CREATE_TABLE_DISHES);

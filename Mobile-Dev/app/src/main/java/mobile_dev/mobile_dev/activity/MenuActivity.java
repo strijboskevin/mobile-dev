@@ -38,6 +38,7 @@ public class MenuActivity extends AppCompatActivity {
     private User user;
     private String url;
     private SQLite myDb;
+    private boolean inputNumber;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,26 +61,24 @@ public class MenuActivity extends AppCompatActivity {
 
     @OnClick(R.id.listview_menus_button)
     public void clickButton() {
-        boolean atLeastOneOrder = false;
         List<OrderElement> orderElements = adapter.getOrderElements();
         adjustOrderElements(orderElements);
-        OrderElementContainer orderElementContainer = new OrderElementContainer(orderElements);
-        for (int i = 0; i < orderElements.size(); i++) {
-            if (orderElements.get(i).getAmount() > 0)
-                atLeastOneOrder = true;
+        if (inputNumber) {
+            OrderElementContainer orderElementContainer = new OrderElementContainer(orderElements);
+            for (int i = 0; i < orderElements.size(); i++) {
+                if (orderElements.get(i).getAmount() > 0) {
+                    Intent intent = new Intent(MenuActivity.this, OverViewActivity.class);
+                    intent.putExtra(GLOBALS.URL, url);
+                    UserContainer userContainer = new UserContainer(user);
+                    intent.putExtra(GLOBALS.USER, userContainer);
+                    intent.putExtra(GLOBALS.ORDERELEMENTS, orderElementContainer);
+                    startActivity(intent);
+                } else
+                    Toast.makeText(this, "Bestel minstens 1 gerecht.", Toast.LENGTH_SHORT).show();
+            }
         }
-        if (atLeastOneOrder)
-        {
-            Intent intent = new Intent(MenuActivity.this, OverViewActivity.class);
-            intent.putExtra(GLOBALS.URL, url);
-            UserContainer userContainer = new UserContainer(user);
-            intent.putExtra(GLOBALS.USER, userContainer);
-            intent.putExtra(GLOBALS.ORDERELEMENTS, orderElementContainer);
-            startActivity(intent);
-        }
-        else {
-            Toast.makeText(this, "Bestel minstens 1 gerecht.", Toast.LENGTH_SHORT).show();
-        }
+        else
+            Toast.makeText(this, "Enkel getallen invullen", Toast.LENGTH_SHORT).show();
     }
 
     private void adjustOrderElements(List<OrderElement> orderElements) {
@@ -88,8 +87,15 @@ public class MenuActivity extends AppCompatActivity {
         for (i=0; i < listView.getCount() ;i++) {
             View v = listView.getAdapter().getView(i, listView.getChildAt(i), listView);
             EditText edit = (EditText) v.findViewById(R.id.activity_menu_list_element_edittext);
-            int amount = Integer.parseInt(edit.getText().toString());
-            orderElements.get(i).setAmount(amount);
+            String tekst = edit.getText().toString();
+            if (edit.getText().toString().matches("[0-9]+")) {
+                int amount = Integer.parseInt(edit.getText().toString());
+                orderElements.get(i).setAmount(amount);
+                inputNumber = true;
+            }
+            else {
+                inputNumber = false;
+            }
         }
     }
 

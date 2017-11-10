@@ -91,7 +91,9 @@ public class DishActivity extends AppCompatActivity {
                     Dish dish = new Dish();
                     dish.setId(res.getInt(0));
                     dish.setImage(res.getString(1));
-                    dish.setRestaurants(dishes.get(i).getRestaurants());
+                    if (dishes != null) {
+                        dish.setRestaurants(dishes.get(i).getRestaurants());
+                    }
                     dish.setName(res.getString(2));
                     dishesSQLite.add(dish);
                     i++;
@@ -111,15 +113,17 @@ public class DishActivity extends AppCompatActivity {
                 Intent intent = new Intent(DishActivity.this, RestaurantListActivity.class);
                 intent.putExtra("restaurants", restaurantsContainer);
                 intent.putExtra("user", userContainer);
-                intent.putExtra("url", dishes.get(position).getImage());
+                intent.putExtra("url", dishesSQLite.get(position).getImage());
                 startActivity(intent);
             }
         });
     }
 
     private void addDishesToSQLiteDb() {
-        for (int i = 0; i < dishes.size(); i++) {
-            myDb.insertDishes(dishes.get(i).getId(), dishes.get(i).getImage(), dishes.get(i).getName());
+        if (dishes != null) {
+            for (int i = 0; i < dishes.size(); i++) {
+                myDb.insertDishes(dishes.get(i).getId(), dishes.get(i).getImage(), dishes.get(i).getName());
+            }
         }
     }
 }

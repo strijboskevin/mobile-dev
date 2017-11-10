@@ -68,9 +68,11 @@ public class RestaurantListActivity extends AppCompatActivity implements Activit
         Picasso.with(this).load(url).into(image);
         adapter = new RestaurantListAdapter(RestaurantListActivity.this, restaurantBundles, user, url);
         listView.setAdapter(adapter);
-        getCities();
-        getUserCity();
-        addRestaurantsToSQLiteDb();
+        if (this.restaurants != null) {
+            getCities();
+            getUserCity();
+            addRestaurantsToSQLiteDb();
+        }
     }
 
     private void addRestaurantsToSQLiteDb() {
