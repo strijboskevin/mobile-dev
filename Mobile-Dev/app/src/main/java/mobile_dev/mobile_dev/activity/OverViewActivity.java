@@ -71,6 +71,7 @@ public class OverViewActivity extends AppCompatActivity {
         paypalIntent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, ppConfig);
         pay();
         startService(paypalIntent);
+        this.total.setText("Totaal: €" + calcTotal());
     }
 
     private void trimOrderElements() {
@@ -92,6 +93,7 @@ public class OverViewActivity extends AppCompatActivity {
         for (i=0; i < orderElements.size() ;i++) {
             total += orderElements.get(i).getMenu().getPrice() * orderElements.get(i).getAmount();
         }
+
         return total;
     }
 

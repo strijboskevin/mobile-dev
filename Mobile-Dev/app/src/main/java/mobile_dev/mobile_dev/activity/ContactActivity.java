@@ -20,7 +20,7 @@ import mobile_dev.mobile_dev.activity.adapter.ContactAdapter;
 public class ContactActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback{
 
     @BindView(R.id.activity_contacts_list) ListView listView;
-    @BindView(R.id.contacts_element_text) TextView textView;
+    private TextView textView;
     private List<String> names;
 
     private static final int PERMISSION_REQUEST_RESULT = 1;
@@ -30,6 +30,7 @@ public class ContactActivity extends AppCompatActivity implements ActivityCompat
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contacts);
         ButterKnife.bind(this);
+        this.textView = (TextView) (findViewById(R.id.contacts_element_text));
         this.names = new ArrayList<String>();
         getPermission();
     }
