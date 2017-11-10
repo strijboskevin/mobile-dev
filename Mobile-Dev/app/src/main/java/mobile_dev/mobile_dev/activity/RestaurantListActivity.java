@@ -268,8 +268,6 @@ public class RestaurantListActivity extends AppCompatActivity implements Activit
                 maps.clear();
                 restaurantBundles.clear();
                 calcDistances();
-                RestaurantListActivity.this.user.setAddress(from);
-                RestaurantListActivity.this.user.setCity("");
             }
         }).convert();
     }

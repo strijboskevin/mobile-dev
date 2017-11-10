@@ -35,7 +35,6 @@ import mobile_dev.mobile_dev.repository.CityRepository;
 public class OverViewActivity extends AppCompatActivity {
 
     @BindView(R.id.overview_menus_list) ListView listView;
-    @BindView(R.id.overview_menus_textview) TextView textView;
     @BindView(R.id.overview_menus_list_image) ImageView image;
     @BindView(R.id.overview_menus_textview_total_price) TextView total;
     @BindView(R.id.paypalButton) Button paypalButton;
@@ -93,7 +92,6 @@ public class OverViewActivity extends AppCompatActivity {
             @Override
             public void execute(String json) {
                 City city = new Gson().fromJson(json, City.class);
-                textView.setText("De bestelling zal geleverd worden aan " + preferences.getString("address", user.getAddress()) + " te " + city.getName() + " op naam van " + OverViewActivity.this.user.getFirstName() + " " + OverViewActivity.this.user.getLastName() + ".");
                 total.setText("Totaal: €" + String.valueOf(calcTotal()));
             }
         }).find(postalCode);
